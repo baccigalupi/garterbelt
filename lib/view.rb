@@ -1,5 +1,7 @@
 module MarkupLounge
   class View
+    include RuPol::Swimsuit
+    
     CLOSED_TAGS = ['area', 'base', 'br', 'col', 'frame', 'hr', 'img', 'input', 'link', 'meta']
     OPEN_TAGS = [
       'a', 'abbr', 'acronym', 'address', 
@@ -19,5 +21,22 @@ module MarkupLounge
       'th', 'thead', 'title', 'tr', 'tt', 'u', 'ul', 'var'
     ]
     TAGS = CLOSED_TAGS + OPEN_TAGS
+    
+    attr_accessor :output, :buffer, :level
+    
+    def initialize(opts={})
+      self.level = opts[:level] || 0
+      self.output = ""
+    end
+    
+    def render(content_method = :content)
+      self.output = ""
+      if content_method == :content
+        content
+      else
+        send(content_method)
+      end
+      output
+    end
   end
 end
