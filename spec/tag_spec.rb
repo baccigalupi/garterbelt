@@ -4,11 +4,15 @@ describe MarkupLounge::Tag do
   Tag = MarkupLounge::Tag unless defined?(Tag)
   
   class MockView
-    attr_accessor :level, :output
+    attr_accessor :level, :output, :buffer
     
     def initialize(l)
+      self.buffer = []
       self.output = ""
       self.level = l
+    end
+    
+    def render_buffer
     end
   end
   
@@ -135,53 +139,22 @@ describe MarkupLounge::Tag do
           end
         end
         
-        describe 'one tag layer deep' do
+        describe 'adding to the tag buffer' do
           before do
+            @b = MarkupLounge::ClosedTag.new(:view => @view, :type => :hr, :attributes => {:class => :linear})
             @tag.id(:foo) do
-              Tag.new(:type => :b, :content => 'Boldly going where everyone has gone before.', :view => @view).render
-              Tag.new(:type => :a, :content => 'Link me', :view => @view, :attributes => {:href => '/go/foo/yourself'}).render
+              @view.buffer << @b
             end
-            
+          end
+          
+          it 'should add the tag to the buffer' do
             @tag.render
+            @view.buffer.should include @b
           end
           
-          it 'adds the content' do
-            @output.should include Tag.new(:type => :b, :content => 'Boldly going where everyone has gone before.', :view => @view).render
-          end
-          
-          it 'adds the content in the correct order' do
-            @output.should match /<p[^<]*<b/
-          end
-          
-          it 'properly indents the content' do
-            @output.should match /^        Boldly/
-          end
-          
-          it 'works with multiple tags on the same level' do
-            @output.should include "Link me"
-            @output.should match /^        Link me/
-          end
-        end
-        
-        describe 'two layer tag nesting' do
-          before do
-            Tag.new(:type => :form, :view => @view, :attributes => {:action => '/foo/bar', :method => :post}) do
-              Tag.new(:type => :fieldset, :view => @view) do
-                MarkupLounge::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'my_great_input', :value => 'change me'}).render
-              end.render
-            end.render
-          end
-          
-          it 'includes the second layer content' do
-            @output.should match /<input[^>]*>/
-          end
-          
-          it 'puts the second layer after the first' do
-            @output.should match /<fieldset[^>]*>[^<]*<input[^>]*>[^<]*<\/fieldset>/
-          end
-          
-          it 'is properly indented' do
-            @output.should match /^        <input/        
+          it 'calls render buffer on the view' do
+            @view.should_receive(:render_buffer)
+            @tag.render
           end
         end
       end

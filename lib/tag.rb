@@ -34,6 +34,7 @@ module MarkupLounge
       view.level += 1
       if content.is_a?(Proc)
         content.call
+        view.render_buffer
         self.output << "\n"
       else
         self.output << "#{indent}#{content}\n" if content

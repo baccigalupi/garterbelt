@@ -11,5 +11,5 @@ require 'markup_lounge'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+  include PutSpec
 end

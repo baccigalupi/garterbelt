@@ -3,13 +3,12 @@ module MarkupLounge
     include RuPol::Swimsuit
     max_pool_size 10000
     
-    attr_accessor :type, :view, :attributes, :css_class, :output
+    attr_accessor :type, :view, :attributes, :css_class
     
     def initialize(opts, &block)
       self.type = opts[:type] || raise(ArgumentError, ":type required in initialization options")
       self.view = opts[:view] || raise(ArgumentError, ":view required in initialization options")
       self.attributes = opts[:attributes] || {}
-      self.output = view.output
       
       css_class = attributes.delete(:class)
       self.css_class = if css_class
@@ -35,6 +34,9 @@ module MarkupLounge
     alias :* :c
     
     # Rendering -----------------------------------------------
+    def output
+      view.output
+    end
     
     def level 
       view.level
