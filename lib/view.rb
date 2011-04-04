@@ -13,7 +13,7 @@ module MarkupLounge
     # TAG HELPERS -----------------------
     
     def tag(type, *args, &block)
-      tag = Tag.new(parse_tag_arguments(type, args), &block)
+      tag = ContentTag.new(parse_tag_arguments(type, args), &block)
       buffer << tag
       tag
     end

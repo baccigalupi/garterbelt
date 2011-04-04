@@ -23,7 +23,7 @@ describe MarkupLounge::View do
     
     it 'has a tag buffer' do
       @view.buffer.should == []
-      @tag = MarkupLounge::Tag.new(:view => @view, :type => :hr)
+      @tag = MarkupLounge::ContentTag.new(:view => @view, :type => :hr)
       @view.buffer << @tag
       @view.buffer.should == [@tag]
     end
@@ -54,9 +54,9 @@ describe MarkupLounge::View do
     
     describe "render_buffer" do
       before do
-        @hr = MarkupLounge::Tag.new(:view => @view, :type => :hr)
-        @input = MarkupLounge::Tag.new(:view => @view, :type => :input)
-        @img = MarkupLounge::Tag.new(:view => @view, :type => :img)
+        @hr = MarkupLounge::ContentTag.new(:view => @view, :type => :hr)
+        @input = MarkupLounge::ContentTag.new(:view => @view, :type => :input)
+        @img = MarkupLounge::ContentTag.new(:view => @view, :type => :img)
       end
       
       it 'will clear the buffer' do
@@ -102,7 +102,7 @@ describe MarkupLounge::View do
       
       describe 'second level' do
         before do
-          @view.buffer << MarkupLounge::Tag.new(:type => :p, :view => @view) do
+          @view.buffer << MarkupLounge::ContentTag.new(:type => :p, :view => @view) do
             @view.buffer << MarkupLounge::ClosedTag.new(:type => :hr, :view => @view)
           end
           @view.render
@@ -123,12 +123,12 @@ describe MarkupLounge::View do
       
       describe 'multi level' do
         before do
-          @view.buffer << MarkupLounge::Tag.new(:type => :form, :view => @view) do
-            @view.buffer << MarkupLounge::Tag.new(:type => :fieldset, :view => @view) do
-              @view.buffer << MarkupLounge::Tag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
+          @view.buffer << MarkupLounge::ContentTag.new(:type => :form, :view => @view) do
+            @view.buffer << MarkupLounge::ContentTag.new(:type => :fieldset, :view => @view) do
+              @view.buffer << MarkupLounge::ContentTag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
                 @view.buffer << MarkupLounge::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
               end
-              @view.buffer << MarkupLounge::Tag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
+              @view.buffer << MarkupLounge::ContentTag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
             end
           end
           @view.render
@@ -155,19 +155,27 @@ describe MarkupLounge::View do
         end
       end
     end
+  
+    describe 'class method' do
+      it 'passes along arguments to new'
+      it 'makes a new view'
+      it 'renders it'
+      it 'recycles the view'
+      it 'returns the output'
+    end
   end
 
   describe 'tag helpers' do
     describe '#tag' do
       it 'makes a new tag' do
-        MarkupLounge::Tag.should_receive(:new).with(
+        MarkupLounge::ContentTag.should_receive(:new).with(
           :type => :p, :view => @view, :content => 'content', :attributes => {:class => 'classy'}
         ).and_return('content')
         @view.tag(:p, "content", {:class => 'classy'})
       end
       
       it 'returns the tag' do
-        @view.tag(:p, "content", {:class => 'classy'}).is_a?(MarkupLounge::Tag).should be_true
+        @view.tag(:p, "content", {:class => 'classy'}).is_a?(MarkupLounge::ContentTag).should be_true
       end
       
       it 'adds it to the buffer' do
@@ -233,6 +241,12 @@ describe MarkupLounge::View do
             @view.send(type, {:class => 'classy'})
           end
         end
+      end
+    end
+  
+    describe 'special renderers/helpers' do
+      describe 'text' do
+        it 'adds the text renderer to the buffer'
       end
     end
   end

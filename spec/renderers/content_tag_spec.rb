@@ -1,43 +1,34 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::Tag do
-  Tag = MarkupLounge::Tag unless defined?(Tag)
-  
-  class MockView
-    attr_accessor :level, :output, :buffer
-    
-    def initialize(l)
-      self.buffer = []
-      self.output = ""
-      self.level = l
-    end
-    
-    def render_buffer
-    end
-  end
+describe MarkupLounge::ContentTag do
+  ContentTag = MarkupLounge::ContentTag unless defined?(ContentTag)
   
   before do
-    @view = MockView.new(2)
+    @view = MockView.new
     @output = @view.output
     @params = {:type => :p, :attributes => {:class => 'classy'}, :view => @view}
-    @tag = Tag.new(@params)
+    @tag = ContentTag.new(@params)
   end
   
-  describe "initialize" do
+  describe "basics" do
     it 'takes a content option' do
-      Tag.new(@params.merge(:content => 'My great content')).content.should == "My great content"
+      ContentTag.new(@params.merge(:content => 'My great content')).content.should == "My great content"
     end
     
     it 'takes a block as content' do
-      Tag.new(@params) do
+      ContentTag.new(@params) do
         @output << "This is block content"
       end.content.class.should == Proc
     end
     
     it 'will override option content in favor of block content' do
-      Tag.new(@params.merge(:content => 'not the block')) do
+      ContentTag.new(@params.merge(:content => 'not the block')) do
         @output << "This is block content"
       end.content.class.should == Proc
+    end
+    
+    it 'inherits a really large max_pool_size' do
+      ContentTag._pool.max_size.should == 10000
     end
   end
   

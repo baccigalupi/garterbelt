@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe MarkupLounge::ClosedTag do
   ClosedTag = MarkupLounge::ClosedTag unless defined?(ClosedTag)

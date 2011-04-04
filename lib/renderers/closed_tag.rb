@@ -1,13 +1,13 @@
 module MarkupLounge
-  class ClosedTag
+  class ClosedTag < Renderer
     include RuPol::Swimsuit
     max_pool_size 10000
     
-    attr_accessor :type, :view, :attributes, :css_class
+    attr_accessor :type, :attributes, :css_class
     
-    def initialize(opts, &block)
+    def initialize(opts)
+      super
       self.type = opts[:type] || raise(ArgumentError, ":type required in initialization options")
-      self.view = opts[:view] || raise(ArgumentError, ":view required in initialization options")
       self.attributes = opts[:attributes] || {}
       
       css_class = attributes.delete(:class)
@@ -34,17 +34,6 @@ module MarkupLounge
     alias :* :c
     
     # Rendering -----------------------------------------------
-    def output
-      view.output
-    end
-    
-    def level 
-      view.level
-    end
-    
-    def indent
-      ' '*level*2
-    end
     
     def rendered_attributes
       str = ""
