@@ -96,15 +96,11 @@ describe MarkupLounge::ContentTag do
       describe 'string' do
         before do
           @tag.content = "My string content"
+        end
+        
+        it 'makes a Text object' do
+          MarkupLounge::Text.should_receive(:new).and_return('text')
           @tag.render
-        end
-        
-        it 'is output' do
-          @output.should include "My string content"
-        end
-        
-        it 'is properly indented' do
-          @output.should match /^      My/
         end
       end
       
@@ -126,7 +122,7 @@ describe MarkupLounge::ContentTag do
           end
           
           it 'should put the content between the tags' do
-            @output.should match /<p.*\nGoing directly to the source\n\W*<\/p/
+            @output.should match /<p.*\nGoing.*<\/p/
           end
         end
         

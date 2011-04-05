@@ -42,11 +42,10 @@ module MarkupLounge
       view.level += 1
       if content.is_a?(Proc)
         content.call
-        view.render_buffer
-        self.output << "\n"
       else
-        self.output << "#{indent}#{content}\n" if content
+        view.buffer << Text.new(:view => view, :content => content) if content
       end
+      view.render_buffer
       view.level -= 1
     end
   end

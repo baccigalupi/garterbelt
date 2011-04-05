@@ -27,6 +27,10 @@ describe MarkupLounge::View do
       @view.buffer << @tag
       @view.buffer.should == [@tag]
     end
+  
+    it 'has escape set to true by default' do
+      @view.escape.should == true
+    end
   end
   
   describe 'rendering' do
@@ -157,7 +161,6 @@ describe MarkupLounge::View do
     end
   
     describe 'class method' do
-      it 'passes along arguments to new'
       it 'makes a new view'
       it 'renders it'
       it 'recycles the view'
@@ -209,6 +212,67 @@ describe MarkupLounge::View do
       end
     end
   
+    describe '#non_escape_tag' do
+      it 'calls #tag' do
+        @view.should_receive(:tag)
+        @view.non_escape_tag(:pre, "<div>content</div>", {:class => 'classy'})
+      end
+      
+      it 'sets and resets the escape when escape is originally set to true' do
+        @view.should_receive(:escape=).with(false).ordered
+        @view.should_receive(:tag).ordered
+        @view.should_receive(:escape=).with(true).ordered
+        @view.non_escape_tag(:pre, "<div>content</div>", {:class => 'classy'})
+      end
+      
+      it 'does not set the escape when set to false' do
+        @view.escape = false
+        @view.should_not_receive(:escape=)
+        @view.non_escape_tag(:pre, "<div>content</div>", {:class => 'classy'})
+      end
+    end
+    
+    describe '#text' do
+      it 'makes a new Text' do
+        MarkupLounge::Text.should_receive(:new).and_return('some content')
+        @view.text("content")
+      end
+      
+      it 'passes the right options to Text' do
+        MarkupLounge::Text.should_receive(:new).with({
+          :view => @view, :indent => true, :content => 'content'
+        }).and_return('text renderer')
+        @view.text("content")
+      end
+      
+      it 'adds the Text object to the buffer' do
+        @view.text("content")
+        text = @view.buffer.last
+        text.is_a?(MarkupLounge::Text).should be_true
+        text.content.should == 'content'
+      end
+    end
+    
+    describe '#raw_text' do
+      it 'calls #text' do
+        @view.should_receive(:text).and_return('text')
+        @view.raw_text("<div>foo</div>")
+      end
+      
+      it 'sets escape before and after for a view that is set to escape' do
+        @view.should_receive(:escape=).with(false).ordered
+        @view.should_receive(:text).and_return('text')
+        @view.should_receive(:escape=).with(true).ordered
+        @view.raw_text("<div>foo</div>")
+      end
+      
+      it 'does not set escape if the view is not escaping' do
+        @view.escape = false
+        @view.should_not_receive(:escape=)
+        @view.raw_text("<div>foo</div>")
+      end
+    end
+    
     describe 'html tag helpers' do
       describe 'content tags' do
         MarkupLounge::View::CONTENT_TAGS.each do |type|
@@ -236,18 +300,26 @@ describe MarkupLounge::View do
             @view.should respond_to(type)
           end
         
-          it "##{type} should call #tag with argument" do
+          it "##{type} should call #closed_tag with argument" do
             @view.should_receive(:closed_tag).with(type.to_sym, {:class => 'classy'})
             @view.send(type, {:class => 'classy'})
           end
         end
       end
-    end
-  
-    describe 'special renderers/helpers' do
-      describe 'text' do
-        it 'adds the text renderer to the buffer'
+      
+      describe 'non-escaping tags' do
+        MarkupLounge::View::NON_ESCAPE_TAGS.each do |tag|
+          it "responds to :#{tag}" do
+            @view.should respond_to(tag)
+          end 
+
+          it 'calls non_escape_tag' do
+            @view.should_receive :non_escape_tag
+            @view.send(tag)
+          end
+        end
       end
     end
+  
   end
 end

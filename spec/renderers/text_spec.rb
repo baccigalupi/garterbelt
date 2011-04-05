@@ -26,13 +26,7 @@ describe MarkupLounge::Text do
     it 'inherits its pool size' do
       MarkupLounge::Text._pool.max_size.should == 10000
     end
-    
-    it 'takes an indent option and converts it to #indent?' do
-      MarkupLounge::Text.new(:view => @view, :content => 'foo').indent?.should be_false
-      MarkupLounge::Text.new(:view => @view, :indent => true, :content => 'foo').indent?.should be_true
-    end
   end
-  
   
   describe 'render' do
     before do
@@ -50,17 +44,9 @@ describe MarkupLounge::Text do
       @view.output.should include "Render me"
     end
     
-    describe 'indentation' do
-      it 'indents to the view level by default' do
-        @text.render
-        @view.output.should match /^\W{4}Render me\n$/
-      end
-      
-      it 'indents one addition level when #indent? is true' do
-        text = MarkupLounge::Text.new(:view => @view, :content => 'Indent me more', :indent => true)
-        text.render
-        @view.output.should match /^\W{6}Indent me more\n$/
-      end
+    it 'indents to the view level' do
+      @text.render
+      @view.output.should match /^\W{4}Render me\n$/
     end
     
     describe 'escaping' do
