@@ -19,7 +19,7 @@ describe MarkupLounge::Text do
     
     it 'raises an error when initializing without content' do
       lambda{ MarkupLounge::Text.new(:view => @view) }.should raise_error( 
-        ArgumentError, ":content option required for Text initialization" 
+        ArgumentError, ":content option required for MarkupLounge::Text initialization" 
       )
     end
     
@@ -36,7 +36,7 @@ describe MarkupLounge::Text do
     
     it 'raises an error with block content' do
       @text.content = lambda { puts "foo" }
-      lambda{ @text.render }.should raise_error(ArgumentError, "Text does not take block content")
+      lambda{ @text.render }.should raise_error(ArgumentError, "MarkupLounge::Text does not take block content")
     end
     
     it 'it adds the content to the output' do

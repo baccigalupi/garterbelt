@@ -1,8 +1,11 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe MarkupLounge::View do
   class BasicView < MarkupLounge::View
     def content
+    end
+    
+    def alt_content
     end
   end
   
@@ -161,10 +164,38 @@ describe MarkupLounge::View do
     end
   
     describe 'class method' do
-      it 'makes a new view'
-      it 'renders it'
-      it 'recycles the view'
-      it 'returns the output'
+      before do
+        @rendered = @view.render
+        @view.stub(:recycle)
+      end
+      
+      it 'makes a new view' do
+        BasicView.should_receive(:new).and_return(@view)
+        BasicView.render
+      end
+      
+      it 'renders it' do
+        BasicView.stub(:new).and_return(@view)
+        @view.should_receive(:render)
+        BasicView.render
+      end
+      
+      it 'passes the :method option to render' do
+        BasicView.stub(:new).and_return(@view)
+        @view.should_receive(:render).with(:alt_content)
+        BasicView.render :method => :alt_content
+      end
+      
+      it 'recycles the view' do
+        BasicView.stub(:new).and_return(@view)
+        @view.should_receive(:recycle)
+        BasicView.render
+      end
+      
+      it 'returns the output' do
+        BasicView.stub(:new).and_return(@view)
+        BasicView.render.should == @rendered
+      end
     end
   end
 
@@ -240,7 +271,7 @@ describe MarkupLounge::View do
       
       it 'passes the right options to Text' do
         MarkupLounge::Text.should_receive(:new).with({
-          :view => @view, :indent => true, :content => 'content'
+          :view => @view, :content => 'content'
         }).and_return('text renderer')
         @view.text("content")
       end
@@ -319,7 +350,18 @@ describe MarkupLounge::View do
           end
         end
       end
+    
+      describe 'comment' do
+        it 'makes a comment object' do
+          @view.comment('This is a comment.').is_a?(MarkupLounge::Comment).should be_true
+        end
+        
+        it 'puts it on the buffer' do
+          comment = @view.comment("new comment now")
+          @view.buffer.last.should == comment
+        end
+      end
     end
-  
+    
   end
 end

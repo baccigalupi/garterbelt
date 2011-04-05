@@ -52,10 +52,11 @@ module MarkupLounge
     end
     
     def text(content)
-      tag = Text.new(:view => self, :indent => true, :content => content)
+      tag = Text.new(:view => self, :content => content)
       buffer << tag
       tag
     end
+    alias :h :text
     
     def raw_text(content)
       if escape
@@ -66,6 +67,14 @@ module MarkupLounge
       else
         text(content)
       end
+    end
+    alias :raw :raw_text
+    alias :rawtext :raw_text
+    
+    def comment(content)
+      tag = Comment.new(:view => self, :content => content)
+      buffer << tag
+      tag
     end
     
     CLOSED_TAGS = ['area', 'base', 'br', 'col', 'frame', 'hr', 'img', 'input', 'link', 'meta'] # ?? link, meta others in head
@@ -137,6 +146,14 @@ module MarkupLounge
           output << item.to_s
         end
       end
+    end
+    
+    def self.render(opts={})
+      content_method = opts[:method]
+      view = new
+      output = content_method ? view.render(content_method) : view.render
+      view.recycle
+      output
     end
   end
 end

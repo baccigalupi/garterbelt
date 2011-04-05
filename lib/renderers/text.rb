@@ -4,12 +4,16 @@ module MarkupLounge
     
     def initialize(opts)
       super
-      raise ArgumentError, ":content option required for Text initialization" unless opts[:content]
+      raise ArgumentError, ":content option required for #{self.class} initialization" unless opts[:content]
       self.content = opts[:content]
     end
     
+    def raise_with_block_content
+      raise ArgumentError, "#{self.class} does not take block content" if self.content.is_a?(Proc)
+    end
+    
     def render
-      raise ArgumentError, "Text does not take block content" if self.content.is_a?(Proc)
+      raise_with_block_content
       output << "#{indent}#{escaped_content}\n"
     end
     
