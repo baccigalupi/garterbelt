@@ -6,9 +6,85 @@ module MarkupLounge
     
     def initialize(opts={})
       self.buffer = []
-      self.level = opts[:level] || 0
+      self.level = opts.delete(:level) || 0
       self.output = ""
       self.escape = true
+      
+      params = self.class.default_variables.merge(opts)
+      keys = params.keys
+      
+      unless (self.class.required - keys).empty?
+        raise ArgumentError, "#{(self.class.required - keys).inspect} required as an initialization option"
+      end
+      
+      if self.class.selective_require && keys != self.class.required
+        raise ArgumentError, "Allowed initalization options are only #{self.class.required.inspect}"
+      end
+      
+      params.each do |key, value|
+        self.class.add_accssor(key) unless respond_to?(key)
+        send("#{key}=", value)
+      end
+    end
+    
+    # VARIABLE ACCESS -----------------------------
+    class << self
+      attr_accessor :required, :selective_require
+    end
+    
+    def self.add_accssor key
+      key = key.to_s
+      return if accessories.include?(key)
+      if instance_methods.include?(key)
+        raise ArgumentError, ":#{key} cannot be a required variable because it maps to an existing method"
+      end
+      
+      accessories << key.to_s
+      attr_accessor key
+    end
+    
+    def self.accessories
+      @accessories ||= superclass? ? superclass.accessories.dup : []
+    end
+    
+    def self.superclass?
+      @superclassed ||= superclass.respond_to?( :required )
+    end
+    
+    def self.super_required
+      superclass? ? superclass.required || [] : []
+    end 
+    
+    def self.default_variables
+      @default_variables ||= superclass? ? superclass.default_variables.dup : Hash.new
+    end  
+    
+    def self.requires *args
+      if args.last.is_a?(Hash) 
+        self.default_variables.merge!(args.pop) 
+        args += default_variables.keys.map{ |x| x.to_sym }
+      end 
+      
+      args = super_required + args  
+      self.required = args.uniq
+      build_accessors
+      required
+    end
+        
+    def self.requires_only(*args)
+      self.selective_require = true
+      requires(*args)
+    end
+    
+    class << self
+      alias :needs :requires
+      alias :needs_only :requires_only
+    end
+    
+    def self.build_accessors
+      required.each do |m|
+        add_accssor m
+      end
     end
     
     # TAG HELPERS -----------------------
