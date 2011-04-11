@@ -38,7 +38,11 @@ module MarkupLounge
       str << " class=\"#{css_class.join(' ')}\"" unless css_class.empty?
       keys = attributes.keys.sort{|a, b| a.to_s <=> b.to_s}
       keys.each do |key|
-        str << " #{key}=\"#{attributes[key]}\"" if attributes[key]
+        value = attributes[key]
+        if value
+          value = value.to_s.gsub('"', '\'')
+          str << " #{key}=\"#{value}\""
+        end
       end
       str
     end

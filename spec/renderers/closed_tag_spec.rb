@@ -136,6 +136,11 @@ describe MarkupLounge::ClosedTag do
         rendered.should_not include "checked=\"\""
         rendered.should_not include "nily=\"\""
       end
+      
+      it 'should subs out double quotes from attributes' do
+        @tag.attributes[:foo_title] = 'I am not "sure" if this will work'
+        @tag.rendered_attributes.should include "I am not 'sure' if this will work"
+      end
     end
     
     describe 'integration' do
