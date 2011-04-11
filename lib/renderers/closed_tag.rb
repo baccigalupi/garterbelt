@@ -35,9 +35,10 @@ module MarkupLounge
     
     def rendered_attributes
       str = ""
-      str << " class='#{css_class.join(' ')}'" unless css_class.empty?
-      attributes.each do |key, value|
-        str << " #{key}='#{value}'" if value
+      str << " class=\"#{css_class.join(' ')}\"" unless css_class.empty?
+      keys = attributes.keys.sort{|a, b| a.to_s <=> b.to_s}
+      keys.each do |key|
+        str << " #{key}=\"#{attributes[key]}\"" if attributes[key]
       end
       str
     end

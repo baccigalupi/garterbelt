@@ -20,4 +20,20 @@ describe MarkupLounge::View, "Integration" do
       ViewWithVars.new(:user => user, :params => {:remember_me => true}).render.should == file('variables/view_with_user_and_params')
     end
   end
+  
+  describe 'caching' do
+    before do
+      MarkupLounge.cache.clear
+      @user = Hashie::Mash.new(:id => 'foo_id', :upgradable? => true)
+    end
+    
+    it 'renders it correctly the first time' do
+      ViewWithCache.new(:user => @user).render.should == file('view_with_cache')
+    end
+    
+    it 'renders correctly from the cache' do
+      ViewWithCache.new(:user => @user).render
+      ViewWithCache.new(:user => @user).render.should == file("view_with_cache")
+    end
+  end
 end

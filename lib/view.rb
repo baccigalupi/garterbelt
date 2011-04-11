@@ -235,22 +235,43 @@ module MarkupLounge
     # CACHING ---------------------------
     
     class << self
-      attr_writer :cache_store
+      attr_writer :cache_store_key, :cache_key_base
     end
     
-    attr_writer :cache_store
+    attr_writer :cache_store_key, :cache_key_base
     
     
-    def self.cache_store
-      @cache_store ||= :default
+    def self.cache_store_key
+      @cache_store_key ||= :default
+    end
+    
+    def cache_store_key
+      @cache_store_key ||= self.class.cache_store_key
     end
     
     def cache_store
-      @cache_store ||= self.class.cache_store
+      @cache ||= MarkupLounge.cache(cache_store_key)
     end
     
-    def cache
-      @cache ||= MarkupLounge.cache(cache_store)
+    def self.cache_key_base
+      @cache_key_base ||= self.to_s.underscore
+    end
+    
+    def cache_key_base
+      @cache_key_base ||= self.class.cache_key_base
+    end
+    
+    CACHE_DETAIL_DEFAULT = 'default'
+    
+    def cache_key(detail = CACHE_DETAIL_DEFAULT)
+      detail ||= CACHE_DETAIL_DEFAULT
+      "#{cache_key_base}_#{detail}"
+    end
+    
+    def cache(key, &block)
+      renderer = Cache.new(:view => self, :key => cache_key(key), &block)
+      buffer << renderer
+      renderer
     end
   end
 end

@@ -142,7 +142,7 @@ describe MarkupLounge::View do
         end
         
         it 'should include the deepest level content' do
-          @view.output.should include "<input type='text' name='email'>"
+          @view.output.should include "<input name=\"email\" type=\"text\">"
         end
         
         it 'should nest properly' do
@@ -153,12 +153,12 @@ describe MarkupLounge::View do
           @view.output.should match /^<form>/
           @view.output.should match /^  <fieldset>/
           @view.output.should match /^    <label/
-          @view.output.should match /^      <input type='text'/
+          @view.output.should match /^      <input name="email"/
         end
         
         it 'should include content after the nesting' do
-          @view.output.should include "<input type='submit' value='Login or whatever'"
-          @view.output.should match /^    <input type='submit'/
+          @view.output.should include "<input type=\"submit\" value=\"Login or whatever\""
+          @view.output.should match /^    <input type="submit"/
         end
       end
     end

@@ -72,7 +72,7 @@ describe MarkupLounge::ContentTag do
       end
       
       it 'renders the beginning tag correctly' do
-        @output.should include "<p class='classy'>"
+        @output.should include "<p class=\"classy\">"
       end
       
       it 'indents the ending tag correctly' do
@@ -89,7 +89,7 @@ describe MarkupLounge::ContentTag do
         it 'works' do
           @tag.content.should be_nil
           @tag.render
-          @output.should match "    <p class='classy'>\n    </p>"
+          @output.should match "    <p class=\"classy\">\n    </p>"
         end
       end
       

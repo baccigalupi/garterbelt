@@ -117,24 +117,24 @@ describe MarkupLounge::ClosedTag do
     
     describe '#rendered_attributes' do
       it 'includes the css_class' do
-        @tag.rendered_attributes.should include "class='foo_bar'"
+        @tag.rendered_attributes.should include "class=\"foo_bar\""
       end
       
       it 'multiple classes are separated by a space' do
         @tag.c(:more_classy)
-        @tag.rendered_attributes.should include "class='foo_bar more_classy'"
+        @tag.rendered_attributes.should include "class=\"foo_bar more_classy\""
       end
       
       it 'include other key/value pairs' do
-        @tag.rendered_attributes.should include "thing='thong'"
+        @tag.rendered_attributes.should include "thing=\"thong\""
       end
       
       it 'does not include attributes with nil or false values' do
         @tag.attributes[:checked] = false
         @tag.attributes[:nily] = nil
         rendered = @tag.rendered_attributes
-        rendered.should_not include "checked=''"
-        rendered.should_not include "nily=''"
+        rendered.should_not include "checked=\"\""
+        rendered.should_not include "nily=\"\""
       end
     end
     

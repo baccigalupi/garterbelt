@@ -24,11 +24,11 @@ module MarkupLounge
     end
     
     def render_content
-      if cached = view.cache[key]
+      if cached = view.cache_store[key]
         self.output << cached
       else
-        cached = super            # renders block to the diverted output
-        view.cache[key] = cached  # set the cache
+        super                                 # renders block to the diverted output
+        view.cache_store[key] = cache_output  # set the cache
       end
     end
   end

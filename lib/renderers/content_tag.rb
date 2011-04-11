@@ -25,21 +25,12 @@ module MarkupLounge
     
     def head
       self.output << "#{indent}<#{type}#{rendered_attributes}>\n"
+      super
     end
     
     def foot
+      super
       self.output << "#{indent}</#{type}>\n"
-    end
-    
-    def render_content
-      view.level += 1
-      if content.is_a?(Proc)
-        content.call
-      else
-        view.buffer << Text.new(:view => view, :content => content) if content
-      end
-      view.render_buffer
-      view.level -= 1
     end
   end
 end

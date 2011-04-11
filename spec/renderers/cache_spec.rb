@@ -63,20 +63,20 @@ describe MarkupLounge::Cache do
     
     describe '#render_content' do
       it 'trys to get the content from the cache using the key' do
-        @view.cache.should_receive(:[]).with('good_deal').and_return("foo")
+        @view.cache_store.should_receive(:[]).with('good_deal').and_return("foo")
         @cache.render
       end
     
       it 'puts the cache into the output when it hits' do
         @view.output = "view output; "
-        @view.cache.stub(:[]).with('good_deal').and_return("foo")
+        @view.cache_store.stub(:[]).with('good_deal').and_return("foo")
         @cache.render
         @view.output.should include 'foo'
       end
     
       it 'renders the block when the cache misses' do
         @view.output = "view output; "
-        @view.cache.should_receive(:[]).with('good_deal').and_return(nil)
+        @view.cache_store.should_receive(:[]).with('good_deal').and_return(nil)
         @view.should_receive(:render_buffer)
         @cache.render
       end
