@@ -28,12 +28,30 @@ describe MarkupLounge::View, "Integration" do
     end
     
     it 'renders it correctly the first time' do
-      ViewWithCache.new(:user => @user).render.should == file('view_with_cache')
+      ViewWithCache.new(:user => @user).render.should == file('general_view')
     end
     
     it 'renders correctly from the cache' do
       ViewWithCache.new(:user => @user).render
-      ViewWithCache.new(:user => @user).render.should == file("view_with_cache")
+      ViewWithCache.new(:user => @user).render.should == file("general_view")
+    end
+  end
+  
+  describe 'partials' do
+    before do
+      @user = Hashie::Mash.new(:id => 'foo_id', :upgradable? => true)
+    end
+    
+    it 'render correctly with class arguments on the partial' do
+      ViewWithPartial.new(:user => @user).render.should == file("general_view")
+    end
+    
+    it 'renders correctly with a view instance' do
+      ViewWithPartial2.new(:user => @user).render.should == file('general_view')
+    end
+    
+    it 'nests deeply' do
+      MyPagelet.new(:user => @user).render.should == file('view_partial_nest')
     end
   end
 end

@@ -2,14 +2,16 @@ module MarkupLounge
   class View
     include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :level, :escape, :curator
+    attr_accessor :output, :buffer, :level, :escape
+    attr_reader :curator
     
     def initialize(opts={})
       self.buffer = []
-      self.curator = opts.delete(:curator) || self
       self.level =  (opts.delete(:level) || 0)
-      self.output = curator != self ? curator.output : ""
+      self.output = ""
       self.escape = true
+      
+      self.curator = opts.delete(:curator) || self
       
       params = self.class.default_variables.merge(opts)
       keys = params.keys
@@ -25,6 +27,16 @@ module MarkupLounge
       params.each do |key, value|
         self.class.add_accssor(key) unless respond_to?(key)
         send("#{key}=", value)
+      end
+    end
+    
+    def curator=(parent_view)
+      @curator = parent_view
+      if parent_view != self
+        self.buffer = parent_view.buffer
+        self.level = parent_view.level
+        self.output = parent_view.output
+        self.escape = parent_view.escape
       end
     end
     
@@ -232,6 +244,20 @@ module MarkupLounge
       view.recycle
       output
     end
+    
+    def partial(*args, &block)
+      if (klass = args.first).is_a?(Class)
+        args.shift
+        view = klass.new(*args)
+      else
+        view = args.first
+      end
+      view.curator = curator
+      self.buffer << view
+      view
+    end
+    
+    alias :widget :partial
     
     # CACHING ---------------------------
     
