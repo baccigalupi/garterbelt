@@ -20,12 +20,11 @@ Jeweler::Tasks.new do |gem|
   gem.email = "baccigalupi@gmail.com"
   gem.authors = ["Kane Baccigalupi"]
   
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+  gem.add_development_dependency 'hashie', '~>1.0'
   
   gem.add_runtime_dependency 'ru_pol', '>=0.1.2'
   gem.add_runtime_dependency 'activesupport', '>=2.3.8'
   gem.add_runtime_dependency 'moneta', '>=0.6.0'
-  
 end
 Jeweler::RubygemsDotOrgTasks.new
 

@@ -32,16 +32,54 @@ describe MarkupLounge::Cache do
   end
   
   describe 'rendering' do
-    describe 'cache calling' do
-      it 'trys to get the content from the cache using the full key'
-      it 'calls #render_content if cache misses'
-      it 'puts the cache into the output when it hits'
+    before do
+      @cache = build_cache
+    end
+    
+    describe "diverting output" do
+      before do
+        @cache.cache_output = "cache output"
+        @view.output = 'view output; '
+      end
+      
+      it '#head changes the view output to a local output' do
+        @cache.head
+        @view.output.should == "cache output"
+      end
+      
+      it '#foot resets the output to the original view output' do
+        @cache.head
+        @view.output.should_not include "view output; "
+        @cache.foot
+        @view.output.should include "view output; "
+      end
+      
+      it '#render calls #head and #foot' do
+        @cache.should_receive(:head).ordered
+        @cache.should_receive(:foot).ordered
+        @cache.render
+      end
     end
     
     describe '#render_content' do
-      it 'diverts view output to a local string'
-      it 'renders the block content'
-      it 'return view output to original string'
+      it 'trys to get the content from the cache using the key' do
+        @view.cache.should_receive(:[]).with('good_deal').and_return("foo")
+        @cache.render
+      end
+    
+      it 'puts the cache into the output when it hits' do
+        @view.output = "view output; "
+        @view.cache.stub(:[]).with('good_deal').and_return("foo")
+        @cache.render
+        @view.output.should include 'foo'
+      end
+    
+      it 'renders the block when the cache misses' do
+        @view.output = "view output; "
+        @view.cache.should_receive(:[]).with('good_deal').and_return(nil)
+        @view.should_receive(:render_buffer)
+        @cache.render
+      end
     end
   end
 end

@@ -14,6 +14,10 @@ module MarkupLounge
       view.output
     end
     
+    def output=(alt_output)
+      view.output = alt_output
+    end
+    
     def level 
       view.level
     end

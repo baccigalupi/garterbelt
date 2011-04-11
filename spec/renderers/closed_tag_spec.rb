@@ -128,6 +128,14 @@ describe MarkupLounge::ClosedTag do
       it 'include other key/value pairs' do
         @tag.rendered_attributes.should include "thing='thong'"
       end
+      
+      it 'does not include attributes with nil or false values' do
+        @tag.attributes[:checked] = false
+        @tag.attributes[:nily] = nil
+        rendered = @tag.rendered_attributes
+        rendered.should_not include "checked=''"
+        rendered.should_not include "nily=''"
+      end
     end
     
     describe 'integration' do

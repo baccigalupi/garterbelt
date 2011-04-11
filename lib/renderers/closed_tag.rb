@@ -31,15 +31,13 @@ module MarkupLounge
       self
     end
     
-    alias :* :c
-    
     # Rendering -----------------------------------------------
     
     def rendered_attributes
       str = ""
       str << " class='#{css_class.join(' ')}'" unless css_class.empty?
       attributes.each do |key, value|
-        str << " #{key}='#{value}'"
+        str << " #{key}='#{value}'" if value
       end
       str
     end
