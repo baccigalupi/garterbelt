@@ -1,6 +1,6 @@
 module MarkupLounge
   class ContentTag < ClosedTag
-    attr_accessor :content
+    include ContentRendering
     
     def initialize(opts, &block)
       super
@@ -23,19 +23,12 @@ module MarkupLounge
       self
     end
     
-    def head_tag
+    def head
       self.output << "#{indent}<#{type}#{rendered_attributes}>\n"
     end
     
-    def foot_tag
+    def foot
       self.output << "#{indent}</#{type}>\n"
-    end
-    
-    def render
-      head_tag
-      render_content
-      foot_tag
-      output
     end
     
     def render_content

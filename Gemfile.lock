@@ -8,6 +8,7 @@ GEM
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
+    moneta (0.6.0)
     rake (0.8.7)
     rcov (0.9.9)
     rspec (2.3.0)
@@ -28,6 +29,7 @@ DEPENDENCIES
   activesupport (>= 2.3.8)
   bundler (~> 1.0.0)
   jeweler (~> 1.5.2)
+  moneta (>= 0.6.0)
   rcov
   rspec (~> 2.3.0)
   ru_pol (= 0.1.2)

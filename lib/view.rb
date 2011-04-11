@@ -13,7 +13,7 @@ module MarkupLounge
       params = self.class.default_variables.merge(opts)
       keys = params.keys
       
-      unless (self.class.required - keys).empty?
+      unless ((self.class.required || []) - keys).empty?
         raise ArgumentError, "#{(self.class.required - keys).inspect} required as an initialization option"
       end
       
@@ -230,6 +230,27 @@ module MarkupLounge
       output = content_method ? view.render(content_method) : view.render
       view.recycle
       output
+    end
+    
+    # CACHING ---------------------------
+    
+    class << self
+      attr_writer :cache_store
+    end
+    
+    attr_writer :cache_store
+    
+    
+    def self.cache_store
+      @cache_store ||= :default
+    end
+    
+    def cache_store
+      @cache_store ||= self.class.cache_store
+    end
+    
+    def cache
+      @cache ||= MarkupLounge.cache(cache_store)
     end
   end
 end

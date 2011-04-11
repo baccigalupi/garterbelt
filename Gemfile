@@ -5,6 +5,7 @@ source "http://rubygems.org"
 
 gem 'ru_pol', '0.1.2'
 gem 'activesupport', ">=2.3.8"
+gem 'moneta', '>=0.6.0'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
