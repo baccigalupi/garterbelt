@@ -2,12 +2,13 @@ module MarkupLounge
   class View
     include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :level, :escape
+    attr_accessor :output, :buffer, :level, :escape, :curator
     
     def initialize(opts={})
       self.buffer = []
-      self.level = opts.delete(:level) || 0
-      self.output = ""
+      self.curator = opts.delete(:curator) || self
+      self.level =  (opts.delete(:level) || 0)
+      self.output = curator != self ? curator.output : ""
       self.escape = true
       
       params = self.class.default_variables.merge(opts)
@@ -103,9 +104,9 @@ module MarkupLounge
     
     def non_escape_tag(*args, &block)
       if escape
-        self.escape = false
+        curator.escape = false
         t = tag(*args, &block)
-        self.escape = true
+        curator.escape = true
         t
       else
         tag(*args, &block)
@@ -113,7 +114,7 @@ module MarkupLounge
     end
     
     def parse_tag_arguments(type, args)
-      opts = {:type => type, :view => self}
+      opts = {:type => type, :view => curator}
       if args.size == 2
         opts[:content] = args.shift
         opts[:attributes] = args.first
@@ -128,7 +129,7 @@ module MarkupLounge
     end
     
     def text(content)
-      tag = Text.new(:view => self, :content => content)
+      tag = Text.new(:view => curator, :content => content)
       buffer << tag
       tag
     end
@@ -136,9 +137,9 @@ module MarkupLounge
     
     def raw_text(content)
       if escape
-        self.escape = false
+        curator.escape = false
         t = text(content)
-        self.escape = true
+        curator.escape = true
         t
       else
         text(content)
@@ -148,7 +149,7 @@ module MarkupLounge
     alias :rawtext :raw_text
     
     def comment(content)
-      tag = Comment.new(:view => self, :content => content)
+      tag = Comment.new(:view => curator, :content => content)
       buffer << tag
       tag
     end
@@ -201,7 +202,7 @@ module MarkupLounge
     # RENDERING -------------------------
     
     def render(content_method = :content)
-      self.output = ""
+      self.output = "" if curator === self
       if content_method == :content
         content
       else

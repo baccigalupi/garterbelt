@@ -4,36 +4,13 @@ describe MarkupLounge::View do
   class BasicView < MarkupLounge::View
     def content
     end
-    
+  
     def alt_content
     end
   end
-  
+
   before do
     @view = BasicView.new
-  end
-
-  describe 'pooling' do
-    it 'includes the swimsuit' do
-      BasicView.ancestors.should include( RuPol::Swimsuit )
-    end
-  end
-  
-  describe 'attributes' do
-    it 'has an output' do
-      @view.output.should == ""
-    end
-    
-    it 'has a tag buffer' do
-      @view.buffer.should == []
-      @tag = MarkupLounge::ContentTag.new(:view => @view, :type => :hr)
-      @view.buffer << @tag
-      @view.buffer.should == [@tag]
-    end
-  
-    it 'has escape set to true by default' do
-      @view.escape.should == true
-    end
   end
   
   describe 'rendering' do
