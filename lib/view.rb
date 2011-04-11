@@ -224,6 +224,9 @@ module MarkupLounge
       output
     end
     
+    alias :to_s :render
+    alias :to_html :render
+    
     def render_buffer
       array = buffer.dup
       buffer.clear

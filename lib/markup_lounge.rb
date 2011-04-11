@@ -1,7 +1,7 @@
 lounge_dir =  File.dirname(__FILE__)
 
 require 'active_support/core_ext/string/output_safety'
-require 'support/string'
+require lounge_dir + '/support/string'
 
 require 'ru_pol'
 require 'moneta'

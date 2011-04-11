@@ -1,0 +1,4 @@
+Page
+- remove title tag, in favor of title_tag
+- make html tags for each flavor
+- make erector style js and css embeds and link/rels
