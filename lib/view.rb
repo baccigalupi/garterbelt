@@ -102,16 +102,17 @@ module Garterbelt
     
     # TAG HELPERS -----------------------
     
+    def add_to_buffer(renderer)
+      buffer << renderer
+      renderer
+    end
+    
     def tag(type, *args, &block)
-      tag = ContentTag.new(parse_tag_arguments(type, args), &block)
-      buffer << tag
-      tag
+      add_to_buffer ContentTag.new(parse_tag_arguments(type, args), &block)
     end
     
     def closed_tag(type, *args)
-      tag = ClosedTag.new(parse_tag_arguments(type, args))
-      buffer << tag
-      tag
+      add_to_buffer ClosedTag.new(parse_tag_arguments(type, args))
     end
     
     def non_escape_tag(*args, &block)
@@ -123,6 +124,38 @@ module Garterbelt
       else
         tag(*args, &block)
       end
+    end
+    
+    def text(content)
+      add_to_buffer Text.new(:view => curator, :content => content)
+    end
+    
+    alias :h :text
+    
+    def raw_text(content)
+      if escape
+        curator.escape = false
+        t = text(content)
+        curator.escape = true
+        t
+      else
+        text(content)
+      end
+    end
+    alias :raw :raw_text
+    alias :rawtext :raw_text
+    
+    def comment(content)
+      add_to_buffer Comment.new(:view => curator, :content => content)
+    end
+    
+    def doctype(type=:transitional)
+      add_to_buffer Doctype.new(:view => curator, :type => type)
+    end
+    
+    def xml(opts={})
+      opts = {:version => 1.0, :encoding => 'utf-8'}.merge(opts)
+      add_to_buffer Xml.new(parse_tag_arguments(:xml, [opts]))
     end
     
     def parse_tag_arguments(type, args)
@@ -140,32 +173,6 @@ module Garterbelt
       opts
     end
     
-    def text(content)
-      tag = Text.new(:view => curator, :content => content)
-      buffer << tag
-      tag
-    end
-    alias :h :text
-    
-    def raw_text(content)
-      if escape
-        curator.escape = false
-        t = text(content)
-        curator.escape = true
-        t
-      else
-        text(content)
-      end
-    end
-    alias :raw :raw_text
-    alias :rawtext :raw_text
-    
-    def comment(content)
-      tag = Comment.new(:view => curator, :content => content)
-      buffer << tag
-      tag
-    end
-    
     CLOSED_TAGS = ['area', 'br', 'col', 'frame', 'hr', 'img', 'input']
     CONTENT_TAGS = [
       'a', 'abbr', 'acronym', 'address', 
@@ -174,7 +181,7 @@ module Garterbelt
       'dd', 'del', 'dfn', 'div', 'dl', 'dt', 'em',
       'embed',
       'fieldset', 'form', 'frameset',
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'i',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'html', 'i',
       'iframe', 'ins', 'kbd', 'label', 'legend', 'li', 'map',
       'noframes', 'noscript', 
       'object', 'ol', 'optgroup', 'option', 'p', 'param', 

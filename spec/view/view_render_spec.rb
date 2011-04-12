@@ -338,6 +338,37 @@ describe Garterbelt::View do
           @view.buffer.last.should == comment
         end
       end
+    
+      describe 'doctype' do
+        it 'makes a Doctype object' do
+          @view.doctype(:html5).is_a?(Garterbelt::Doctype).should be_true
+        end
+        
+        it 'puts it on the buffer' do
+          doctype = @view.doctype
+          @view.buffer.last.should == doctype
+        end
+      end
+    
+      describe 'xml' do
+        it 'adds an xml to the buffer' do
+          xml = @view.xml
+          xml.is_a?(Garterbelt::Xml).should be_true
+          @view.buffer.last.should == xml
+        end
+        
+        it 'makes a closed tag with default options' do
+          xml = @view.xml
+          xml.attributes[:version].should == 1.0
+          xml.attributes[:encoding].should == 'utf-8'
+        end
+        
+        it 'uses custom attributes when desired' do
+          xml = @view.xml(:version => 0)
+          xml.attributes[:version].should == 0
+          xml.attributes[:encoding].should == 'utf-8'
+        end
+      end
     end
     
   end

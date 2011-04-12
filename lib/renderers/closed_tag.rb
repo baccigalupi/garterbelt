@@ -47,8 +47,12 @@ module Garterbelt
       str
     end
     
+    def template
+      "#{indent}<#{type}#{rendered_attributes}>\n"
+    end
+    
     def render
-      str = "#{indent}<#{type}#{rendered_attributes}>\n"
+      str = template
       self.output << str
       str
     end
