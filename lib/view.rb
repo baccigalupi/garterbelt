@@ -25,7 +25,7 @@ module Garterbelt
       end
       
       params.each do |key, value|
-        self.class.add_accssor(key) unless respond_to?(key)
+        self.class.add_accessor(key) unless respond_to?(key)
         send("#{key}=", value)
       end
     end
@@ -49,7 +49,7 @@ module Garterbelt
       attr_accessor :required, :selective_require
     end
     
-    def self.add_accssor key
+    def self.add_accessor key
       key = key.to_s
       return if accessories.include?(key)
       if instance_methods.include?(key)
@@ -100,7 +100,7 @@ module Garterbelt
     
     def self.build_accessors
       required.each do |m|
-        add_accssor m
+        add_accessor m
       end
     end
     
