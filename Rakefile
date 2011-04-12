@@ -15,12 +15,13 @@ Jeweler::Tasks.new do |gem|
   gem.name = "garterbelt"
   gem.homepage = "http://github.com/baccigalupi/garterbelt"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Garterbelt is a Ruby HTML/XML markup framework. It is san DSL. Just all Ruby, all the time.}
+  gem.description = %Q{Garterbelt is a Ruby HTML/XML markup framework inspired by Erector and Markaby. Garterbelt maps html tags to methods allowing the intuitive construction of HTML pages using nothing but Ruby. And because it is all Ruby all the time, views benefit from the dryness of inheritance, modules and all the meta magic that Ruby can imagine. Stockings not included.}
   gem.email = "baccigalupi@gmail.com"
   gem.authors = ["Kane Baccigalupi"]
   
   gem.add_development_dependency 'hashie', '~>1.0'
+  gem.add_development_dependency 'rbench'
   
   gem.add_runtime_dependency 'ru_pol', '>=0.1.2'
   gem.add_runtime_dependency 'activesupport', '>=2.3.8'
