@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::ClosedTag do
-  ClosedTag = MarkupLounge::ClosedTag unless defined?(ClosedTag)
+describe Garterbelt::ClosedTag do
+  ClosedTag = Garterbelt::ClosedTag unless defined?(ClosedTag)
   
   before do
     @output = ''

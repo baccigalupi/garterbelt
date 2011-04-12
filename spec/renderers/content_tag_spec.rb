@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::ContentTag do
-  ContentTag = MarkupLounge::ContentTag unless defined?(ContentTag)
+describe Garterbelt::ContentTag do
+  ContentTag = Garterbelt::ContentTag unless defined?(ContentTag)
   
   before do
     @view = MockView.new
@@ -99,7 +99,7 @@ describe MarkupLounge::ContentTag do
         end
         
         it 'makes a Text object' do
-          MarkupLounge::Text.should_receive(:new).and_return('text')
+          Garterbelt::Text.should_receive(:new).and_return('text')
           @tag.render
         end
       end
@@ -128,7 +128,7 @@ describe MarkupLounge::ContentTag do
         
         describe 'adding to the tag buffer' do
           before do
-            @b = MarkupLounge::ClosedTag.new(:view => @view, :type => :hr, :attributes => {:class => :linear})
+            @b = Garterbelt::ClosedTag.new(:view => @view, :type => :hr, :attributes => {:class => :linear})
             @tag.id(:foo) do
               @view.buffer << @b
             end

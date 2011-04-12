@@ -1,29 +1,29 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::Cache do
+describe Garterbelt::Cache do
   before :all do
     @view = MockView.new
   end
 
   def build_cache
-    MarkupLounge::Cache.new(:key => 'good_deal', :view => @view) do
-      MarkupLounge::ContentTag.new(:type => :p, :view => @view)
+    Garterbelt::Cache.new(:key => 'good_deal', :view => @view) do
+      Garterbelt::ContentTag.new(:type => :p, :view => @view)
     end
   end
   
   describe 'initialization' do
     it 'requires block content' do
-      lambda{ MarkupLounge::Cache.new(:key => 'foo_key', :view => @view)}.should raise_error(ArgumentError, "Block content required")
-      lambda{ MarkupLounge::Cache.new(:key => 'other_foo', :view => @view, :content => 'content')}.should raise_error( ArgumentError, "Block content required")
+      lambda{ Garterbelt::Cache.new(:key => 'foo_key', :view => @view)}.should raise_error(ArgumentError, "Block content required")
+      lambda{ Garterbelt::Cache.new(:key => 'other_foo', :view => @view, :content => 'content')}.should raise_error( ArgumentError, "Block content required")
     end
     
     it 'requires a key' do
-      lambda{ MarkupLounge::Cache.new(:view => @view) {puts 'foo'} }.should raise_error(ArgumentError, ":key option required")
+      lambda{ Garterbelt::Cache.new(:view => @view) {puts 'foo'} }.should raise_error(ArgumentError, ":key option required")
     end
     
     it 'otherwise is successful' do
       lambda{ build_cache }.should_not raise_error
-      build_cache.is_a?(MarkupLounge::Cache).should be_true
+      build_cache.is_a?(Garterbelt::Cache).should be_true
     end
     
     it 'stores the full key' do

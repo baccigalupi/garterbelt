@@ -1,42 +1,42 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::Comment do
+describe Garterbelt::Comment do
   before :all do
     @view = MockView.new
   end
   
   describe 'basics' do
     it 'is decends from Renderer' do
-      MarkupLounge::Comment.ancestors.should include MarkupLounge::Renderer
+      Garterbelt::Comment.ancestors.should include Garterbelt::Renderer
     end
     
     it 'has conent' do
-      comment = MarkupLounge::Comment.new(:view => @view, :content => "Initializing ...")
+      comment = Garterbelt::Comment.new(:view => @view, :content => "Initializing ...")
       comment.content.should == "Initializing ..."
       comment.content = "foo"
       comment.content.should == "foo"
     end
     
     it 'raises an error when initializing without content' do
-      lambda{ MarkupLounge::Comment.new(:view => @view) }.should raise_error( 
-        ArgumentError, ":content option required for MarkupLounge::Comment initialization" 
+      lambda{ Garterbelt::Comment.new(:view => @view) }.should raise_error( 
+        ArgumentError, ":content option required for Garterbelt::Comment initialization" 
       )
     end
     
     it 'has a smaller pool size' do
-      MarkupLounge::Comment._pool.max_size.should == 1000
+      Garterbelt::Comment._pool.max_size.should == 1000
     end
   end
   
   describe 'render' do
     before do
       @view = MockView.new
-      @comment = MarkupLounge::Comment.new(:view => @view, :content => 'Render me')
+      @comment = Garterbelt::Comment.new(:view => @view, :content => 'Render me')
     end
     
     it 'raises an error with block content' do
       @comment.content = lambda { puts "foo" }
-      lambda{ @comment.render }.should raise_error(ArgumentError, "MarkupLounge::Comment does not take block content")
+      lambda{ @comment.render }.should raise_error(ArgumentError, "Garterbelt::Comment does not take block content")
     end
     
     it 'it adds the content to the output' do

@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   class Cache < Renderer
     include ContentRendering
     

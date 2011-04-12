@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   module ContentRendering
     def self.included(base)
       base.class_eval <<-RUBY

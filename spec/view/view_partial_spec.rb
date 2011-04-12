@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View, 'Partials' do
+describe Garterbelt::View, 'Partials' do
   describe '#partial' do
     before do
-      @view = MarkupLounge::View.new
+      @view = Garterbelt::View.new
       @view.output = "Foo You!\n"
       @view.level = 3
       @view.buffer = ['foo', 'bar']
@@ -11,7 +11,7 @@ describe MarkupLounge::View, 'Partials' do
     
     describe 'with an instance' do
       before do
-        @child_instance = MarkupLounge::View.new
+        @child_instance = Garterbelt::View.new
       end
       
       it 'sets the curator of the instance to the current view' do
@@ -26,7 +26,7 @@ describe MarkupLounge::View, 'Partials' do
     end
     
     describe 'with a class and initialization options' do
-      class PartedOut < MarkupLounge::View
+      class PartedOut < Garterbelt::View
         needs :x => 'x'
         def content
           text "foo #{x}"

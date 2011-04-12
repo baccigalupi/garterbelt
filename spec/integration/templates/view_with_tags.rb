@@ -1,4 +1,4 @@
-class ViewWithContentTags < MarkupLounge::View
+class ViewWithContentTags < Garterbelt::View
   
   def content
     div.c(:line) do

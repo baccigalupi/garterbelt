@@ -1,4 +1,4 @@
-class ViewWithPartial2 < MarkupLounge::View
+class ViewWithPartial2 < Garterbelt::View
   needs :user
 
   def content
@@ -25,7 +25,7 @@ class ViewWithPartial2 < MarkupLounge::View
   
 end
 
-class SettingLink2 < MarkupLounge::View
+class SettingLink2 < Garterbelt::View
   needs :user
   
   def content

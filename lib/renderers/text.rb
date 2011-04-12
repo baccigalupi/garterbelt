@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   class Text < Renderer
     attr_accessor :content
     

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View, "Rails Style Helpers" do
+describe Garterbelt::View, "Rails Style Helpers" do
   describe 'inputs' do
     describe '#input' do
       it 'defaults to type of text'

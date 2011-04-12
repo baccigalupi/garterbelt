@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View, 'Variables' do
-  class NeedyView < MarkupLounge::View
+describe Garterbelt::View, 'Variables' do
+  class NeedyView < Garterbelt::View
     requires :x, :y 
   end
 
-  class SelectiveView < MarkupLounge::View 
+  class SelectiveView < Garterbelt::View 
     requires_only :x, :y
   end   
   
@@ -13,7 +13,7 @@ describe MarkupLounge::View, 'Variables' do
     requires :z
   end 
   
-  class LessNeedy < MarkupLounge::View 
+  class LessNeedy < Garterbelt::View 
     requires :x => 'x', :y => 'y'
   end 
   
@@ -73,7 +73,7 @@ describe MarkupLounge::View, 'Variables' do
     end
     
     it 'aliases #requires_only to #needs_only' do
-      class AltlyView < MarkupLounge::View 
+      class AltlyView < Garterbelt::View 
         needs_only :x, :y
       end
       AltlyView.required.should == [:x, :y]
@@ -106,7 +106,7 @@ describe MarkupLounge::View, 'Variables' do
 
       it 'raises on compile if the required variables map to existing methods' do
         lambda {
-          class Failer < MarkupLounge::View
+          class Failer < Garterbelt::View
             requires :p
           end
         }.should raise_error(ArgumentError, ":p cannot be a required variable because it maps to an existing method")
@@ -142,7 +142,7 @@ describe MarkupLounge::View, 'Variables' do
     end
     
     it 'builds class level accessors when it receives additional parameters' do
-      class ExtraNeed < MarkupLounge::View
+      class ExtraNeed < Garterbelt::View
         requires :x, :y
       end
       

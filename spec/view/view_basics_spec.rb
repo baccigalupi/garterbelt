@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View do
-  class BasicView < MarkupLounge::View
+describe Garterbelt::View do
+  class BasicView < Garterbelt::View
     def content
     end
   
@@ -22,7 +22,7 @@ describe MarkupLounge::View do
   describe 'attributes' do
     it 'has a tag buffer' do
       @view.buffer.should == []
-      @tag = MarkupLounge::ContentTag.new(:view => @view, :type => :hr)
+      @tag = Garterbelt::ContentTag.new(:view => @view, :type => :hr)
       @view.buffer << @tag
       @view.buffer.should == [@tag]
     end

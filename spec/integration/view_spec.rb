@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View, "Integration" do
+describe Garterbelt::View, "Integration" do
   def file(name)
     File.read(File.dirname(__FILE__) + "/expectations/#{name}.html")
   end
@@ -23,7 +23,7 @@ describe MarkupLounge::View, "Integration" do
   
   describe 'caching' do
     before do
-      MarkupLounge.cache.clear
+      Garterbelt.cache.clear
       @user = Hashie::Mash.new(:id => 'foo_id', :upgradable? => true)
     end
     

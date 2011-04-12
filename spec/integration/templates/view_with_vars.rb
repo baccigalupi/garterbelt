@@ -1,4 +1,4 @@
-class ViewWithVars < MarkupLounge::View
+class ViewWithVars < Garterbelt::View
   needs :user, :params => {}
   
   def content

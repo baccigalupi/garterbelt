@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   def self.cache_hash
     @cache_hash ||= {:default => Moneta::Memory.new}
   end

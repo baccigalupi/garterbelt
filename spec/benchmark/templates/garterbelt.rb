@@ -1,4 +1,4 @@
-class LoungeTemplate < MarkupLounge::View
+class GarterbeltTemplate < Garterbelt::View
   needs :user, :flash => nil
   
   def content

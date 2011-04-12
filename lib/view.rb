@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   class View
     include RuPol::Swimsuit
     
@@ -166,7 +166,7 @@ module MarkupLounge
       tag
     end
     
-    CLOSED_TAGS = ['area', 'base', 'br', 'col', 'frame', 'hr', 'img', 'input', 'link', 'meta'] # ?? link, meta others in head
+    CLOSED_TAGS = ['area', 'br', 'col', 'frame', 'hr', 'img', 'input']
     CONTENT_TAGS = [
       'a', 'abbr', 'acronym', 'address', 
       'b', 'bdo', 'big', 'blockquote', 'body', 'button', 
@@ -174,16 +174,16 @@ module MarkupLounge
       'dd', 'del', 'dfn', 'div', 'dl', 'dt', 'em',
       'embed',
       'fieldset', 'form', 'frameset',
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'html', 'i',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'i',
       'iframe', 'ins', 'kbd', 'label', 'legend', 'li', 'map',
       'noframes', 'noscript', 
       'object', 'ol', 'optgroup', 'option', 'p', 'param', 
       'q', 's',
-      'samp', 'script', 'select', 'small', 'span', 'strike',
+      'samp', 'script', 'select', 'small', 'span',
       'strong', 'style', 'sub', 'sup',
       'table', 'tbody', 'td', 'textarea', 'tfoot', 
-      'th', 'thead', 'title', 'tr', 'tt', 'u', 'ul', 'var'
-    ] # ?? i, s, title, var
+      'th', 'thead', 'tr', 'tt', 'u', 'ul', 'var'
+    ]
     NON_ESCAPE_TAGS = ['code', 'pre']
     TAGS = CLOSED_TAGS + CONTENT_TAGS
     
@@ -280,7 +280,7 @@ module MarkupLounge
     end
     
     def cache_store
-      @cache ||= MarkupLounge.cache(cache_store_key)
+      @cache ||= Garterbelt.cache(cache_store_key)
     end
     
     def self.cache_key_base

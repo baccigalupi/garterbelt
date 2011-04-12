@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View, "Caching" do
-  class Cached < MarkupLounge::View
+describe Garterbelt::View, "Caching" do
+  class Cached < Garterbelt::View
   end
   
-  class SpecialCached < MarkupLounge::View
+  class SpecialCached < Garterbelt::View
     def self.cache_store_key
       :foo
     end
@@ -13,7 +13,7 @@ describe MarkupLounge::View, "Caching" do
   describe 'cache access' do
     describe 'class level #cache_store_key' do
       it 'defaults to :default' do
-        MarkupLounge::View.cache_store_key.should == :default
+        Garterbelt::View.cache_store_key.should == :default
         Cached.cache_store_key.should == :default
       end
       
@@ -37,12 +37,12 @@ describe MarkupLounge::View, "Caching" do
     
     describe 'cache_store' do
       it 'returns a cache object' do
-        Cached.new.cache_store.should == MarkupLounge.cache
+        Cached.new.cache_store.should == Garterbelt.cache
       end
       
       it 'uses the instance level cache_store_key' do
         cached = Cached.new
-        MarkupLounge.cache_hash[:foo] = 'foo'
+        Garterbelt.cache_hash[:foo] = 'foo'
         cached.cache_store_key = :foo
         cached.cache_store.should == 'foo'
       end
@@ -107,14 +107,14 @@ describe MarkupLounge::View, "Caching" do
     end
     
     it 'makes a Cache object' do
-      MarkupLounge::Cache.should_receive(:new).and_return('foo')
+      Garterbelt::Cache.should_receive(:new).and_return('foo')
       @view.cache("user_8") do
         puts "bar"
       end
     end
     
     it 'passes the correct key and the view' do
-      MarkupLounge::Cache.should_receive(:new).with(:view => @view, :key => "cached_user_8").and_return('foo')
+      Garterbelt::Cache.should_receive(:new).with(:view => @view, :key => "cached_user_8").and_return('foo')
       @view.cache("user_8") do
         puts "bar"
       end
@@ -125,7 +125,7 @@ describe MarkupLounge::View, "Caching" do
         puts "bar"
       end
       cache = @view.buffer.last
-      cache.is_a?(MarkupLounge::Cache).should be_true
+      cache.is_a?(Garterbelt::Cache).should be_true
       cache.key.should == 'cached_foo_you'
     end
   end

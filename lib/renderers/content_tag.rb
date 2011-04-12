@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   class ContentTag < ClosedTag
     include ContentRendering
     

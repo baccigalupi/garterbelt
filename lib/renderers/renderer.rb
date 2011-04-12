@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   class Renderer
     include RuPol::Swimsuit
     max_pool_size 10000

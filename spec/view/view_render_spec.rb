@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::View do
-  class BasicView < MarkupLounge::View
+describe Garterbelt::View do
+  class BasicView < Garterbelt::View
     def content
     end
   
@@ -38,9 +38,9 @@ describe MarkupLounge::View do
     
     describe "render_buffer" do
       before do
-        @hr = MarkupLounge::ContentTag.new(:view => @view, :type => :hr)
-        @input = MarkupLounge::ContentTag.new(:view => @view, :type => :input)
-        @img = MarkupLounge::ContentTag.new(:view => @view, :type => :img)
+        @hr = Garterbelt::ContentTag.new(:view => @view, :type => :hr)
+        @input = Garterbelt::ContentTag.new(:view => @view, :type => :input)
+        @img = Garterbelt::ContentTag.new(:view => @view, :type => :img)
       end
       
       it 'will clear the buffer' do
@@ -80,14 +80,14 @@ describe MarkupLounge::View do
   
     describe 'tag nesting' do
       it 'should render correctly at one layer deep' do
-        @view.buffer << MarkupLounge::ClosedTag.new(:type => :hr, :view => @view)
+        @view.buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
         @view.render.should == "<hr>\n"
       end
       
       describe 'second level' do
         before do
-          @view.buffer << MarkupLounge::ContentTag.new(:type => :p, :view => @view) do
-            @view.buffer << MarkupLounge::ClosedTag.new(:type => :hr, :view => @view)
+          @view.buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view) do
+            @view.buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
           end
           @view.render
         end
@@ -107,12 +107,12 @@ describe MarkupLounge::View do
       
       describe 'multi level' do
         before do
-          @view.buffer << MarkupLounge::ContentTag.new(:type => :form, :view => @view) do
-            @view.buffer << MarkupLounge::ContentTag.new(:type => :fieldset, :view => @view) do
-              @view.buffer << MarkupLounge::ContentTag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
-                @view.buffer << MarkupLounge::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
+          @view.buffer << Garterbelt::ContentTag.new(:type => :form, :view => @view) do
+            @view.buffer << Garterbelt::ContentTag.new(:type => :fieldset, :view => @view) do
+              @view.buffer << Garterbelt::ContentTag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
+                @view.buffer << Garterbelt::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
               end
-              @view.buffer << MarkupLounge::ContentTag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
+              @view.buffer << Garterbelt::ContentTag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
             end
           end
           @view.render
@@ -179,14 +179,14 @@ describe MarkupLounge::View do
   describe 'tag helpers' do
     describe '#tag' do
       it 'makes a new tag' do
-        MarkupLounge::ContentTag.should_receive(:new).with(
+        Garterbelt::ContentTag.should_receive(:new).with(
           :type => :p, :view => @view, :content => 'content', :attributes => {:class => 'classy'}
         ).and_return('content')
         @view.tag(:p, "content", {:class => 'classy'})
       end
       
       it 'returns the tag' do
-        @view.tag(:p, "content", {:class => 'classy'}).is_a?(MarkupLounge::ContentTag).should be_true
+        @view.tag(:p, "content", {:class => 'classy'}).is_a?(Garterbelt::ContentTag).should be_true
       end
       
       it 'adds it to the buffer' do
@@ -204,14 +204,14 @@ describe MarkupLounge::View do
     
     describe '#closed_tag' do
       it 'makes a new closed tag' do
-        MarkupLounge::ClosedTag.should_receive(:new).with(
+        Garterbelt::ClosedTag.should_receive(:new).with(
           :type => :hr, :view => @view, :attributes => {:class => 'linear'}
         ).and_return('content')
         @view.closed_tag(:hr, :class => 'linear')
       end
       
       it 'returns the tag' do
-        @view.closed_tag(:hr, :class => 'linear').is_a?(MarkupLounge::ClosedTag).should be_true
+        @view.closed_tag(:hr, :class => 'linear').is_a?(Garterbelt::ClosedTag).should be_true
       end
       
       it 'adds it to the buffer' do
@@ -242,12 +242,12 @@ describe MarkupLounge::View do
     
     describe '#text' do
       it 'makes a new Text' do
-        MarkupLounge::Text.should_receive(:new).and_return('some content')
+        Garterbelt::Text.should_receive(:new).and_return('some content')
         @view.text("content")
       end
       
       it 'passes the right options to Text' do
-        MarkupLounge::Text.should_receive(:new).with({
+        Garterbelt::Text.should_receive(:new).with({
           :view => @view, :content => 'content'
         }).and_return('text renderer')
         @view.text("content")
@@ -256,7 +256,7 @@ describe MarkupLounge::View do
       it 'adds the Text object to the buffer' do
         @view.text("content")
         text = @view.buffer.last
-        text.is_a?(MarkupLounge::Text).should be_true
+        text.is_a?(Garterbelt::Text).should be_true
         text.content.should == 'content'
       end
     end
@@ -283,7 +283,7 @@ describe MarkupLounge::View do
     
     describe 'html tag helpers' do
       describe 'content tags' do
-        MarkupLounge::View::CONTENT_TAGS.each do |type|
+        Garterbelt::View::CONTENT_TAGS.each do |type|
           it "should have a method ##{type}" do
             @view.should respond_to(type)
           end
@@ -303,7 +303,7 @@ describe MarkupLounge::View do
       end
       
       describe 'closed tags' do
-        MarkupLounge::View::CLOSED_TAGS.each do |type|
+        Garterbelt::View::CLOSED_TAGS.each do |type|
           it "should have a method ##{type}" do
             @view.should respond_to(type)
           end
@@ -316,7 +316,7 @@ describe MarkupLounge::View do
       end
       
       describe 'non-escaping tags' do
-        MarkupLounge::View::NON_ESCAPE_TAGS.each do |tag|
+        Garterbelt::View::NON_ESCAPE_TAGS.each do |tag|
           it "responds to :#{tag}" do
             @view.should respond_to(tag)
           end 
@@ -330,7 +330,7 @@ describe MarkupLounge::View do
     
       describe 'comment' do
         it 'makes a comment object' do
-          @view.comment('This is a comment.').is_a?(MarkupLounge::Comment).should be_true
+          @view.comment('This is a comment.').is_a?(Garterbelt::Comment).should be_true
         end
         
         it 'puts it on the buffer' do

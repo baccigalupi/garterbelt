@@ -1,4 +1,4 @@
-class ViewWithCache < MarkupLounge::View
+class ViewWithCache < Garterbelt::View
   needs :user
 
   def content

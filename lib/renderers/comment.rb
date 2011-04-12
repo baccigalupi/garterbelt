@@ -1,4 +1,4 @@
-module MarkupLounge
+module Garterbelt
   class Comment < Text
     max_pool_size 1000
     

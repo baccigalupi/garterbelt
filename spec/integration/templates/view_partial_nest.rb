@@ -1,4 +1,4 @@
-class MyPagelet < MarkupLounge::View
+class MyPagelet < Garterbelt::View
   needs :user
   
   def content
@@ -11,7 +11,7 @@ class MyPagelet < MarkupLounge::View
   end
 end
 
-class Header < MarkupLounge::View
+class Header < Garterbelt::View
   needs :user
   
   def content

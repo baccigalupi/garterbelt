@@ -1,42 +1,42 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MarkupLounge::Text do
+describe Garterbelt::Text do
   before :all do
     @view = MockView.new
   end
   
   describe 'basics' do
     it 'is decends from Renderer' do
-      MarkupLounge::Text.ancestors.should include MarkupLounge::Renderer
+      Garterbelt::Text.ancestors.should include Garterbelt::Renderer
     end
     
     it 'has conent' do
-      text = MarkupLounge::Text.new(:view => @view, :content => "Initializing ...")
+      text = Garterbelt::Text.new(:view => @view, :content => "Initializing ...")
       text.content.should == "Initializing ..."
       text.content = "foo"
       text.content.should == "foo"
     end
     
     it 'raises an error when initializing without content' do
-      lambda{ MarkupLounge::Text.new(:view => @view) }.should raise_error( 
-        ArgumentError, ":content option required for MarkupLounge::Text initialization" 
+      lambda{ Garterbelt::Text.new(:view => @view) }.should raise_error( 
+        ArgumentError, ":content option required for Garterbelt::Text initialization" 
       )
     end
     
     it 'inherits its pool size' do
-      MarkupLounge::Text._pool.max_size.should == 10000
+      Garterbelt::Text._pool.max_size.should == 10000
     end
   end
   
   describe 'render' do
     before do
       @view = MockView.new
-      @text = MarkupLounge::Text.new(:view => @view, :content => 'Render me')
+      @text = Garterbelt::Text.new(:view => @view, :content => 'Render me')
     end
     
     it 'raises an error with block content' do
       @text.content = lambda { puts "foo" }
-      lambda{ @text.render }.should raise_error(ArgumentError, "MarkupLounge::Text does not take block content")
+      lambda{ @text.render }.should raise_error(ArgumentError, "Garterbelt::Text does not take block content")
     end
     
     it 'it adds the content to the output' do
@@ -52,7 +52,7 @@ describe MarkupLounge::Text do
     describe 'escaping' do
       it 'escapes if view is set to escape' do
         str = "<a href='/foo.com'>Foo it!</a>"
-        text = MarkupLounge::Text.new(:view => @view, :content => str)
+        text = Garterbelt::Text.new(:view => @view, :content => str)
         text.render.should_not include str
         text.render.should include ERB::Util.html_escape(str)
       end
@@ -60,7 +60,7 @@ describe MarkupLounge::Text do
       it 'does not escape if the view is set to not escape' do
         str = "<a href='/foo.com'>Foo it!</a>"
         @view.escape = false
-        text = MarkupLounge::Text.new(:view => @view, :content => str)
+        text = Garterbelt::Text.new(:view => @view, :content => str)
         text.render.should include str
       end
     end
