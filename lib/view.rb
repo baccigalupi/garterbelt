@@ -40,6 +40,10 @@ module Garterbelt
       end
     end
     
+    def curated?
+      curator === self
+    end
+    
     # VARIABLE ACCESS -----------------------------
     class << self
       attr_accessor :required, :selective_require
@@ -173,7 +177,6 @@ module Garterbelt
       opts
     end
     
-    CLOSED_TAGS = ['area', 'br', 'col', 'frame', 'hr', 'img', 'input']
     CONTENT_TAGS = [
       'a', 'abbr', 'acronym', 'address', 
       'b', 'bdo', 'big', 'blockquote', 'body', 'button', 
@@ -191,9 +194,6 @@ module Garterbelt
       'table', 'tbody', 'td', 'textarea', 'tfoot', 
       'th', 'thead', 'tr', 'tt', 'u', 'ul', 'var'
     ]
-    NON_ESCAPE_TAGS = ['code', 'pre']
-    TAGS = CLOSED_TAGS + CONTENT_TAGS
-    
     CONTENT_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args, &block)
@@ -202,6 +202,7 @@ module Garterbelt
       RUBY
     end
     
+    NON_ESCAPE_TAGS = ['code', 'pre']
     NON_ESCAPE_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args, &block)
@@ -210,6 +211,7 @@ module Garterbelt
       RUBY
     end
     
+    CLOSED_TAGS = ['area', 'br', 'col', 'frame', 'hr', 'img', 'input']
     CLOSED_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args)
@@ -218,10 +220,31 @@ module Garterbelt
       RUBY
     end  
     
+    HEAD_TAGS = ['base', 'meta', 'link']
+    HEAD_TAGS.each do |type|
+      class_eval <<-RUBY
+        def _#{type}(*args)
+          closed_tag(:#{type}, *args)
+        end
+      RUBY
+    end
+    
+    def page_title(*args, &block)
+      tag(:title, *args, &block)
+    end
+    
+    def stylesheet_link(path)
+      _link(:rel => "stylesheet", 'type' => "text/css", :href => "#{path}.css")
+    end
+    
+    def javascript_link(path)
+      script(:src => "#{path}.js", 'type' => "text/javascript")
+    end
+    
     # RENDERING -------------------------
     
     def render(content_method = :content)
-      self.output = "" if curator === self
+      self.output = "" if curated?
       if content_method == :content
         content
       else

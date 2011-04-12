@@ -369,7 +369,40 @@ describe Garterbelt::View do
           xml.attributes[:encoding].should == 'utf-8'
         end
       end
-    end
     
+      describe 'head tags' do
+        Garterbelt::View::HEAD_TAGS.each do |type|
+          describe "_#{type}" do
+            it "it is a method" do
+              @view.should respond_to("_#{type}")
+            end
+          
+            it "makes a closed tag" do
+              @view.should_receive(:closed_tag).with(type.to_sym)
+              @view.send("_#{type}")
+            end
+          end
+        end
+        
+        describe 'page_title' do
+          it 'makes a content tag of type :title' do
+            @view.should_receive(:tag).with(:title, "My Great Page Title!")
+            @view.page_title "My Great Page Title!"
+          end
+        end
+        
+        describe 'helpers' do
+          it 'stylesheet_link makes a link closed tag with the right options' do
+            @view.should_receive(:_link).with(:rel => "stylesheet", 'type' => "text/css", :href => "/foo/theme.css")
+            @view.stylesheet_link('/foo/theme')
+          end
+          
+          it 'javascript_link makes a script tag with the right options' do
+            @view.should_receive(:script).with( :src => "/foo/script.js", 'type' => "text/javascript")
+            @view.javascript_link('/foo/script')
+          end
+        end
+      end
+    end
   end
 end
