@@ -29,6 +29,13 @@ describe Garterbelt::Cache do
     it 'stores the full key' do
       build_cache.key.should == 'good_deal'
     end
+    
+    it 'stores the expiration information' do
+      cache = Garterbelt::Cache.new(:key => 'expiring_deal', :view => @view, :expires_in => 3600) do # one hour, in seconds
+        Garterbelt::ContentTag.new(:type => :p, :view => @view)
+      end
+      cache.expires_in.should == 3600
+    end
   end
   
   describe 'rendering' do
@@ -79,6 +86,27 @@ describe Garterbelt::Cache do
         @view.cache_store.should_receive(:[]).with('good_deal').and_return(nil)
         @view.should_receive(:render_buffer)
         @cache.render
+      end
+      
+      it 'adds puts the render block into the cache' do
+        @view.output = "view output; "
+        @view.cache_store.should_receive(:[]).with('good_deal').and_return(nil)
+        @view.stub(:render_buffer).and_return('buffer rendered')
+        @view.cache_store.should_receive(:store).with('good_deal', @cache.cache_output, {})
+        @cache.render
+      end
+      
+      it 'uses the expiration when it has one' do
+        cache = Garterbelt::Cache.new(:key => 'good_deal', :view => @view, :expires_in => 3600) do
+          Garterbelt::ContentTag.new(:type => :p, :view => @view)
+        end
+        
+        @view.output = "view output; "
+        @view.cache_store.should_receive(:[]).with('good_deal').and_return(nil)
+        @view.stub(:render_buffer).and_return('buffer rendered')
+        
+        @view.cache_store.should_receive(:store).with('good_deal', cache.cache_output, {:expires_in => 3600})
+        cache.render
       end
     end
   end

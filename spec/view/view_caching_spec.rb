@@ -128,5 +128,13 @@ describe Garterbelt::View, "Caching" do
       cache.is_a?(Garterbelt::Cache).should be_true
       cache.key.should == 'cached_foo_you'
     end
+    
+    it 'passes on correctly the :expires_in option' do
+      @view.cache("my_key", :expires_in => 24*3600) do
+        puts "foo"
+      end
+      cache = @view.buffer.last
+      cache.expires_in.should == 24*3600
+    end
   end
 end

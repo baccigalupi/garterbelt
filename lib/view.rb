@@ -332,10 +332,9 @@ module Garterbelt
       "#{cache_key_base}_#{detail}"
     end
     
-    def cache(key, &block)
-      renderer = Cache.new(:view => self, :key => cache_key(key), &block)
-      buffer << renderer
-      renderer
+    def cache(key, opts={}, &block)
+      opts = opts.merge(:key => cache_key(key), :view => curator)
+      add_to_buffer Cache.new(opts, &block)
     end
   end
 end
