@@ -1,3 +1,6 @@
 Page
 
 - partial passes down params from parent view
+- partial receives a block
+
+Rails Helpers
