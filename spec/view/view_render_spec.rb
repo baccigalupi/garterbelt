@@ -330,11 +330,11 @@ describe Garterbelt::View do
     
       describe 'comment' do
         it 'makes a comment object' do
-          @view.comment('This is a comment.').is_a?(Garterbelt::Comment).should be_true
+          @view.comment_tag('This is a comment.').is_a?(Garterbelt::Comment).should be_true
         end
         
         it 'puts it on the buffer' do
-          comment = @view.comment("new comment now")
+          comment = @view.comment_tag("new comment now")
           @view.buffer.last.should == comment
         end
       end

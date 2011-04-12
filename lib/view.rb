@@ -149,7 +149,7 @@ module Garterbelt
     alias :raw :raw_text
     alias :rawtext :raw_text
     
-    def comment(content)
+    def comment_tag(content)
       add_to_buffer Comment.new(:view => curator, :content => content)
     end
     
