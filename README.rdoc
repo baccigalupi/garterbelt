@@ -1,6 +1,8 @@
 = garterbelt
 
-Description goes here.
+Garterbelt is a Ruby HTML/XML markup framework inspired by Erector and Markaby. Garterbelt maps html tags to methods allowing the intuitive construction of HTML pages using nothing but Ruby. And because it is all Ruby all the time, views benefit from the dryness of inheritance, modules and all the meta magic that Ruby can imagine. Stockings not included.
+
+More docs coming soon!
 
 == Contributing to garterbelt
  
