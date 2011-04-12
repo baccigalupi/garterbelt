@@ -8,6 +8,7 @@ require 'moneta'
 require 'moneta/memory'
  
 require stocking_dir + '/stocking'
+
 require stocking_dir + '/renderers/renderer'
 require stocking_dir + '/renderers/content_rendering'
 require stocking_dir + '/renderers/closed_tag'
@@ -19,3 +20,4 @@ require stocking_dir + '/renderers/doctype'
 require stocking_dir + '/renderers/xml'
 
 require stocking_dir + '/view'
+require stocking_dir + '/page'

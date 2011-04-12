@@ -1,8 +1,3 @@
 Page
-- remove title tag, in favor of page_title
-- link
-- meta
-  - make erector style js and css embeds and link/rels
-- base
 
 - partial passes down params from parent view

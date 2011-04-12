@@ -243,6 +243,10 @@ module Garterbelt
     
     # RENDERING -------------------------
     
+    def content
+      raise NotImplementedError, "Implement #content in #{self.class}!"
+    end
+    
     def render(content_method = :content)
       self.output = "" if curated?
       if content_method == :content
