@@ -7,13 +7,13 @@ require 'hashie'
 require 'erector'
 require File.dirname(__FILE__) + "/../../lib/garterbelt"
 
-require File.dirname(__FILE__) + '/templates/stocking'
+require File.dirname(__FILE__) + '/templates/garterbelt'
 require File.dirname(__FILE__) + '/templates/erector'
 
-TIMES = 500_000
+TIMES = 100_000
 
 RBench.run(TIMES) do
-  LoungeTemplate.max_pool_size TIMES/10
+  Garterbelt.max_pool_size = TIMES/100
   column :garterbelt
   column :erector
   
@@ -24,7 +24,9 @@ RBench.run(TIMES) do
   end
 end
 
-# 4/11/2011, version 0.0.1, standard pooling
+puts GarterbeltTemplate._pool.stats.inspect
+
+# 4/11/2011, version 0.0.1
 # GARTERBELT = pooling at standard 1000 instances
 # GARTERBELT_2 = pooling at 10% of sample time
 

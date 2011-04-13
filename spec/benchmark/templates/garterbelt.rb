@@ -1,4 +1,5 @@
 class GarterbeltTemplate < Garterbelt::View
+  max_pool_size Garterbelt.max_pool_size
   needs :user, :flash => nil
   
   def content
