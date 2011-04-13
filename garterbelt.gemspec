@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{garterbelt}
-  s.version = "0.0.6"
+  s.version = "0.0.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kane Baccigalupi"]
@@ -44,12 +44,14 @@ Gem::Specification.new do |s|
     "lib/view.rb",
     "spec/garterbelt_spec.rb",
     "spec/integration/expectations/general_view.html",
+    "spec/integration/expectations/unescaping_view.html",
     "spec/integration/expectations/variables/view_with_user_and_params.html",
     "spec/integration/expectations/variables/view_with_user_email.html",
     "spec/integration/expectations/view_partial_nest.html",
     "spec/integration/expectations/view_with_forms.html",
     "spec/integration/expectations/view_with_tags.html",
     "spec/integration/templates/form.rb",
+    "spec/integration/templates/unescaping_view.rb",
     "spec/integration/templates/view_partial_nest.rb",
     "spec/integration/templates/view_with_cache.rb",
     "spec/integration/templates/view_with_forms.rb",
@@ -87,6 +89,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/garterbelt_spec.rb",
     "spec/integration/templates/form.rb",
+    "spec/integration/templates/unescaping_view.rb",
     "spec/integration/templates/view_partial_nest.rb",
     "spec/integration/templates/view_with_cache.rb",
     "spec/integration/templates/view_with_forms.rb",
