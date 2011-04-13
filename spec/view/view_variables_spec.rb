@@ -104,12 +104,22 @@ describe Garterbelt::View, 'Variables' do
         end
       end
 
-      it 'raises on compile if the required variables map to existing methods' do
-        lambda {
-          class Failer < Garterbelt::View
-            requires :p
-          end
-        }.should raise_error(ArgumentError, ":p cannot be a required variable because it maps to an existing method")
+      describe 'allowed accessors' do
+        it 'raises on compile if the required variables map to existing view methods' do
+          lambda {
+            class Failer < Garterbelt::View
+              requires :p
+            end
+          }.should raise_error(ArgumentError, ":p cannot be a required variable because it maps to an existing method")
+        end
+      
+        it 'does not raise an error when overriding Object instance methods' do
+          lambda {
+            class Doer < Garterbelt::View
+              requires :tap
+            end
+          }.should_not raise_error
+        end
       end
     end    
   end

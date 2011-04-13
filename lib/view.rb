@@ -52,7 +52,7 @@ module Garterbelt
     def self.add_accessor key
       key = key.to_s
       return if accessories.include?(key)
-      if instance_methods.include?(key)
+      if (instance_methods - Object.instance_methods).include?(key)
         raise ArgumentError, ":#{key} cannot be a required variable because it maps to an existing method"
       end
       
