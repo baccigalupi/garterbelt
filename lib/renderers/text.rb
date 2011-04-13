@@ -1,11 +1,12 @@
 module Garterbelt
   class Text < Renderer
-    attr_accessor :content
+    attr_accessor :content, :escape
     
     def initialize(opts)
       super
       raise ArgumentError, ":content option required for #{self.class} initialization" unless opts[:content]
       self.content = opts[:content]
+      self.escape = view.escape
     end
     
     def raise_with_block_content
@@ -18,11 +19,7 @@ module Garterbelt
     end
     
     def escaped_content
-      escape? ? ERB::Util.h(content) : content
-    end
-    
-    def escape?
-      !!view.escape
+      escape ? ERB::Util.h(content) : content
     end
   end
 end

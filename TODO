@@ -1,5 +1,11 @@
 increase performance ~10%
 partial passes down params from parent view
-anonymous view
+anonymous views
 
-Rails Helpers
+rails style helpers
+
+render styles
+  - pretty: current and default
+  - compact: argument content in the tags, not new line
+  - minified: no new lines or indenting
+  - text only: no tags, appropriate new lines according to tag type

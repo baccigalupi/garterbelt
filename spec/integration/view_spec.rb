@@ -9,6 +9,13 @@ describe Garterbelt::View, "Integration" do
     ViewWithContentTags.new.render.should == file("view_with_tags")
   end
   
+  it 'properly unescapes text' do
+    format_text = "You should check out my rad new site:
+      http://foo.com
+      It will blow your mind!"
+    UnescapingView.new(:format_text => format_text).render.should == file('unescaping_view')
+  end
+  
   describe 'variables' do
     it 'calls methods on passed objects' do
       user =  Hashie::Mash.new(:email => 'foo@example.com')

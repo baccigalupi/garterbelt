@@ -10,7 +10,7 @@ require File.dirname(__FILE__) + "/../../lib/garterbelt"
 require File.dirname(__FILE__) + '/templates/garterbelt'
 require File.dirname(__FILE__) + '/templates/erector'
 
-TIMES = 10_000
+TIMES = 500_000
 
 RBench.run(TIMES) do
   column :garterbelt
@@ -27,12 +27,30 @@ RBench.run(TIMES) do
     garterbelt { GarterbeltTemplate.new(:user => user).render }
     erector { ErectorTemplate.new(:user => user).to_html }
   end
-  
-  report "Simple Page, class level rendering" do
-    garterbelt { GarterbeltTemplate.render(:user => user) }
-    erector { ErectorTemplate.new(:user => user).to_html }
-  end
 end
+
+# 4/13/2011, more stuff checking for 0.0.6
+# 10_000                           GARTERBELT | ERECTOR | PERCENT DIFFERENCE
+# --------------------------------------------------------------------------
+# Simple Page Initializing              0.178 |   0.170 | 4.5% slower
+# Simple Page Rendering                 6.971 |   6.613 | 5.1% slower
+#
+# 50_000                           GARTERBELT | ERECTOR | PERCENT DIFFERENCE
+# --------------------------------------------------------------------------
+# Simple Page Initializing              0.856 |   1.016 | 15.7% faster
+# Simple Page Rendering                34.804 |  33.547 | 3.6% slower
+#
+# 100_000                          GARTERBELT | ERECTOR | PERCENT DIFFERENCE
+# --------------------------------------------------------------------------
+# Simple Page Initializing              1.678 |   1.911 | 12% faster
+# Simple Page Rendering                69.654 |  67.422 | 3.2% slower
+# 
+# 500_0000                         GARTERBELT | ERECTOR | PERCENT DIFFERENCE
+# --------------------------------------------------------------------------
+# Simple Page Initializing              8.465 |   9.656 | 12.4% faster
+# Simple Page Rendering               350.409 | 338.026 | 3.5% slower
+
+
 
 # 4/13/2011, version 0.0.4, Removing RuPol from the lib, totally a flacid chick :(
 # more work on performance later
