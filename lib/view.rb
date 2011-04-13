@@ -265,6 +265,9 @@ module Garterbelt
       output
     end
     
+    alias :to_s :render
+    alias :to_html :render
+    
     def render_block
       return output unless block
       block.call
@@ -272,8 +275,9 @@ module Garterbelt
       output
     end
     
-    alias :to_s :render
-    alias :to_html :render
+    def call_block
+      block.call if block
+    end
     
     def render_buffer
       array = buffer.dup
