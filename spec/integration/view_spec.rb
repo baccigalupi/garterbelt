@@ -53,5 +53,9 @@ describe Garterbelt::View, "Integration" do
     it 'nests deeply' do
       MyPagelet.new(:user => @user).render.should == file('view_partial_nest')
     end
+    
+    it 'works with passed blocks' do
+      ViewWithForms.new.render.should == file('view_with_forms')
+    end
   end
 end

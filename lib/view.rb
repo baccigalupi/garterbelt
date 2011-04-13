@@ -2,16 +2,18 @@ module Garterbelt
   class View
     include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :level, :escape
+    attr_accessor :output, :buffer, :level, :escape, :block, :options
     attr_reader :curator
     
-    def initialize(opts={})
+    def initialize(opts={}, &block)
+      self.options =  opts.dup
       self.buffer = []
-      self.level =  (opts.delete(:level) || 0)
+      self.level =  (options.delete(:level) || 0)
       self.output = ""
       self.escape = true
+      self.block = block if block_given?
       
-      self.curator = opts.delete(:curator) || self
+      self.curator = options.delete(:curator) || self
       
       params = self.class.default_variables.merge(opts)
       keys = params.keys
@@ -25,8 +27,12 @@ module Garterbelt
       end
       
       params.each do |key, value|
-        self.class.add_accessor(key) unless respond_to?(key)
-        send("#{key}=", value)
+        begin 
+          self.class.add_accessor(key) unless respond_to?(key)
+          send("#{key}=", value)
+        rescue
+          instance_variable_set "@#{key}", value
+        end
       end
     end
     
@@ -258,6 +264,13 @@ module Garterbelt
       output
     end
     
+    def render_block
+      return output unless block
+      block.call
+      render_buffer
+      output
+    end
+    
     alias :to_s :render
     alias :to_html :render
     
@@ -285,7 +298,7 @@ module Garterbelt
     def partial(*args, &block)
       if (klass = args.first).is_a?(Class)
         args.shift
-        view = klass.new(*args)
+        view = klass.new(*args, &block)
       else
         view = args.first
       end

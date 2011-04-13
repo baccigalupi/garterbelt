@@ -1,11 +1,7 @@
-Page
+partial passes down params from parent view
+new receives and stores block
+partial receives a block
+anonymous view
 
-- partial passes down params from parent view
-- partial receives a block
-
-
-Anonymous view
-
-Views allow overriding methods from higher on the inheritance chain than View
 
 Rails Helpers

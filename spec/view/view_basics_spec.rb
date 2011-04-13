@@ -59,6 +59,18 @@ describe Garterbelt::View do
       end
     end
     
+    it 'can be initailzed with a block' do
+      view = BasicView.new do
+        Garterbelt::Tag.new(:type => :p, :content => 'Initalization block content', :view => view)
+      end
+      view.block.is_a?(Proc).should be_true
+    end
+    
+    it 'can save the options' do
+      view = BasicView.new(:foo => 'foo', :bar => 'bar')
+      view.options.should == {:foo => 'foo', :bar => 'bar'}
+    end
+    
     describe 'setting the curator: view responsible for displaying the rendered content' do
       before do
         @view.level = 42

@@ -174,9 +174,18 @@ describe Garterbelt::View do
         BasicView.render.should == @rendered
       end
     end
+
+    describe 'block initalized content' do
+      it 'has a #render_block method that renders that content' do
+        @view = BasicView.new do
+          @view.buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view, :content => 'Block level p tag')
+        end
+        @view.render_block.should include "Block level p tag"
+      end
+    end
   end
 
-  describe 'tag helpers' do
+  describe 'renderers' do
     describe '#tag' do
       it 'makes a new tag' do
         Garterbelt::ContentTag.should_receive(:new).with(

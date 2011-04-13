@@ -1,0 +1,29 @@
+<div class="servey">
+  <form action="/form/fu" method="get">
+    <label>
+      <h4>
+        Are you fu?
+      </h4>
+      <input name="fu" type="radio" value="yes">
+      Yes!
+      <input name="fu" type="radio" value="no">
+      no :(
+    </label>
+    <input type="submit" value="Answer the Fu Master">
+  </form>
+  <form class="update" action="/user/info" method="post">
+    <input name="_method" type="hidden" value="put">
+    <h4>
+      Provide us with updated information
+    </h4>
+    <label>
+      Name: 
+      <input name="name" type="text">
+    </label>
+    <label>
+      Email: 
+      <input name="email" type="text">
+    </label>
+    <input type="submit" value="Update">
+  </form>
+</div>

@@ -54,10 +54,17 @@ describe Garterbelt::View, 'Partials' do
       
       it 'has the correct initalization options' do
         @view.partial(PartedOut, :x => '= foo')
-        partial = @view
+        partial = @view.buffer.last
+        partial.x.should == '= foo'
       end
       
-      it 'passes along the block, wait do views take blocks right now?'
+      it 'passes along the block' do
+        @view.partial(PartedOut, :x => 'not x') do
+          puts { 'maybe x; i don\'t know '}
+        end
+        partial = @view.buffer.last
+        partial.block.is_a?(Proc).should be_true
+      end
     end
   end
 end
