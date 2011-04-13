@@ -6,7 +6,7 @@ module Garterbelt
     attr_reader :curator
     
     def initialize(opts={}, &block)
-      self.options =  opts.dup
+      self.options =  opts
       self.buffer = []
       self.level =  (options.delete(:level) || 0)
       self.output = ""
@@ -27,12 +27,8 @@ module Garterbelt
       end
       
       params.each do |key, value|
-        begin 
-          self.class.add_accessor(key) unless respond_to?(key)
-          send("#{key}=", value)
-        rescue
-          instance_variable_set "@#{key}", value
-        end
+        self.class.add_accessor(key) unless respond_to?(key)
+        instance_variable_set "@#{key}", value
       end
     end
     
@@ -118,7 +114,12 @@ module Garterbelt
     end
     
     def tag(type, *args, &block)
-      add_to_buffer ContentTag.new(parse_tag_arguments(type, args), &block)
+      t = if block_given?
+        ContentTag.new(parse_tag_arguments(type, args), &block)
+      else
+        ContentTag.new(parse_tag_arguments(type, args))
+      end
+      add_to_buffer t
     end
     
     def closed_tag(type, *args)
@@ -128,11 +129,11 @@ module Garterbelt
     def non_escape_tag(*args, &block)
       if escape
         curator.escape = false
-        t = tag(*args, &block)
+        t = block_given? ? tag(*args, &block) : tag(*args)
         curator.escape = true
         t
       else
-        tag(*args, &block)
+        block_given? ? tag(*args, &block) : tag(*args)
       end
     end
     
@@ -203,7 +204,7 @@ module Garterbelt
     CONTENT_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args, &block)
-          tag(:#{type}, *args, &block)
+          block_given? ? tag(:#{type}, *args, &block) : tag(:#{type}, *args)
         end
       RUBY
     end
@@ -212,7 +213,7 @@ module Garterbelt
     NON_ESCAPE_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args, &block)
-          non_escape_tag(:#{type}, *args, &block)
+          block_given? ? non_escape_tag(:#{type}, *args, &block) : non_escape_tag(:#{type}, *args)
         end
       RUBY
     end
@@ -236,7 +237,7 @@ module Garterbelt
     end
     
     def page_title(*args, &block)
-      tag(:title, *args, &block)
+      block_given? ? tag(:title, *args, &block) : tag(:title, *args)
     end
     
     def stylesheet_link(path)
@@ -287,9 +288,9 @@ module Garterbelt
       end
     end
     
-    def self.render(opts={})
-      content_method = opts[:method]
-      view = new
+    def self.render(opts={}, &block)
+      content_method = opts.delete(:method)
+      view = block_given? ? new(opts, &block) : new(opts)
       output = content_method ? view.render(content_method) : view.render
       view.recycle
       output
@@ -298,7 +299,11 @@ module Garterbelt
     def partial(*args, &block)
       if (klass = args.first).is_a?(Class)
         args.shift
-        view = klass.new(*args, &block)
+        view = if block
+          klass.new(*args, &block)
+        else
+          klass.new(*args)
+        end
       else
         view = args.first
       end

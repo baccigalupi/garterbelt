@@ -1,5 +1,7 @@
+figure out why ru_pol is not caching on the tag level
+set up caching for views
+
 partial passes down params from parent view
 anonymous view
-
 
 Rails Helpers

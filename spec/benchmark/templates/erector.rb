@@ -11,21 +11,21 @@ class ErectorTemplate < Erector::Widget
       
       body :class => self.class.to_s.underscore do
         div :id => :wrapper, :class => 'line' do
-          if flash
+          if @flash
             div :id => 'flash', :class => 'inner' do
-              text flash
+              text @flash
             end
           end
           
-          dl :class => ['inner', 'user_info'] do
-            dt 'username'
-            dd user.username
+          dl :class => ['inner', '@user_info'] do
+            dt '@username'
+            dd @user.username
             
             dt 'email'
-            dd user.email
+            dd @user.email
             
             dt 'name'
-            dd user.name
+            dd @user.name
             
             dt 'number of assigned tasks'
             dd rand(20)

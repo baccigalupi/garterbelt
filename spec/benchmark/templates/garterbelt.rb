@@ -5,9 +5,9 @@ class GarterbeltTemplate < Garterbelt::View
   def content
     html do
       head do
-        title "Benchmarking Templates"
-        link :rel => 'stylesheet', :href => '/stylesheet/application.css'
-        link :rel => 'stylesheet', :href => '/stylesheet/ie.css'
+        page_title "Benchmarking Templates"
+        _link :rel => 'stylesheet', :href => '/stylesheet/application.css'
+        _link :rel => 'stylesheet', :href => '/stylesheet/ie.css'
       end
       
       body :class => self.class.to_s.underscore do
