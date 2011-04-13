@@ -1,6 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Garterbelt do
+  describe 'instance pooling' do
+    it 'has a default maxpool size' do
+      Garterbelt.max_pool_size.should == 1_000
+    end
+    
+    it 'can be customized' do
+      Garterbelt.max_pool_size = 10_000
+      Garterbelt.max_pool_size.should == 10_000
+    end
+  end
+  
   describe 'cache module level methods' do
     describe '#cache_hash' do
       it 'creates a default hash when accessed the first time' do
@@ -14,20 +25,6 @@ describe Garterbelt do
         Garterbelt.cache_hash[:foo] = 'foo'
         Garterbelt.cache_hash[:foo].should == 'foo'
       end
-    end
-    
-    describe '#cache=' do
-      it 'creates a Moneta cache' do
-        
-      end
-      
-      describe 'options' do
-        it 'creates a memory Moneta cache correctly'
-        it 'creates a file system Moneta cache'
-        it 'creates alternative types as requested'
-      end
-      it 'sets the default key when not provided a argument'
-      it 'sets other keys when not '
     end
     
     describe '#cache' do

@@ -1,8 +1,5 @@
 module Garterbelt
   class ClosedTag < Renderer
-    include RuPol::Swimsuit
-    max_pool_size 10000
-    
     attr_accessor :type, :attributes, :css_class
     
     def initialize(opts)
