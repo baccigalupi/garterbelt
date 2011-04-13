@@ -1,7 +1,5 @@
 module Garterbelt
   class Doctype < ClosedTag
-    max_pool_size Garterbelt.max_pool_size
-    
     ATTRIBUTES = {
       :transitional => "html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"",
       :strict => 'html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"',

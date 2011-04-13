@@ -34,16 +34,6 @@ describe Garterbelt::ClosedTag do
     end
   end
   
-  describe 'pooling' do
-    it 'include RuPol::Swimsuit' do
-      ClosedTag.ancestors.should include(RuPol::Swimsuit)
-    end
-    
-    it 'has a really large max_pool_size' do
-      ClosedTag._pool.max_size.should == 10000
-    end
-  end
-  
   describe 'method chaining' do
     before do
       @tag = ClosedTag.new(:type => :input, :view => @view)

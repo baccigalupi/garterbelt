@@ -58,19 +58,6 @@ describe Garterbelt::View do
         @view.render_buffer
       end
       
-      it 'should recycle the tags' do
-        @view.buffer << @hr << @input << @img
-        @hr.stub(:render)
-        @input.stub(:render)
-        @img.stub(:render)
-        
-        @hr.should_receive(:recycle)
-        @input.should_receive(:recycle)
-        @img.should_receive(:recycle)
-        
-        @view.render_buffer
-      end
-      
       it 'will add non renderable items to the output as strings' do
         @view.buffer << "foo " << :bar
         @view.render_buffer
@@ -143,7 +130,6 @@ describe Garterbelt::View do
     describe 'class method' do
       before do
         @rendered = @view.render
-        @view.stub(:recycle)
       end
       
       it 'makes a new view' do
@@ -161,12 +147,6 @@ describe Garterbelt::View do
         BasicView.stub(:new).and_return(@view)
         @view.should_receive(:render).with(:alt_content)
         BasicView.render :method => :alt_content
-      end
-      
-      it 'recycles the view' do
-        BasicView.stub(:new).and_return(@view)
-        @view.should_receive(:recycle)
-        BasicView.render
       end
       
       it 'returns the output' do

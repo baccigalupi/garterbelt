@@ -9,10 +9,6 @@ describe Garterbelt::Doctype do
     it 'is decends from ClosedTag' do
       Garterbelt::Doctype.ancestors.should include Garterbelt::ClosedTag
     end
-    
-    it 'has a smaller pool size' do
-      Garterbelt::Doctype._pool.max_size.should == 1000
-    end
   end
   
   describe 'render' do

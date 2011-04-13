@@ -22,10 +22,6 @@ describe Garterbelt::Text do
         ArgumentError, ":content option required for Garterbelt::Text initialization" 
       )
     end
-    
-    it 'inherits its pool size' do
-      Garterbelt::Text._pool.max_size.should == 10000
-    end
   end
   
   describe 'render' do

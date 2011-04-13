@@ -22,10 +22,6 @@ describe Garterbelt::Comment do
         ArgumentError, ":content option required for Garterbelt::Comment initialization" 
       )
     end
-    
-    it 'has a smaller pool size' do
-      Garterbelt::Comment._pool.max_size.should == 1000
-    end
   end
   
   describe 'render' do

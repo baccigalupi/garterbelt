@@ -20,7 +20,6 @@ GEM
     rspec-expectations (2.3.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.3.0)
-    ru_pol (0.1.2)
     yard (0.6.5)
 
 PLATFORMS
@@ -34,5 +33,4 @@ DEPENDENCIES
   moneta (>= 0.6.0)
   rcov
   rspec (~> 2.3.0)
-  ru_pol (= 0.1.2)
   yard (~> 0.6.0)

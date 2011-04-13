@@ -1,6 +1,6 @@
 module Garterbelt
   class View
-    include RuPol::Swimsuit
+    # include RuPol::Swimsuit
     
     attr_accessor :output, :buffer, :level, :escape, :block, :options
     attr_reader :curator
@@ -281,7 +281,6 @@ module Garterbelt
       array.each do |item|
         if item.respond_to?(:render)
           item.render
-          item.recycle
         else
           output << item.to_s
         end
@@ -292,7 +291,6 @@ module Garterbelt
       content_method = opts.delete(:method)
       view = block_given? ? new(opts, &block) : new(opts)
       output = content_method ? view.render(content_method) : view.render
-      view.recycle
       output
     end
     

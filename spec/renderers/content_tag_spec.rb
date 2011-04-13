@@ -26,10 +26,6 @@ describe Garterbelt::ContentTag do
         @output << "This is block content"
       end.content.class.should == Proc
     end
-    
-    it 'inherits a really large max_pool_size' do
-      ContentTag._pool.max_size.should == 10000
-    end
   end
   
   describe 'chaining' do

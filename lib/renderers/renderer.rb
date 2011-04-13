@@ -1,8 +1,5 @@
 module Garterbelt
   class Renderer
-    include RuPol::Swimsuit
-    max_pool_size Garterbelt.max_pool_size * 10
-    
     attr_accessor :view
     
     def initialize(opts)

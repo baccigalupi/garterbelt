@@ -1,7 +1,5 @@
 module Garterbelt
   class Comment < Text
-    max_pool_size Garterbelt.max_pool_size
-    
     def initialize(opts)
       super
     end

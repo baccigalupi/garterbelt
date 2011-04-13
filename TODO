@@ -1,6 +1,4 @@
-figure out why ru_pol is not caching on the tag level
-set up caching for views
-
+increase performance ~10%
 partial passes down params from parent view
 anonymous view
 

@@ -13,12 +13,6 @@ describe Garterbelt::View do
     @view = BasicView.new
   end
 
-  describe 'pooling' do
-    it 'includes the swimsuit' do
-      BasicView.ancestors.should include( RuPol::Swimsuit )
-    end
-  end
-
   describe 'attributes' do
     it 'has a tag buffer' do
       @view.buffer.should == []
