@@ -4,8 +4,7 @@ describe Garterbelt::ClosedTag do
   ClosedTag = Garterbelt::ClosedTag unless defined?(ClosedTag)
   
   before do
-    @output = ''
-    @view = mock(:output => @output, :level => 2)
+    @view = MockView.new
   end
   
   describe 'initialize' do
@@ -79,7 +78,7 @@ describe Garterbelt::ClosedTag do
     end
     
     it 'uses its output' do
-      @tag.output.should == @output
+      @tag.output.should == @view.output
     end
     
     it 'uses its level' do
@@ -133,7 +132,7 @@ describe Garterbelt::ClosedTag do
       end
     end
     
-    describe 'integration' do
+    describe 'integration (:pretty style)' do
       before do
         @str = @tag.render
       end
@@ -155,7 +154,45 @@ describe Garterbelt::ClosedTag do
       end
       
       it 'adds the string to the output' do
-        @output.should include @str
+        @view.output.should include @str
+      end
+    end
+    
+    describe 'styles' do
+      before do
+        @tag = ClosedTag.new(:type => :input, :view => @view)
+        @view.render_style = :pretty
+        @pretty = @tag.render
+      end
+      
+      describe ':compact' do
+        it 'is the same as :pretty' do
+          @view.render_style = :compact
+          @tag.render.should == @pretty
+        end
+      end
+      
+      describe ':minified' do
+        before do
+          @view.render_style = :minified
+          @min = @tag.render
+        end
+        
+        it 'does not end in a line break' do
+          @min.should_not match  /\n$/
+        end
+        
+        it 'does not have any indentation' do
+          @pretty.should match /^\s{4}</
+          @min.should_not match /^\s{4}</
+        end
+      end
+      
+      describe ':text' do
+        it 'is an empty string' do
+          @view.render_style = :text
+          @tag.render.should == ''
+        end
       end
     end
   end

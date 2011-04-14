@@ -20,6 +20,34 @@ describe Garterbelt::View do
       @view.output.should_not include 'Foo the magic output!'
     end
     
+    describe 'argument parsing' do
+      describe 'render method' do
+        it 'finds in as the first argument' do
+          @view.should_receive(:bar)
+          @view.render(:bar)
+        end
+        
+        it 'finds it in the options' do
+          @view.should_receive(:baz)
+          @view.render :method => :baz
+        end
+      end
+      
+      describe ':style option' do
+        it 'is found in options as the second argument' do
+          @view.stub(:foo)
+          @view.render(:foo, {:style => :minified})
+          @view.render_style.should == :minified
+        end
+      
+        it 'is found when options are the first argument' do
+          @view.stub(:content)
+          @view.render(:style => :text)
+          @view.render_style.should == :text
+        end
+      end
+    end
+    
     describe 'methods' do
       it 'renders the :content method by default' do
         @view.should_receive(:content)

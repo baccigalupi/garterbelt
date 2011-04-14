@@ -2,13 +2,14 @@ module Garterbelt
   class View
     # include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :level, :escape, :block, :options
+    attr_accessor :output, :buffer, :level, :escape, :block, :options, :render_style
     attr_reader :curator
     
     def initialize(opts={}, &block)
       self.options =  opts
       self.buffer = []
-      self.level =  (options.delete(:level) || 0)
+      self.level =  options.delete(:level) || 0
+      self.render_style = options.delete(:style) || :pretty
       self.output = ""
       self.escape = true
       self.block = block if block_given?
@@ -39,6 +40,7 @@ module Garterbelt
         self.level = parent_view.level
         self.output = parent_view.output
         self.escape = parent_view.escape
+        self.render_style = parent_view.render_style
       end
     end
     
@@ -254,13 +256,33 @@ module Garterbelt
       raise NotImplementedError, "Implement #content in #{self.class}!"
     end
     
-    def render(content_method = :content)
-      self.output = "" if curated?
-      if content_method == :content
-        content
+    class << self
+      attr_writer :default_render_style, :default_content_method
+    end
+    
+    def self.default_render_style
+      @default_render_style ||= :pretty
+    end
+    
+    def self.default_content_method
+      @default_content_method ||= :content
+    end
+    
+    def render(*args)
+      if args.first.is_a?(Hash)
+        options = args.shift
+        content_method = options[:method]
       else
-        send(content_method)
+        content_method = args.shift
+        options = args.shift || {}
       end
+      
+      content_method ||= self.class.default_content_method
+      self.render_style = options[:style] || self.class.default_render_style
+      
+      self.output = "" if curated?
+      send(content_method)
+      
       render_buffer
       output
     end

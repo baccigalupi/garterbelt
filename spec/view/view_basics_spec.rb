@@ -60,10 +60,15 @@ describe Garterbelt::View do
       view.block.is_a?(Proc).should be_true
     end
     
-    it 'can save the options' do
+    it 'saves the options' do
       view = BasicView.new(:foo => 'foo', :bar => 'bar')
       view.options.should == {:foo => 'foo', :bar => 'bar'}
     end
+    
+    it 'render_style defaults to :pretty' do
+      view = BasicView.new
+      view.render_style.should == :pretty
+    end 
     
     describe 'setting the curator: view responsible for displaying the rendered content' do
       before do
@@ -71,6 +76,7 @@ describe Garterbelt::View do
         @view.output = "foo"
         @view.buffer = ["bar"]
         @view.escape = false
+        @view.render_style = :text
         @child = BasicView.new(:curator => @view)
       end
       
@@ -103,6 +109,10 @@ describe Garterbelt::View do
         
         it 'sets the escape to the curator\'s' do
           @child.escape.should == @view.escape
+        end
+        
+        it 'sets the render_style to the curator\'s' do
+          @child.render_style.should == @view.render_style
         end
       end
     end
