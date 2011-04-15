@@ -33,7 +33,11 @@ module Garterbelt
     end
     
     def foot_template
-      style == :text ? '' : "#{indent}</#{type}>#{line_end}"
+      if style == :text 
+        [:p, :ul, :ol, :li].include?(type) ? "\n" : '' 
+      else
+        "#{indent}</#{type}>#{line_end}"
+      end
     end
     
     def foot

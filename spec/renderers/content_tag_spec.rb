@@ -110,9 +110,24 @@ describe Garterbelt::ContentTag do
       end
       
       describe ':text' do
-        it 'has no tags' do
+        before do
           @view.render_style = :text
+        end
+        
+        it 'has no tags' do
           @tag.render.should_not match /<[^>]>*/
+        end
+        
+        [:p, :ul, :ol, :li].each do |type|
+          it ":#{type} includes a line break" do
+            @tag.type = type
+            @tag.render.should match /\n/
+          end
+        end
+        
+        it 'has no line breaks othewise' do
+          @tag.type = :div
+          @tag.render.should_not match /\n/
         end
       end
     end

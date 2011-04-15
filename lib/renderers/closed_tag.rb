@@ -45,7 +45,11 @@ module Garterbelt
     end
     
     def template
-      view.render_style == :text ? "" : "#{indent}<#{type}#{rendered_attributes}>#{line_end}"
+      if style == :text 
+        type == :br ? "\n" : ""
+      else 
+        "#{indent}<#{type}#{rendered_attributes}>#{line_end}"
+      end
     end
     
     def render
