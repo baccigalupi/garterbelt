@@ -80,6 +80,43 @@ describe Garterbelt::ContentTag do
       end
     end
     
+    describe 'styles' do
+      before do
+        @tag.content = "My string content"
+        @view.render_style = :pretty
+        @view.output = ''
+      end
+      
+      describe ':compact' do
+        it 'does not include the line break after the opening tag' do
+          @view.render_style = :compact
+          @tag.render.should_not match /<p class=\"classy\">\n/
+        end
+      end
+      
+      describe ':minified' do
+        before do
+          @view.render_style = :minified
+          @min = @tag.render
+        end
+        
+        it 'does not end in a line break' do
+          @min.should_not match  /\n$/
+        end
+        
+        it 'does not have any indentation' do
+          @min.should_not match /^\s{4}</
+        end
+      end
+      
+      describe ':text' do
+        it 'has no tags' do
+          @view.render_style = :text
+          @tag.render.should_not match /<[^>]>*/
+        end
+      end
+    end
+    
     describe 'content' do
       describe 'none' do
         it 'works' do

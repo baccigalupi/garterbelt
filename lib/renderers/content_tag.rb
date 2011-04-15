@@ -23,14 +23,22 @@ module Garterbelt
       self
     end
     
+    def head_template
+      style == :text ? '' : "#{indent}<#{type}#{rendered_attributes}>#{style == :pretty ? line_end : ''}"
+    end
+    
     def head
-      self.output << "#{indent}<#{type}#{rendered_attributes}>\n"
+      self.output << head_template
       super
+    end
+    
+    def foot_template
+      style == :text ? '' : "#{indent}</#{type}>#{line_end}"
     end
     
     def foot
       super
-      self.output << "#{indent}</#{type}>\n"
+      self.output << foot_template
     end
   end
 end

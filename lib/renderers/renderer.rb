@@ -19,12 +19,16 @@ module Garterbelt
       view.level
     end
     
+    def style
+      view.render_style
+    end
+    
     def indent
-      view.render_style == :minified ? "" : ' '*level*2
+      style == :minified ? "" : ' '*level*2
     end
     
     def line_end
-      view.render_style == :minified ?  "" : "\n"
+      style == :minified ?  "" : "\n"
     end
     
     def render
