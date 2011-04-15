@@ -4,9 +4,13 @@ module Garterbelt
       super
     end
     
+    def template
+      view.render_style == :text ? "" : "#{indent}<!-- #{content} -->#{line_end}"
+    end
+    
     def render
       raise_with_block_content
-      output << "#{indent}<!-- #{content} -->\n"
+      output << template
     end
   end
 end

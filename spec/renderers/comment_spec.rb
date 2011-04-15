@@ -30,35 +30,76 @@ describe Garterbelt::Comment do
       @comment = Garterbelt::Comment.new(:view => @view, :content => 'Render me')
     end
     
-    it 'raises an error with block content' do
-      @comment.content = lambda { puts "foo" }
-      lambda{ @comment.render }.should raise_error(ArgumentError, "Garterbelt::Comment does not take block content")
+    describe 'basics' do
+      it 'raises an error with block content' do
+        @comment.content = lambda { puts "foo" }
+        lambda{ @comment.render }.should raise_error(ArgumentError, "Garterbelt::Comment does not take block content")
+      end
+    
+      it 'it adds the content to the output' do
+        @comment.render
+        @view.output.should include "Render me"
+      end
+    
+      it 'builds the right header tag' do
+        @comment.render
+        @view.output.should match /<!-- Render me/
+      end
+    
+      it 'builds the right footer tag' do
+        @comment.render
+        @view.output.should match /Render me -->/
+      end
+    
+      it 'indents to the view level' do
+        @comment.render
+        @view.output.should match /^\W{4}<!-- Render me/
+      end
+    
+      it 'does not escape the content' do
+        @comment.content = "<div>foo</div>"
+        @comment.render
+        @view.output.should include "<div>foo</div>"
+      end
     end
     
-    it 'it adds the content to the output' do
-      @comment.render
-      @view.output.should include "Render me"
-    end
-    
-    it 'builds the right header tag' do
-      @comment.render
-      @view.output.should match /<!-- Render me/
-    end
-    
-    it 'builds the right footer tag' do
-      @comment.render
-      @view.output.should match /Render me -->/
-    end
-    
-    it 'indents to the view level' do
-      @comment.render
-      @view.output.should match /^\W{4}<!-- Render me/
-    end
-    
-    it 'does not escape the content' do
-      @comment.content = "<div>foo</div>"
-      @comment.render
-      @view.output.should include "<div>foo</div>"
+    describe 'styles' do
+      before do
+        @tag = Garterbelt::Comment.new(:view => @view, :content => 'foo')
+        @view.render_style = :pretty
+        @pretty = @tag.render
+        @view.output = ''
+      end
+      
+      describe ':compact' do
+        it 'is the same as :pretty' do
+          @view.render_style = :compact
+          @tag.render.should == @pretty
+        end
+      end
+      
+      describe ':minified' do
+        before do
+          @view.render_style = :minified
+          @min = @tag.render
+        end
+        
+        it 'does not end in a line break' do
+          @min.should_not match  /\n$/
+        end
+        
+        it 'does not have any indentation' do
+          @pretty.should match /^\s{4}</
+          @min.should_not match /^\s{4}</
+        end
+      end
+      
+      describe ':text' do
+        it 'is an empty string' do
+          @view.render_style = :text
+          @tag.render.should == ''
+        end
+      end
     end
   end
 end

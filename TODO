@@ -8,6 +8,8 @@ better error messaging when rendering buffer, which line in content is causing t
 text should ignore nil content
 text wraps at X chars
 class level view required defaults to [] not nil
+pass the block content to partial instances too
+embed_js, embed_css file content, string content
 
 
 name changes (for less name collision):
