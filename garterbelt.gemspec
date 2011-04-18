@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{garterbelt}
-  s.version = "0.0.7"
+  s.version = "0.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kane Baccigalupi"]
-  s.date = %q{2011-04-13}
+  s.date = %q{2011-04-18}
   s.description = %q{Garterbelt is a Ruby HTML/XML markup framework inspired by Erector and Markaby. Garterbelt maps html tags to methods allowing the intuitive construction of HTML pages using nothing but Ruby. And because it is all Ruby all the time, views benefit from the dryness of inheritance, modules and all the meta magic that Ruby can imagine. Stockings not included.}
   s.email = %q{baccigalupi@gmail.com}
   s.extra_rdoc_files = [
@@ -44,12 +44,16 @@ Gem::Specification.new do |s|
     "lib/view.rb",
     "spec/garterbelt_spec.rb",
     "spec/integration/expectations/general_view.html",
+    "spec/integration/expectations/render_styles/compact.html",
+    "spec/integration/expectations/render_styles/minified.html",
+    "spec/integration/expectations/render_styles/text.html",
     "spec/integration/expectations/unescaping_view.html",
     "spec/integration/expectations/variables/view_with_user_and_params.html",
     "spec/integration/expectations/variables/view_with_user_email.html",
     "spec/integration/expectations/view_partial_nest.html",
     "spec/integration/expectations/view_with_forms.html",
     "spec/integration/expectations/view_with_tags.html",
+    "spec/integration/integration_spec.rb",
     "spec/integration/templates/form.rb",
     "spec/integration/templates/unescaping_view.rb",
     "spec/integration/templates/view_partial_nest.rb",
@@ -59,7 +63,6 @@ Gem::Specification.new do |s|
     "spec/integration/templates/view_with_partial_2.rb",
     "spec/integration/templates/view_with_tags.rb",
     "spec/integration/templates/view_with_vars.rb",
-    "spec/integration/view_spec.rb",
     "spec/page_spec.rb",
     "spec/performance/profiling.rb",
     "spec/performance/templates/erector.rb",
@@ -72,6 +75,7 @@ Gem::Specification.new do |s|
     "spec/renderers/doctype_spec.rb",
     "spec/renderers/text_spec.rb",
     "spec/spec_helper.rb",
+    "spec/string_spec.rb",
     "spec/support/mock_view.rb",
     "spec/support/puters.rb",
     "spec/view/view_basics_spec.rb",
@@ -88,6 +92,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Garterbelt is a Ruby HTML/XML markup framework. It is san DSL. Just all Ruby, all the time.}
   s.test_files = [
     "spec/garterbelt_spec.rb",
+    "spec/integration/integration_spec.rb",
     "spec/integration/templates/form.rb",
     "spec/integration/templates/unescaping_view.rb",
     "spec/integration/templates/view_partial_nest.rb",
@@ -97,7 +102,6 @@ Gem::Specification.new do |s|
     "spec/integration/templates/view_with_partial_2.rb",
     "spec/integration/templates/view_with_tags.rb",
     "spec/integration/templates/view_with_vars.rb",
-    "spec/integration/view_spec.rb",
     "spec/page_spec.rb",
     "spec/performance/profiling.rb",
     "spec/performance/templates/erector.rb",
@@ -110,6 +114,7 @@ Gem::Specification.new do |s|
     "spec/renderers/doctype_spec.rb",
     "spec/renderers/text_spec.rb",
     "spec/spec_helper.rb",
+    "spec/string_spec.rb",
     "spec/support/mock_view.rb",
     "spec/support/puters.rb",
     "spec/view/view_basics_spec.rb",
