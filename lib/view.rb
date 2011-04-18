@@ -19,7 +19,7 @@ module Garterbelt
       params = self.class.default_variables.merge(opts)
       keys = params.keys
       
-      unless ((self.class.required || []) - keys).empty?
+      unless (self.class.required - keys).empty?
         raise ArgumentError, "#{(self.class.required - keys).inspect} required as an initialization option"
       end
       
@@ -50,7 +50,12 @@ module Garterbelt
     
     # VARIABLE ACCESS -----------------------------
     class << self
-      attr_accessor :required, :selective_require
+      attr_writer :required
+      attr_accessor :selective_require
+    end
+    
+    def self.required
+      @required ||= []
     end
     
     def self.add_accessor key
@@ -73,7 +78,7 @@ module Garterbelt
     end
     
     def self.super_required
-      superclass? ? superclass.required || [] : []
+      superclass? ? superclass.required : []
     end 
     
     def self.default_variables
@@ -87,7 +92,7 @@ module Garterbelt
       end 
       
       args = super_required + args  
-      self.required = args.uniq
+      self.required += args.uniq
       build_accessors
       required
     end

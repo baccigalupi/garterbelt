@@ -18,6 +18,10 @@ describe Garterbelt::View, 'Variables' do
   end 
   
   describe 'class level requirements' do
+    it 'is an empty array by default' do
+      Garterbelt::View.required.should == []
+    end
+    
     it 'the class should store a list of required variables' do 
       NeedyView.required.should == [:x, :y]
       SelectiveView.required.should == [:x, :y] 
