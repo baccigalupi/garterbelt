@@ -19,18 +19,20 @@ module Garterbelt
       str
     end
     
-    def line_end
-      [:pretty, :text].include?(style) ? "\n" : ''
+    def escaped_content
+      if escape
+        str = ERB::Util.h(content)
+        if style == :pretty
+          str = str.wrap(Garterbelt.wrap_length, :indent => indent)
+        end
+        str
+      else
+        content
+      end
     end
     
     def template
-      str = escape ? ERB::Util.h(content) : content
-      
-      if style == :pretty 
-        "#{str.wrap(Garterbelt.wrap_length, :indent => indent)}#{line_end}" 
-      else 
-        "#{str}#{line_end}"
-      end
+      "#{escaped_content}#{line_end}"
     end
   end
 end

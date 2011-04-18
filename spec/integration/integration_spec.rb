@@ -74,5 +74,9 @@ describe Garterbelt::View, "Integration" do
     it 'does text only' do
       ViewWithContentTags.new.render(:style => :text).should == file("render_styles/text")
     end
+    
+    it 'styles do not screw up text line breaks, especially with raw text embeds' do
+      PrettyWithEmbeds.new.render.should == file('render_styles/pretty_with_embeds')
+    end
   end
 end
