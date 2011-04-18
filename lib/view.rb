@@ -286,7 +286,12 @@ module Garterbelt
       self.render_style = options[:style] || self.class.default_render_style
       
       self.output = "" if curated?
-      send(content_method)
+      
+      if block
+        send(content_method, &block)
+      else
+        send(content_method)
+      end
       
       render_buffer
       output

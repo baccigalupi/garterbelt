@@ -190,6 +190,22 @@ describe Garterbelt::View do
         end
         @view.render_block.should include "Block level p tag"
       end
+      
+      it 'passes the block to the content method' do
+        class PassItOn < Garterbelt::View
+          def content
+            p do
+              yield
+            end
+          end
+        end
+        
+        @view = PassItOn.new do
+          @view.buffer << Garterbelt::ContentTag.new(:type => :span, :view => @view, :content => 'spanning it up!')
+        end
+        
+        @view.render.should include "spanning it up!"
+      end
     end
   end
 
