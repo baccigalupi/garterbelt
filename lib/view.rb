@@ -203,8 +203,8 @@ module Garterbelt
       'noframes', 'noscript', 
       'object', 'ol', 'optgroup', 'option', 'p', 'param', 
       'q', 's',
-      'samp', 'script', 'select', 'small', 'span',
-      'strong', 'style', 'sub', 'sup',
+      'samp', 'select', 'small', 'span',
+      'strong', 'sub', 'sup',
       'table', 'tbody', 'td', 'textarea', 'tfoot', 
       'th', 'thead', 'tr', 'tt', 'u', 'ul', 'var'
     ]
@@ -216,7 +216,7 @@ module Garterbelt
       RUBY
     end
     
-    NON_ESCAPE_TAGS = ['code', 'pre']
+    NON_ESCAPE_TAGS = ['code', 'pre', 'script', 'style']
     NON_ESCAPE_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args, &block)
