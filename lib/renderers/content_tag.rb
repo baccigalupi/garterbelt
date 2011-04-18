@@ -24,7 +24,7 @@ module Garterbelt
     end
     
     def head_template
-      style == :text ? '' : "#{indent}<#{type}#{rendered_attributes}>#{style == :pretty ? line_end : ''}"
+      style == :text ? '' : "#{indent}<#{type}#{rendered_attributes}>#{line_end}"
     end
     
     def head

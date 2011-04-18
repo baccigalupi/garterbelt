@@ -16,12 +16,6 @@ describe Garterbelt::Comment do
       comment.content = "foo"
       comment.content.should == "foo"
     end
-    
-    it 'raises an error when initializing without content' do
-      lambda{ Garterbelt::Comment.new(:view => @view) }.should raise_error( 
-        ArgumentError, ":content option required for Garterbelt::Comment initialization" 
-      )
-    end
   end
   
   describe 'render' do
@@ -69,13 +63,6 @@ describe Garterbelt::Comment do
         @view.render_style = :pretty
         @pretty = @tag.render
         @view.output = ''
-      end
-      
-      describe ':compact' do
-        it 'is the same as :pretty' do
-          @view.render_style = :compact
-          @tag.render.should == @pretty
-        end
       end
       
       describe ':minified' do

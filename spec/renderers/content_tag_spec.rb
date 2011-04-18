@@ -87,13 +87,6 @@ describe Garterbelt::ContentTag do
         @view.output = ''
       end
       
-      describe ':compact' do
-        it 'does not include the line break after the opening tag' do
-          @view.render_style = :compact
-          @tag.render.should_not match /<p class=\"classy\">\n/
-        end
-      end
-      
       describe ':minified' do
         before do
           @view.render_style = :minified

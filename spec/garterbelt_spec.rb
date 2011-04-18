@@ -1,6 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Garterbelt do
+  describe 'wrap length' do
+    after :all do
+      Garterbelt.wrap_length = 80
+    end
+    
+    it 'is 80 by default' do
+      Garterbelt.wrap_length.should == 80
+    end
+    
+    it 'can be customized' do
+      Garterbelt.wrap_length = 50
+      Garterbelt.wrap_length.should == 50
+    end
+  end
+  
   describe 'cache module level methods' do
     describe '#cache_hash' do
       it 'creates a default hash when accessed the first time' do

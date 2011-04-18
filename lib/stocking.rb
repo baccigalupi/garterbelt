@@ -8,4 +8,12 @@ module Garterbelt
     raise "Cache #{store.inspect} has not yet been configured" unless c
     c
   end
+  
+  class << self
+    attr_writer :wrap_length
+  end
+  
+  def self.wrap_length
+    @wrap_length || 80
+  end
 end

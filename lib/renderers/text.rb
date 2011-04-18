@@ -4,8 +4,7 @@ module Garterbelt
     
     def initialize(opts)
       super
-      raise ArgumentError, ":content option required for #{self.class} initialization" unless opts[:content]
-      self.content = opts[:content]
+      self.content = opts[:content] || ''
       self.escape = view.escape
     end
     
@@ -15,11 +14,23 @@ module Garterbelt
     
     def render
       raise_with_block_content
-      output << "#{indent}#{escaped_content}\n"
+      str = template
+      output << str
+      str
     end
     
-    def escaped_content
-      escape ? ERB::Util.h(content) : content
+    def line_end
+      [:pretty, :text].include?(style) ? "\n" : ''
+    end
+    
+    def template
+      str = escape ? ERB::Util.h(content) : content
+      
+      if style == :pretty 
+        "#{str.wrap(Garterbelt.wrap_length, :indent => indent)}#{line_end}" 
+      else 
+        "#{str}#{line_end}"
+      end
     end
   end
 end

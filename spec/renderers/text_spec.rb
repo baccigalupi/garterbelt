@@ -16,12 +16,6 @@ describe Garterbelt::Text do
       text.content = "foo"
       text.content.should == "foo"
     end
-    
-    it 'raises an error when initializing without content' do
-      lambda{ Garterbelt::Text.new(:view => @view) }.should raise_error( 
-        ArgumentError, ":content option required for Garterbelt::Text initialization" 
-      )
-    end
   end
   
   describe 'render' do
@@ -40,11 +34,6 @@ describe Garterbelt::Text do
       @view.output.should include "Render me"
     end
     
-    it 'indents to the view level' do
-      @text.render
-      @view.output.should match /^\W{4}Render me\n$/
-    end
-    
     describe 'escaping' do
       it 'escapes if view is set to escape' do
         str = "<a href='/foo.com'>Foo it!</a>"
@@ -58,6 +47,63 @@ describe Garterbelt::Text do
         @view.escape = false
         text = Garterbelt::Text.new(:view => @view, :content => str)
         text.render.should include str
+      end
+    end
+    
+    describe 'styles' do
+      before do
+        @str = "123456789 "*40 # 100 char long
+        @tag = Garterbelt::Text.new(:content =>  @str, :view => @view)
+        @view.render_style = :pretty
+        @pretty = @tag.render
+      end
+      
+      describe ':pretty' do
+        it 'indents to the view level' do
+          rendered = @tag.render
+          @view.output.should include rendered
+        end
+        
+        it 'wraps' do
+          @tag = Garterbelt::Text.new(:content => "12345678 "*15, :view => @view) 
+          matcher = "12345678 "*7 + "12345678"
+          @tag.render.should match /^    #{matcher}\n/ 
+        end
+        
+        it 'ends in a line break' do
+          @tag.render.should match  /\n\z/
+        end
+      end
+      
+      describe ':minified' do
+        before do
+          @view.render_style = :minified
+          @minified = @tag.render
+        end
+        
+        it 'does not have any line break(s)' do
+          @minified.should_not match  /\n/
+        end
+        
+        it 'does not have any indentation' do
+          @pretty.should match /^\s{4}1/
+          @minified.should_not match /^\s{4}a1/
+        end
+      end
+      
+      describe ':text' do
+        before do
+          @view.render_style = :text
+          @text = @tag.render
+        end
+        
+        it 'should end in a line break' do
+          @text.should match /\n\z/
+        end
+        
+        it 'should not wrap' do
+          @text.should_not match /\n1/
+        end
       end
     end
   end

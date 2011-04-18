@@ -16,12 +16,12 @@ class ViewWithForms < Garterbelt::View
       partial FormView, :action => '/user/info', :method => 'put', :class => 'update' do
         h4 "Provide us with updated information"
         label do
-          text "Name: "
+          text "Name:"
           input :type => 'text', :name => 'name'
         end
         
         label do
-          text "Email: "
+          text "Email:"
           input :type => 'text', :name => 'email'
         end
         input :type => 'submit', :value => 'Update'

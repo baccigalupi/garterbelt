@@ -1,15 +1,20 @@
 increase performance ~10%
 
-partial passes down params from parent view
 anonymous views
-pass block to render method so you can yield!
-join on widgets?
-better error messaging when rendering buffer, which line in content is causing the problem?
-text should ignore nil content
-text wraps at X chars
-class level view required defaults to [] not nil
-pass the block content to partial instances too
-embed_js, embed_css file content, string content
+
+view
+  class level view required defaults to [] not nil
+  join on widgets?
+  pass block to render method so you can yield!
+  better error messaging when rendering buffer, which line in content is causing the problem?
+  
+partial
+  pass the block content to partial instances too
+  partial passes down params from parent view
+
+page
+  embed_js, embed_css file content, string content
+  make content method = page_content, so that downstream views can just use content as their main method
 
 
 name changes (for less name collision):
@@ -17,10 +22,6 @@ name changes (for less name collision):
   curator to _curator
   look at other names for possible issues
 
-rails style helpers
 
-render styles
-  - pretty: current and default
-  - compact: argument content in the tags, not new line
-  - minified: no new lines or indenting
-  - text only: no tags, appropriate new lines according to tag type
+# CoverGirl
+rails style helpers

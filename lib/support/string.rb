@@ -1,3 +1,29 @@
+class String
+  def wrap(limit = 50, opts={})
+    strip!
+    indent = opts[:indent] || ''
+    return indent << self if size + indent.size <= limit || !include?(' ')
+    
+    words = self.split(/\s/)
+    lines = [[indent]]
+    char_count = indent.size
+    words.each do |word|
+      word_size = word.size + 1
+      if (word_size + char_count <= limit) || lines.last.size == 1
+        char_count += word_size
+        lines.last << word
+      else
+        char_count = word_size + indent.size
+        lines << [indent, word]
+      end
+    end
+    lines.map do |line| 
+      indent = line.shift
+      indent + line.join(' ')
+    end.join("\n")
+  end
+end
+
 unless String.instance_methods.include?('underscore')
   begin
     # being selective if activesupport 3.0.x 

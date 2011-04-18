@@ -165,13 +165,6 @@ describe Garterbelt::ClosedTag do
         @pretty = @tag.render
       end
       
-      describe ':compact' do
-        it 'is the same as :pretty' do
-          @view.render_style = :compact
-          @tag.render.should == @pretty
-        end
-      end
-      
       describe ':minified' do
         before do
           @view.render_style = :minified
