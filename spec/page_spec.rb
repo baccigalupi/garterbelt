@@ -63,7 +63,7 @@ describe Garterbelt::Page do
     
     before do
       @view = MockView.new
-      @view.level = 0
+      @view._level = 0
       @output = BasicPage.new.render
     end
     

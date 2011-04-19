@@ -43,13 +43,13 @@ describe Garterbelt::View do
       end
     end
     
-    describe 'level' do
+    describe '_level' do
       it 'is 0 by default' do
-        @view.level.should == 0
+        @view._level.should == 0
       end
       
       it 'can be set via initialization' do
-        BasicView.new(:level => 42).level.should == 42
+        BasicView.new(:_level => 42)._level.should == 42
       end
     end
     
@@ -72,7 +72,7 @@ describe Garterbelt::View do
     
     describe 'setting the _curator: view responsible for displaying the rendered content' do
       before do
-        @view.level = 42
+        @view._level = 42
         @view.output = "foo"
         @view.buffer = ["bar"]
         @view.escape = false
@@ -98,9 +98,9 @@ describe Garterbelt::View do
           @child.output.should === @view.output
         end
         
-        it 'sets the level to the _curator\'s' do
-          @child.level.should == @view.level
-          @child.level.should == 42
+        it 'sets the _level to the _curator\'s' do
+          @child._level.should == @view._level
+          @child._level.should == 42
         end
         
         it 'sets the buffer to the _curator\'s' do

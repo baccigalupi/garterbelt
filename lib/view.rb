@@ -2,13 +2,13 @@ module Garterbelt
   class View
     # include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :level, :escape, :block, :initialization_options, :render_style
+    attr_accessor :output, :buffer, :_level, :escape, :block, :initialization_options, :render_style
     attr_reader :_curator
     
     def initialize(opts={}, &block)
       self.initialization_options =  opts
       self.buffer = []
-      self.level =  initialization_options.delete(:level) || 0
+      self._level =  initialization_options.delete(:_level) || 0
       self.render_style = initialization_options.delete(:style) || :pretty
       self.output = ""
       self.escape = true
@@ -37,7 +37,7 @@ module Garterbelt
       @_curator = parent_view
       if parent_view != self
         self.buffer = parent_view.buffer
-        self.level = parent_view.level
+        self._level = parent_view._level
         self.output = parent_view.output
         self.escape = parent_view.escape
         self.render_style = parent_view.render_style

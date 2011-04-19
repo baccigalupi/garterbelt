@@ -5,7 +5,7 @@ describe Garterbelt::View, 'Partials' do
     before do
       @view = Garterbelt::View.new
       @view.output = "Foo You!\n"
-      @view.level = 3
+      @view._level = 3
       @view.buffer = ['foo', 'bar']
     end
     

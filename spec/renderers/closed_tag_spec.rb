@@ -96,7 +96,7 @@ describe Garterbelt::ClosedTag do
       )
     end
     
-    it 'indent corresponding to the view level' do
+    it 'indent corresponding to the view _level' do
       @tag.indent.should == "    "
       @tag.stub(:level).and_return(1)
       @tag.indent.should == "  "

@@ -17,11 +17,11 @@ module Garterbelt
       end
 
       def head
-        view.level += 1
+        view._level += 1
       end
 
       def foot
-        view.level -= 1
+        view._level -= 1
       end
 
       def render_content

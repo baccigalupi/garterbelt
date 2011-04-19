@@ -16,7 +16,7 @@ module Garterbelt
     end
     
     def level 
-      view.level
+      view._level
     end
     
     def style
