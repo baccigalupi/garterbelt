@@ -260,15 +260,15 @@ describe Garterbelt::View do
       end
       
       it 'sets and resets the escape when escape is originally set to true' do
-        @view.should_receive(:escape=).with(false).ordered
+        @view.should_receive(:_escape=).with(false).ordered
         @view.should_receive(:tag).ordered
-        @view.should_receive(:escape=).with(true).ordered
+        @view.should_receive(:_escape=).with(true).ordered
         @view.non_escape_tag(:pre, "<div>content</div>", {:class => 'classy'})
       end
       
       it 'does not set the escape when set to false' do
-        @view.escape = false
-        @view.should_not_receive(:escape=)
+        @view._escape = false
+        @view.should_not_receive(:_escape=)
         @view.non_escape_tag(:pre, "<div>content</div>", {:class => 'classy'})
       end
     end
@@ -301,15 +301,15 @@ describe Garterbelt::View do
       end
       
       it 'sets escape before and after for a view that is set to escape' do
-        @view.should_receive(:escape=).with(false).ordered
+        @view.should_receive(:_escape=).with(false).ordered
         @view.should_receive(:text).and_return('text')
-        @view.should_receive(:escape=).with(true).ordered
+        @view.should_receive(:_escape=).with(true).ordered
         @view.raw_text("<div>foo</div>")
       end
       
       it 'does not set escape if the view is not escaping' do
-        @view.escape = false
-        @view.should_not_receive(:escape=)
+        @view._escape = false
+        @view.should_not_receive(:_escape=)
         @view.raw_text("<div>foo</div>")
       end
     end

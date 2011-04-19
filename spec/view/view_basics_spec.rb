@@ -31,15 +31,15 @@ describe Garterbelt::View do
       end
     end
 
-    describe 'escape' do
-      it 'has escape set to true by default' do
-        @view.escape.should == true
+    describe '_escape' do
+      it 'has _escape set to true by default' do
+        @view._escape.should == true
       end
       
       it 'can be set' do
-        @view.escape = false
-        @view.escape.should == false
-        BasicView.new(:escape => false).escape.should == false
+        @view._escape = false
+        @view._escape.should == false
+        BasicView.new(:_escape => false)._escape.should == false
       end
     end
     
@@ -75,7 +75,7 @@ describe Garterbelt::View do
         @view._level = 42
         @view.output = "foo"
         @view.buffer = ["bar"]
-        @view.escape = false
+        @view._escape = false
         @view.render_style = :text
         @child = BasicView.new(:_curator => @view)
       end
@@ -107,8 +107,8 @@ describe Garterbelt::View do
           @child.buffer.should === @view.buffer
         end
         
-        it 'sets the escape to the _curator\'s' do
-          @child.escape.should == @view.escape
+        it 'sets the _escape to the _curator\'s' do
+          @child._escape.should == @view._escape
         end
         
         it 'sets the render_style to the _curator\'s' do

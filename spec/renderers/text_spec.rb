@@ -44,7 +44,7 @@ describe Garterbelt::Text do
       
       it 'does not escape if the view is set to not escape' do
         str = "<a href='/foo.com'>Foo it!</a>"
-        @view.escape = false
+        @view._escape = false
         text = Garterbelt::Text.new(:view => @view, :content => str)
         text.render.should include str
       end

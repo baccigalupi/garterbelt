@@ -2,7 +2,7 @@ module Garterbelt
   class View
     # include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :_level, :escape, :block, :initialization_options, :render_style
+    attr_accessor :output, :buffer, :_level, :_escape, :block, :initialization_options, :render_style
     attr_reader :_curator
     
     def initialize(opts={}, &block)
@@ -11,7 +11,7 @@ module Garterbelt
       self._level =  initialization_options.delete(:_level) || 0
       self.render_style = initialization_options.delete(:style) || :pretty
       self.output = ""
-      self.escape = true
+      self._escape = true
       self.block = block if block_given?
       
       self._curator = initialization_options.delete(:_curator) || self
@@ -39,7 +39,7 @@ module Garterbelt
         self.buffer = parent_view.buffer
         self._level = parent_view._level
         self.output = parent_view.output
-        self.escape = parent_view.escape
+        self._escape = parent_view._escape
         self.render_style = parent_view.render_style
       end
     end
@@ -134,10 +134,10 @@ module Garterbelt
     end
     
     def non_escape_tag(*args, &block)
-      if escape
-        _curator.escape = false
+      if _escape
+        _curator._escape = false
         t = block_given? ? tag(*args, &block) : tag(*args)
-        _curator.escape = true
+        _curator._escape = true
         t
       else
         block_given? ? tag(*args, &block) : tag(*args)
@@ -151,10 +151,10 @@ module Garterbelt
     alias :h :text
     
     def raw_text(content)
-      if escape
-        _curator.escape = false
+      if _escape
+        _curator._escape = false
         t = text(content)
-        _curator.escape = true
+        _curator._escape = true
         t
       else
         text(content)

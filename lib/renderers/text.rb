@@ -5,7 +5,7 @@ module Garterbelt
     def initialize(opts)
       super
       self.content = opts[:content] || ''
-      self.escape = view.escape
+      self.escape = view._escape
     end
     
     def raise_with_block_content
