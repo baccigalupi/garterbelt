@@ -23,6 +23,13 @@ describe Garterbelt::View, 'Partials' do
         @view.partial(@child_instance)
         @view.buffer.should include @child_instance
       end
+      
+      it 'passes down the block' do
+        @view.partial(@child_instance) do
+          puts {'partial to the block'}
+        end
+        @view.buffer.last.block.is_a?(Proc).should be_true
+      end
     end
     
     describe 'with a class and initialization options' do

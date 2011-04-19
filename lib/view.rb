@@ -331,16 +331,13 @@ module Garterbelt
     end
     
     def partial(*args, &block)
-      if (klass = args.first).is_a?(Class)
+      view = if (klass = args.first).is_a?(Class)
         args.shift
-        view = if block
-          klass.new(*args, &block)
-        else
-          klass.new(*args)
-        end
+        klass.new(*args)
       else
-        view = args.first
+        args.first
       end
+      view.block = block if block
       view.curator = curator
       self.buffer << view
       view

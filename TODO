@@ -3,18 +3,17 @@ increase performance ~10%
 anonymous views
 
 view
-  script and style tags auto escape
-  
   better error messaging when rendering buffer, which line in content is causing the problem?
   join on widgets?
+  caching of full views
+
+  partial
+    pass the block content to partial instances too
+    partial passes down params from parent view
   
 renderers
-  switch from erb to direct escaping of html
-  make quotes not escape
-  
-partial
-  pass the block content to partial instances too
-  partial passes down params from parent view
+  switch from erb to direct escaping of text
+    make quotes not escape
 
 page
   embed_js, embed_css file content, string content
