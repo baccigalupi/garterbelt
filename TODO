@@ -20,7 +20,6 @@ page
 
 
 name changes (for less name collision):
-  options to init_options
   curator to _curator
   look at other names for possible issues
 

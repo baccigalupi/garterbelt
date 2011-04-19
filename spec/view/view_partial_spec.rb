@@ -14,12 +14,12 @@ describe Garterbelt::View, 'Partials' do
         @child_instance = Garterbelt::View.new
       end
       
-      it 'sets the curator of the instance to the current view' do
-        @child_instance.should_receive(:curator=).with(@view)
+      it 'sets the _curator of the instance to the current view' do
+        @child_instance.should_receive(:_curator=).with(@view)
         @view.partial(@child_instance)
       end
       
-      it 'adds the instance to the curator view buffer' do
+      it 'adds the instance to the _curator view buffer' do
         @view.partial(@child_instance)
         @view.buffer.should include @child_instance
       end
@@ -53,10 +53,10 @@ describe Garterbelt::View, 'Partials' do
       end
       
       
-      it 'has the curator as the current view' do
+      it 'has the _curator as the current view' do
         @view.partial(PartedOut, :x => 'what about z?')
         partial = @view.buffer.last
-        partial.curator.should == @view
+        partial._curator.should == @view
       end
       
       it 'has the correct initalization options' do

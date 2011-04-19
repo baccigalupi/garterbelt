@@ -3,7 +3,7 @@ module Garterbelt
     # include RuPol::Swimsuit
     
     attr_accessor :output, :buffer, :level, :escape, :block, :initialization_options, :render_style
-    attr_reader :curator
+    attr_reader :_curator
     
     def initialize(opts={}, &block)
       self.initialization_options =  opts
@@ -14,7 +14,7 @@ module Garterbelt
       self.escape = true
       self.block = block if block_given?
       
-      self.curator = initialization_options.delete(:curator) || self
+      self._curator = initialization_options.delete(:_curator) || self
       
       params = self.class.default_variables.merge(opts)
       keys = params.keys
@@ -33,8 +33,8 @@ module Garterbelt
       end
     end
     
-    def curator=(parent_view)
-      @curator = parent_view
+    def _curator=(parent_view)
+      @_curator = parent_view
       if parent_view != self
         self.buffer = parent_view.buffer
         self.level = parent_view.level
@@ -45,7 +45,7 @@ module Garterbelt
     end
     
     def curated?
-      curator === self
+      _curator === self
     end
     
     # VARIABLE ACCESS -----------------------------
@@ -135,9 +135,9 @@ module Garterbelt
     
     def non_escape_tag(*args, &block)
       if escape
-        curator.escape = false
+        _curator.escape = false
         t = block_given? ? tag(*args, &block) : tag(*args)
-        curator.escape = true
+        _curator.escape = true
         t
       else
         block_given? ? tag(*args, &block) : tag(*args)
@@ -145,16 +145,16 @@ module Garterbelt
     end
     
     def text(content)
-      add_to_buffer Text.new(:view => curator, :content => content)
+      add_to_buffer Text.new(:view => _curator, :content => content)
     end
     
     alias :h :text
     
     def raw_text(content)
       if escape
-        curator.escape = false
+        _curator.escape = false
         t = text(content)
-        curator.escape = true
+        _curator.escape = true
         t
       else
         text(content)
@@ -164,11 +164,11 @@ module Garterbelt
     alias :rawtext :raw_text
     
     def comment_tag(content)
-      add_to_buffer Comment.new(:view => curator, :content => content)
+      add_to_buffer Comment.new(:view => _curator, :content => content)
     end
     
     def doctype(type=:transitional)
-      add_to_buffer Doctype.new(:view => curator, :type => type)
+      add_to_buffer Doctype.new(:view => _curator, :type => type)
     end
     
     def xml(opts={})
@@ -177,7 +177,7 @@ module Garterbelt
     end
     
     def parse_tag_arguments(type, args)
-      opts = {:type => type, :view => curator}
+      opts = {:type => type, :view => _curator}
       if args.size == 2
         opts[:content] = args.shift
         opts[:attributes] = args.first
@@ -348,7 +348,7 @@ module Garterbelt
         args.first
       end
       view.block = block if block
-      view.curator = curator
+      view._curator = _curator
       self.buffer << view
       view
     end
@@ -392,7 +392,7 @@ module Garterbelt
     end
     
     def cache(key, opts={}, &block)
-      opts = opts.merge(:key => cache_key(key), :view => curator)
+      opts = opts.merge(:key => cache_key(key), :view => _curator)
       add_to_buffer Cache.new(opts, &block)
     end
   end
