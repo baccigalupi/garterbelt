@@ -62,7 +62,7 @@ describe Garterbelt::View do
     
     it 'saves the initialization options' do
       view = BasicView.new(:foo => 'foo', :bar => 'bar')
-      view.options.should == {:foo => 'foo', :bar => 'bar'}
+      view.initialization_options.should == {:foo => 'foo', :bar => 'bar'}
     end
     
     it 'render_style defaults to :pretty' do

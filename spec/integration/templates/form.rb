@@ -17,7 +17,7 @@ class FormView < Garterbelt::View
   end
   
   def form_options
-    options.merge(:method => legal_method)
+    initialization_options.merge(:method => legal_method)
   end
   
   def legal_method

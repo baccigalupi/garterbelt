@@ -2,19 +2,19 @@ module Garterbelt
   class View
     # include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :level, :escape, :block, :options, :render_style
+    attr_accessor :output, :buffer, :level, :escape, :block, :initialization_options, :render_style
     attr_reader :curator
     
     def initialize(opts={}, &block)
-      self.options =  opts
+      self.initialization_options =  opts
       self.buffer = []
-      self.level =  options.delete(:level) || 0
-      self.render_style = options.delete(:style) || :pretty
+      self.level =  initialization_options.delete(:level) || 0
+      self.render_style = initialization_options.delete(:style) || :pretty
       self.output = ""
       self.escape = true
       self.block = block if block_given?
       
-      self.curator = options.delete(:curator) || self
+      self.curator = initialization_options.delete(:curator) || self
       
       params = self.class.default_variables.merge(opts)
       keys = params.keys
@@ -275,15 +275,15 @@ module Garterbelt
     
     def render(*args)
       if args.first.is_a?(Hash)
-        options = args.shift
-        content_method = options[:method]
+        initialization_options = args.shift
+        content_method = initialization_options[:method]
       else
         content_method = args.shift
-        options = args.shift || {}
+        initialization_options = args.shift || {}
       end
       
       content_method ||= self.class.default_content_method
-      self.render_style = options[:style] || self.class.default_render_style
+      self.render_style = initialization_options[:style] || self.class.default_render_style
       
       self.output = "" if curated?
       
@@ -334,7 +334,7 @@ module Garterbelt
       view = if (klass = args.first).is_a?(Class)
         args.shift
         partial_opts = args.shift || {}
-        available_opts = self.class.default_variables.merge(options)
+        available_opts = self.class.default_variables.merge(initialization_options)
         opts = if klass.selective_require
           klass.required.each do |key|
             partial_opts[key] ||= available_opts[key]

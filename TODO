@@ -8,7 +8,7 @@ view
   caching of full views
 
   partial
-    partial passes down params from parent view
+    --
   
 renderers
   switch from erb to direct escaping of text
@@ -20,7 +20,7 @@ page
 
 
 name changes (for less name collision):
-  options to initialization_options
+  options to init_options
   curator to _curator
   look at other names for possible issues
 
