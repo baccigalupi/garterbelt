@@ -6,7 +6,7 @@ describe Garterbelt::View, 'Partials' do
       @view = Garterbelt::View.new
       @view.output = "Foo You!\n"
       @view._level = 3
-      @view.buffer = ['foo', 'bar']
+      @view._buffer = ['foo', 'bar']
     end
     
     describe 'with an instance' do
@@ -21,14 +21,14 @@ describe Garterbelt::View, 'Partials' do
       
       it 'adds the instance to the _curator view buffer' do
         @view.partial(@child_instance)
-        @view.buffer.should include @child_instance
+        @view._buffer.should include @child_instance
       end
       
       it 'passes down the block' do
         @view.partial(@child_instance) do
           puts {'partial to the block'}
         end
-        @view.buffer.last.block.is_a?(Proc).should be_true
+        @view._buffer.last.block.is_a?(Proc).should be_true
       end
     end
     
@@ -48,20 +48,20 @@ describe Garterbelt::View, 'Partials' do
       
       it 'adds the instance to the buffer' do
         @view.partial(PartedOut, :x => '!= y?')
-        partial = @view.buffer.last
+        partial = @view._buffer.last
         partial.is_a?(PartedOut).should be_true
       end
       
       
       it 'has the _curator as the current view' do
         @view.partial(PartedOut, :x => 'what about z?')
-        partial = @view.buffer.last
+        partial = @view._buffer.last
         partial._curator.should == @view
       end
       
       it 'has the correct initalization options' do
         @view.partial(PartedOut, :x => '= foo')
-        partial = @view.buffer.last
+        partial = @view._buffer.last
         partial.x.should == '= foo'
       end
       
@@ -69,7 +69,7 @@ describe Garterbelt::View, 'Partials' do
         @view.partial(PartedOut, :x => 'not x') do
           puts { 'maybe x; i don\'t know '}
         end
-        partial = @view.buffer.last
+        partial = @view._buffer.last
         partial.block.is_a?(Proc).should be_true
       end
       
@@ -85,7 +85,7 @@ describe Garterbelt::View, 'Partials' do
           view = Containment.new
           view.content
           
-          parted = view.buffer.last
+          parted = view._buffer.last
           parted.is_a?(PartedOut).should be_true
           parted.x.should == 'find me'
         end
@@ -94,7 +94,7 @@ describe Garterbelt::View, 'Partials' do
           view = Containment.new(:x => 'newer x')
           view.content
           
-          parted = view.buffer.last
+          parted = view._buffer.last
           parted.x.should == 'newer x'
         end
         
@@ -102,7 +102,7 @@ describe Garterbelt::View, 'Partials' do
           view = Containment.new(:y => 'two dimensions, yo!')
           view.content
           
-          parted = view.buffer.last
+          parted = view._buffer.last
           parted.y.should == 'two dimensions, yo!'
         end
         
@@ -111,7 +111,7 @@ describe Garterbelt::View, 'Partials' do
           view = Containment.new(:z => 'two dimensions, again')
           view.content
           
-          parted = view.buffer.last
+          parted = view._buffer.last
           parted.x.should == 'find me'
           parted.should_not respond_to :z
         end

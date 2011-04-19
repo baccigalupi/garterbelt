@@ -171,13 +171,13 @@ describe Garterbelt::ContentTag do
           before do
             @b = Garterbelt::ClosedTag.new(:view => @view, :type => :hr, :attributes => {:class => :linear})
             @tag.id(:foo) do
-              @view.buffer << @b
+              @view._buffer << @b
             end
           end
           
           it 'should add the tag to the buffer' do
             @tag.render
-            @view.buffer.should include @b
+            @view._buffer.should include @b
           end
           
           it 'calls render buffer on the view' do

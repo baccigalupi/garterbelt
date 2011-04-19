@@ -124,7 +124,7 @@ describe Garterbelt::View, "Caching" do
       @view.cache("foo_you") do
         puts "bar"
       end
-      cache = @view.buffer.last
+      cache = @view._buffer.last
       cache.is_a?(Garterbelt::Cache).should be_true
       cache.key.should == 'cached_foo_you'
     end
@@ -133,7 +133,7 @@ describe Garterbelt::View, "Caching" do
       @view.cache("my_key", :expires_in => 24*3600) do
         puts "foo"
       end
-      cache = @view.buffer.last
+      cache = @view._buffer.last
       cache.expires_in.should == 24*3600
     end
   end

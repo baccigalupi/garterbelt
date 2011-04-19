@@ -2,12 +2,12 @@ module Garterbelt
   class View
     # include RuPol::Swimsuit
     
-    attr_accessor :output, :buffer, :_level, :_escape, :block, :initialization_options, :render_style
+    attr_accessor :output, :_buffer, :_level, :_escape, :block, :initialization_options, :render_style
     attr_reader :_curator
     
     def initialize(opts={}, &block)
       self.initialization_options =  opts
-      self.buffer = []
+      self._buffer = []
       self._level =  initialization_options.delete(:_level) || 0
       self.render_style = initialization_options.delete(:style) || :pretty
       self.output = ""
@@ -36,7 +36,7 @@ module Garterbelt
     def _curator=(parent_view)
       @_curator = parent_view
       if parent_view != self
-        self.buffer = parent_view.buffer
+        self._buffer = parent_view._buffer
         self._level = parent_view._level
         self.output = parent_view.output
         self._escape = parent_view._escape
@@ -116,7 +116,7 @@ module Garterbelt
     # TAG HELPERS -----------------------
     
     def add_to_buffer(renderer)
-      buffer << renderer
+      _buffer << renderer
       renderer
     end
     
@@ -312,8 +312,8 @@ module Garterbelt
     end
     
     def render_buffer
-      array = buffer.dup
-      buffer.clear
+      array = _buffer.dup
+      _buffer.clear
       array.each do |item|
         if item.respond_to?(:render)
           item.render
@@ -349,7 +349,7 @@ module Garterbelt
       end
       view.block = block if block
       view._curator = _curator
-      self.buffer << view
+      self._buffer << view
       view
     end
     

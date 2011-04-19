@@ -1,8 +1,8 @@
 class MockView
-  attr_accessor :output, :buffer, :_level, :_escape, :cache_store, :render_style
+  attr_accessor :output, :_buffer, :_level, :_escape, :cache_store, :render_style
   
   def initialize
-    self.buffer = []
+    self._buffer = []
     self.output = ""
     self._level ||= 2
     self._escape = true

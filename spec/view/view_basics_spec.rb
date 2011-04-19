@@ -15,10 +15,10 @@ describe Garterbelt::View do
 
   describe 'attributes' do
     it 'has a tag buffer' do
-      @view.buffer.should == []
+      @view._buffer.should == []
       @tag = Garterbelt::ContentTag.new(:view => @view, :type => :hr)
-      @view.buffer << @tag
-      @view.buffer.should == [@tag]
+      @view._buffer << @tag
+      @view._buffer.should == [@tag]
     end
     
     describe 'output' do
@@ -74,7 +74,7 @@ describe Garterbelt::View do
       before do
         @view._level = 42
         @view.output = "foo"
-        @view.buffer = ["bar"]
+        @view._buffer = ["bar"]
         @view._escape = false
         @view.render_style = :text
         @child = BasicView.new(:_curator => @view)
@@ -104,7 +104,7 @@ describe Garterbelt::View do
         end
         
         it 'sets the buffer to the _curator\'s' do
-          @child.buffer.should === @view.buffer
+          @child._buffer.should === @view._buffer
         end
         
         it 'sets the _escape to the _curator\'s' do

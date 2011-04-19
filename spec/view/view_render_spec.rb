@@ -72,13 +72,13 @@ describe Garterbelt::View do
       end
       
       it 'will clear the buffer' do
-        @view.buffer = [:foo]
+        @view._buffer = [:foo]
         @view.render_buffer
-        @view.buffer.should == []
+        @view._buffer.should == []
       end
       
       it 'will call render on each tag in the buffer' do
-        @view.buffer << @hr << @input << @img
+        @view._buffer << @hr << @input << @img
         @hr.should_receive(:render)
         @input.should_receive(:render)
         @img.should_receive(:render)
@@ -87,7 +87,7 @@ describe Garterbelt::View do
       end
       
       it 'will add non renderable items to the output as strings' do
-        @view.buffer << "foo " << :bar
+        @view._buffer << "foo " << :bar
         @view.render_buffer
         @view.output.should include 'foo bar'
       end
@@ -95,20 +95,20 @@ describe Garterbelt::View do
   
     describe 'tag nesting' do
       it 'should render correctly at one layer deep' do
-        @view.buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
+        @view._buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
         @view.render.should == "<hr>\n"
       end
       
       describe 'second level' do
         before do
-          @view.buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view) do
-            @view.buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
+          @view._buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view) do
+            @view._buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
           end
           @view.render
         end
         
         it 'should leave an empty buffer' do
-          @view.buffer.should be_empty
+          @view._buffer.should be_empty
         end
         
         it 'should include the content' do
@@ -122,12 +122,12 @@ describe Garterbelt::View do
       
       describe 'multi level' do
         before do
-          @view.buffer << Garterbelt::ContentTag.new(:type => :form, :view => @view) do
-            @view.buffer << Garterbelt::ContentTag.new(:type => :fieldset, :view => @view) do
-              @view.buffer << Garterbelt::ContentTag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
-                @view.buffer << Garterbelt::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
+          @view._buffer << Garterbelt::ContentTag.new(:type => :form, :view => @view) do
+            @view._buffer << Garterbelt::ContentTag.new(:type => :fieldset, :view => @view) do
+              @view._buffer << Garterbelt::ContentTag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
+                @view._buffer << Garterbelt::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
               end
-              @view.buffer << Garterbelt::ContentTag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
+              @view._buffer << Garterbelt::ContentTag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
             end
           end
           @view.render
@@ -186,7 +186,7 @@ describe Garterbelt::View do
     describe 'block initalized content' do
       it 'has a #render_block method that renders that content' do
         @view = BasicView.new do
-          @view.buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view, :content => 'Block level p tag')
+          @view._buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view, :content => 'Block level p tag')
         end
         @view.render_block.should include "Block level p tag"
       end
@@ -201,7 +201,7 @@ describe Garterbelt::View do
         end
         
         @view = PassItOn.new do
-          @view.buffer << Garterbelt::ContentTag.new(:type => :span, :view => @view, :content => 'spanning it up!')
+          @view._buffer << Garterbelt::ContentTag.new(:type => :span, :view => @view, :content => 'spanning it up!')
         end
         
         @view.render.should include "spanning it up!"
@@ -224,12 +224,12 @@ describe Garterbelt::View do
       
       it 'adds it to the buffer' do
         tag = @view.tag(:p, "content", {:class => 'classy'})
-         @view.buffer.should include tag
+         @view._buffer.should include tag
       end
       
       it 'works with block content' do
         tag = @view.tag(:p, "content", {:class => 'classy'}) do
-          @view.buffer << "foo"
+          @view._buffer << "foo"
         end
         tag.content.is_a?(Proc).should be_true
       end
@@ -249,7 +249,7 @@ describe Garterbelt::View do
       
       it 'adds it to the buffer' do
         tag = @view.closed_tag(:hr, :class => 'linear')
-        @view.buffer.should include tag
+        @view._buffer.should include tag
       end
     end
   
@@ -288,7 +288,7 @@ describe Garterbelt::View do
       
       it 'adds the Text object to the buffer' do
         @view.text("content")
-        text = @view.buffer.last
+        text = @view._buffer.last
         text.is_a?(Garterbelt::Text).should be_true
         text.content.should == 'content'
       end
@@ -368,7 +368,7 @@ describe Garterbelt::View do
         
         it 'puts it on the buffer' do
           comment = @view.comment_tag("new comment now")
-          @view.buffer.last.should == comment
+          @view._buffer.last.should == comment
         end
       end
     
@@ -379,7 +379,7 @@ describe Garterbelt::View do
         
         it 'puts it on the buffer' do
           doctype = @view.doctype
-          @view.buffer.last.should == doctype
+          @view._buffer.last.should == doctype
         end
       end
     
@@ -387,7 +387,7 @@ describe Garterbelt::View do
         it 'adds an xml to the buffer' do
           xml = @view.xml
           xml.is_a?(Garterbelt::Xml).should be_true
-          @view.buffer.last.should == xml
+          @view._buffer.last.should == xml
         end
         
         it 'makes a closed tag with default options' do

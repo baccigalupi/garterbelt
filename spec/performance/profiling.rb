@@ -14,8 +14,8 @@ require 'ruby-prof'
 # Profile the code
 @view = Garterbelt::View.new
 @tag = Garterbelt::ContentTag.new(:type => :p, :view => @view) do
-  @view.buffer << Garterbelt::ContentTag.new(:type => :span, :view => @view, :content => 'spanning')
-  @view.buffer << Garterbelt::Text.new(:content => ' so much time here', :view => @view)
+  @view._buffer << Garterbelt::ContentTag.new(:type => :span, :view => @view, :content => 'spanning')
+  @view._buffer << Garterbelt::Text.new(:content => ' so much time here', :view => @view)
 end
 
 result = RubyProf.profile do

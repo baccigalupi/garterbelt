@@ -28,7 +28,7 @@ module Garterbelt
         if content.is_a?(Proc)
           content.call
         else
-          view.buffer << Text.new(:view => view, :content => content) if content
+          view._buffer << Text.new(:view => view, :content => content) if content
         end
         view.render_buffer
       end
