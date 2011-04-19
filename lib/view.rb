@@ -1,7 +1,5 @@
 module Garterbelt
   class View
-    # include RuPol::Swimsuit
-    
     attr_accessor :output, :_buffer, :_level, :_escape, :block, :initialization_options, :render_style
     attr_reader :_curator
     
