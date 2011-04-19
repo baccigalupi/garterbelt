@@ -333,7 +333,17 @@ module Garterbelt
     def partial(*args, &block)
       view = if (klass = args.first).is_a?(Class)
         args.shift
-        klass.new(*args)
+        partial_opts = args.shift || {}
+        available_opts = self.class.default_variables.merge(options)
+        opts = if klass.selective_require
+          klass.required.each do |key|
+            partial_opts[key] ||= available_opts[key]
+          end
+          partial_opts
+        else
+          available_opts.merge(partial_opts)
+        end
+        klass.new(opts)
       else
         args.first
       end

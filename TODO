@@ -8,7 +8,6 @@ view
   caching of full views
 
   partial
-    pass the block content to partial instances too
     partial passes down params from parent view
   
 renderers

@@ -72,6 +72,50 @@ describe Garterbelt::View, 'Partials' do
         partial = @view.buffer.last
         partial.block.is_a?(Proc).should be_true
       end
+      
+      describe 'passing down arguments' do
+        class Containment < Garterbelt::View
+          needs :x => 'find me'
+          def content
+            partial PartedOut
+          end
+        end
+        
+        it 'works with defaults' do
+          view = Containment.new
+          view.content
+          
+          parted = view.buffer.last
+          parted.is_a?(PartedOut).should be_true
+          parted.x.should == 'find me'
+        end
+        
+        it 'should recieved initailialized options' do
+          view = Containment.new(:x => 'newer x')
+          view.content
+          
+          parted = view.buffer.last
+          parted.x.should == 'newer x'
+        end
+        
+        it 'should pass all the initialization options along' do
+          view = Containment.new(:y => 'two dimensions, yo!')
+          view.content
+          
+          parted = view.buffer.last
+          parted.y.should == 'two dimensions, yo!'
+        end
+        
+        it 'only passes required arguments if partial is selective' do
+          PartedOut.selective_require = true
+          view = Containment.new(:z => 'two dimensions, again')
+          view.content
+          
+          parted = view.buffer.last
+          parted.x.should == 'find me'
+          parted.should_not respond_to :z
+        end
+      end
     end
   end
 end

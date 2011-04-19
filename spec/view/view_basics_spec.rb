@@ -60,7 +60,7 @@ describe Garterbelt::View do
       view.block.is_a?(Proc).should be_true
     end
     
-    it 'saves the options' do
+    it 'saves the initialization options' do
       view = BasicView.new(:foo => 'foo', :bar => 'bar')
       view.options.should == {:foo => 'foo', :bar => 'bar'}
     end
