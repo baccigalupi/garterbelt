@@ -16,6 +16,10 @@ describe Garterbelt::View, "Integration" do
     UnescapingView.new(:format_text => format_text).render.should == file('unescaping_view')
   end
   
+  it 'deals with textarea correctly' do
+    FormWithTextarea.new.render.should == file('form_with_textarea')
+  end
+  
   describe 'variables' do
     it 'calls methods on passed objects' do
       user =  Hashie::Mash.new(:email => 'foo@example.com')

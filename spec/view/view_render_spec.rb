@@ -273,6 +273,30 @@ describe Garterbelt::View do
       end
     end
     
+    describe '#compact_tag' do
+      it 'should call #tag' do
+        @view.should_receive(:tag)
+        @view.compact_tag(:textarea, "", {:class => 'classy'})
+      end
+      
+      it 'passes in the :render_style option with :minified to tag' do
+        @view.should_receive(:tag).with(:textarea, "", {:render_style => :compact})
+        @view.compact_tag(:textarea, "")
+      end
+      
+      it 'passes in the :render_style option with :minified when not receiving content arguments' do
+        @view.should_receive(:tag).with(:textarea, {:render_style => :compact, :class => :foo})
+        @view.compact_tag(:textarea, :class => :foo)
+      end
+      
+      it 'content tag should be created with the correct attributes' do
+        @view.compact_tag(:textarea, :class => 'foo')
+        tag = @view._buffer.last
+        tag.style.should == :compact
+        tag.attributes.keys.should_not include :render_style
+      end
+    end
+    
     describe '#text' do
       it 'makes a new Text' do
         Garterbelt::Text.should_receive(:new).and_return('some content')

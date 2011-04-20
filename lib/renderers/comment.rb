@@ -5,7 +5,7 @@ module Garterbelt
     end
     
     def template
-      view.render_style == :text ? "" : "#{indent}<!-- #{content} -->#{line_end}"
+      style == :text ? "" : "#{indent}<!-- #{content} -->#{line_end}"
     end
     
     def render

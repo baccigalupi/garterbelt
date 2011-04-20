@@ -77,7 +77,7 @@ describe Garterbelt::Text do
       
       describe ':minified' do
         before do
-          @view.render_style = :minified
+          @tag.style = :minified
           @minified = @tag.render
         end
         
@@ -93,7 +93,7 @@ describe Garterbelt::Text do
       
       describe ':text' do
         before do
-          @view.render_style = :text
+          @tag.style = :text
           @text = @tag.render
         end
         
@@ -105,6 +105,18 @@ describe Garterbelt::Text do
           @text.should_not match /\n1/
         end
       end
+      
+      describe 'compact' do
+        before do
+          @tag.style = :compact
+          @compact = @tag.render
+        end
+        
+        it 'is just the string' do
+          @compact.should == @str
+        end
+      end
+      
     end
   end
 end

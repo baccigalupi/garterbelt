@@ -24,7 +24,12 @@ module Garterbelt
     end
     
     def head_template
-      style == :text ? '' : "#{indent}<#{type}#{rendered_attributes}>#{line_end}"
+      if style == :text 
+        ''
+      else 
+        head_end = style == :compact ? '' : line_end
+        "#{indent}<#{type}#{rendered_attributes}>#{head_end}"
+      end
     end
     
     def head
@@ -36,7 +41,8 @@ module Garterbelt
       if style == :text 
         [:p, :ul, :ol, :li].include?(type) ? "\n" : '' 
       else
-        "#{indent}</#{type}>#{line_end}"
+        foot_dent = style == :compact ? '' : indent
+        "#{foot_dent}</#{type}>#{line_end}"
       end
     end
     

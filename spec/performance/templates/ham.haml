@@ -1,0 +1,23 @@
+%html
+  %head
+    %title Benchmarking Templates
+    %link{"rel" => "stylesheet", :href => "/stylesheet/application.css"}
+    %link{"rel" => "stylesheet", :href => "/stylesheet/ie.css"}
+  %body.not_applicable
+    #wrapper.line
+      - if flash
+        #flash.inner
+          = flash
+      %dl{'class' => 'inner user_info'}
+        %dt username
+        %dd
+          = user.username
+        %dt email
+        %dd
+          = user.email
+        %dt name
+        %dd
+          = user.name
+        %dt number of assigned tasks
+        %dd
+          = rand(20)

@@ -13,6 +13,7 @@ view
 renderers
   switch from erb to direct escaping of text
     make quotes not escape
+  handle funky chars, html entities, re-escaping  
 
 page
   embed_js, embed_css file content, string content

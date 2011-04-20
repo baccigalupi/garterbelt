@@ -5,27 +5,37 @@ require "rbench"
 require 'hashie'
 
 require 'erector'
+require 'haml'
+
 require File.dirname(__FILE__) + "/../../lib/garterbelt"
 
 require File.dirname(__FILE__) + '/templates/garterbelt'
 require File.dirname(__FILE__) + '/templates/erector'
+haml =  File.read(File.dirname(__FILE__) + '/templates/ham.haml')
 
-TIMES = 500_000
+TIMES = 10_000
 
 RBench.run(TIMES) do
   column :garterbelt
   column :erector
+  column :haml
   
   user = Hashie::Mash.new(:username => 'baccigalupi', :email => 'baccigalupi@example.com', :name => 'Kane Baccigalupi')
   
   report "Simple Page Initializing" do
     garterbelt { GarterbeltTemplate.new(:user => user) }
     erector { ErectorTemplate.new(:user => user) }
+    haml { Haml::Engine.new( haml ) }
   end
+  
+  object = Object.new
+  object.instance_variable_set "@user", user
+  object.instance_variable_set "@flash", nil
   
   report "Simple Page Rendering" do
     garterbelt { GarterbeltTemplate.new(:user => user).render }
     erector { ErectorTemplate.new(:user => user).to_html }
+    haml { Haml::Engine.new( haml ).to_html(object, {:user => user, :flash => nil} ) }
   end
 end
 

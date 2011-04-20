@@ -1,9 +1,12 @@
 module Garterbelt
   class Renderer
-    attr_accessor :view
+    attr_accessor :view, :escape
+    attr_writer :style
     
     def initialize(opts)
       self.view = opts[:view] || raise(ArgumentError, ":view required in initialization options")
+      self.style = opts.delete(:render_style)
+      self.escape = view._escape
     end
     
     # Rendering -----------------------------------------------
@@ -20,7 +23,7 @@ module Garterbelt
     end
     
     def style
-      view.render_style
+      @style ||= view.render_style
     end
     
     def indent

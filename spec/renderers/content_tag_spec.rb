@@ -123,6 +123,43 @@ describe Garterbelt::ContentTag do
           @tag.render.should_not match /\n/
         end
       end
+    
+      describe ':compact' do
+        describe 'with block content' do
+          it 'is just like pretty' do
+            @tag.content = lambda { 'foo' }
+            @tag.style = :pretty
+            pretty = @tag.render
+            @tag.style = :compact
+            @tag.render.should == pretty
+          end
+        end
+        
+        describe 'with string content' do
+          before do
+            @tag.content = "stringy"
+            @tag.style = :compact
+            @compact = @tag.render
+          end
+          
+          it 'head tag does not end in a break' do
+            @compact.should match /<p[^>]*>/
+            @compact.should_not match /<p[^>]*>\n/
+          end
+          
+          it 'tail tag does not have any indentation' do
+            @compact.should_not match />\s{1,50}<\/p>/
+          end
+        end
+      end
+    
+      describe 'on initialization' do
+        it 'uses the value passed in over the view render style' do
+          @view.render_style = :pretty
+          tag = ContentTag.new(@params.merge(:render_style => :minified, :content => 'my great content'))
+          tag.style.should == :minified
+        end
+      end
     end
     
     describe 'content' do

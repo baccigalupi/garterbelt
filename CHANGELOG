@@ -1,0 +1,2 @@
+= Version 0.1.1
+  * Bug fix: textarea tags should not have pretty formatting, because white space ends up in the text area

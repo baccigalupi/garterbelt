@@ -167,7 +167,7 @@ describe Garterbelt::ClosedTag do
       
       describe ':minified' do
         before do
-          @view.render_style = :minified
+          @tag.style = :minified
           @min = @tag.render
         end
         
@@ -183,7 +183,7 @@ describe Garterbelt::ClosedTag do
       
       describe ':text' do
         it 'is an empty string' do
-          @view.render_style = :text
+          @tag.style = :text
           @tag.render.should == ''
         end
       end

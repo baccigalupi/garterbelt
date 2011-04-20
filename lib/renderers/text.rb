@@ -1,11 +1,10 @@
 module Garterbelt
   class Text < Renderer
-    attr_accessor :content, :escape
+    attr_accessor :content
     
     def initialize(opts)
       super
       self.content = opts[:content] || ''
-      self.escape = view._escape
     end
     
     def raise_with_block_content
@@ -29,6 +28,10 @@ module Garterbelt
       else
         content
       end
+    end
+    
+    def line_end
+      style == :compact ? '' : super
     end
     
     def template

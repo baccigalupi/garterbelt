@@ -142,6 +142,17 @@ module Garterbelt
       end
     end
     
+    def compact_tag(type, *args, &block)
+      args << {} unless args.last.is_a?(Hash)
+      args.last[:render_style] = :compact
+        
+      if block_given?
+        tag(type, *args, &block)
+      else
+        tag(type, *args)
+      end
+    end
+    
     def text(content)
       add_to_buffer Text.new(:view => _curator, :content => content)
     end
@@ -186,6 +197,7 @@ module Garterbelt
           opts[:content] = args.first
         end
       end
+      opts[:render_style] = opts[:attributes].delete(:render_style) if opts[:attributes] && opts[:attributes][:render_style]
       opts
     end
     
@@ -203,7 +215,7 @@ module Garterbelt
       'q', 's',
       'samp', 'select', 'small', 'span',
       'strong', 'sub', 'sup',
-      'table', 'tbody', 'td', 'textarea', 'tfoot', 
+      'table', 'tbody', 'td', 'tfoot', 
       'th', 'thead', 'tr', 'tt', 'u', 'ul', 'var'
     ]
     CONTENT_TAGS.each do |type|
@@ -237,6 +249,15 @@ module Garterbelt
       class_eval <<-RUBY
         def _#{type}(*args)
           closed_tag(:#{type}, *args)
+        end
+      RUBY
+    end
+    
+    MINIFIED_TAGS = ['textarea']
+    MINIFIED_TAGS.each do |type|
+      class_eval <<-RUBY
+        def #{type}(*args, &block)
+          block_given? ? compact_tag(:#{type}, *args, &block) : compact_tag(:#{type}, *args)
         end
       RUBY
     end

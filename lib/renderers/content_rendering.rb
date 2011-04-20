@@ -2,7 +2,7 @@ module Garterbelt
   module ContentRendering
     def self.included(base)
       base.class_eval <<-RUBY
-        attr_accessor :content
+        attr_accessor :content, :view_escape, :view_style
         
         include InstanceMethods
       RUBY
@@ -17,10 +17,17 @@ module Garterbelt
       end
 
       def head
+        self.view_style = view.render_style
+        self.view_escape = view._escape
+        
+        view.render_style = style
+        view._escape = escape
         view._level += 1
       end
 
       def foot
+        view.render_style = view_style
+        view._escape = view_escape
         view._level -= 1
       end
 
