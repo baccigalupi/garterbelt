@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kane Baccigalupi"]
-  s.date = %q{2011-04-19}
+  s.date = %q{2011-04-20}
   s.description = %q{Garterbelt is a Ruby HTML/XML markup framework inspired by Erector and Markaby. Garterbelt maps html tags to methods allowing the intuitive construction of HTML pages using nothing but Ruby. And because it is all Ruby all the time, views benefit from the dryness of inheritance, modules and all the meta magic that Ruby can imagine. Stockings not included.}
   s.email = %q{baccigalupi@gmail.com}
   s.extra_rdoc_files = [
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    "CHANGELOG",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -43,6 +44,7 @@ Gem::Specification.new do |s|
     "lib/support/string.rb",
     "lib/view.rb",
     "spec/garterbelt_spec.rb",
+    "spec/integration/expectations/form_with_textarea.html",
     "spec/integration/expectations/general_view.html",
     "spec/integration/expectations/render_styles/compact.html",
     "spec/integration/expectations/render_styles/minified.html",
@@ -56,6 +58,7 @@ Gem::Specification.new do |s|
     "spec/integration/expectations/view_with_tags.html",
     "spec/integration/integration_spec.rb",
     "spec/integration/templates/form.rb",
+    "spec/integration/templates/form_with_textarea.rb",
     "spec/integration/templates/pretty_with_embeds.rb",
     "spec/integration/templates/unescaping_view.rb",
     "spec/integration/templates/view_partial_nest.rb",
@@ -69,6 +72,7 @@ Gem::Specification.new do |s|
     "spec/performance/profiling.rb",
     "spec/performance/templates/erector.rb",
     "spec/performance/templates/garterbelt.rb",
+    "spec/performance/templates/ham.haml",
     "spec/performance/vs_erector.rb",
     "spec/renderers/cache_spec.rb",
     "spec/renderers/closed_tag_spec.rb",
@@ -80,6 +84,7 @@ Gem::Specification.new do |s|
     "spec/string_spec.rb",
     "spec/support/mock_view.rb",
     "spec/support/puters.rb",
+    "spec/view/anonymous_view_spec.rb",
     "spec/view/view_basics_spec.rb",
     "spec/view/view_caching_spec.rb",
     "spec/view/view_partial_spec.rb",
@@ -96,6 +101,7 @@ Gem::Specification.new do |s|
     "spec/garterbelt_spec.rb",
     "spec/integration/integration_spec.rb",
     "spec/integration/templates/form.rb",
+    "spec/integration/templates/form_with_textarea.rb",
     "spec/integration/templates/pretty_with_embeds.rb",
     "spec/integration/templates/unescaping_view.rb",
     "spec/integration/templates/view_partial_nest.rb",
@@ -120,6 +126,7 @@ Gem::Specification.new do |s|
     "spec/string_spec.rb",
     "spec/support/mock_view.rb",
     "spec/support/puters.rb",
+    "spec/view/anonymous_view_spec.rb",
     "spec/view/view_basics_spec.rb",
     "spec/view/view_caching_spec.rb",
     "spec/view/view_partial_spec.rb",
