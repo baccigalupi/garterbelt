@@ -10,7 +10,6 @@ describe Garterbelt::Page do
     class NewCustom < CustomPage
     end
     
-    
     describe 'doctype' do
       it 'defaults to :transitional' do
         Garterbelt::Page.doctype.should == :transitional
@@ -67,6 +66,24 @@ describe Garterbelt::Page do
       @output = BasicPage.new.render
     end
     
+    it 'clears the embedded files' do
+      page = BasicPage.new
+      page.embedded_files = ['foo.js', 'jar.css']
+      page.render
+      page.embedded_files.should == []
+    end
+    
+    it 'renders the #page_content method' do
+      page = BasicPage.new
+      page.should_not_receive(:content).and_return('')
+      page.should_receive(:page_content)
+      page.render
+    end
+    
+    it 'includes a default xml tag' do
+      @output.should include Garterbelt::Xml.new(:view => @view, :type => :xml, :attributes => {:version => 1.0, :encoding => 'utf-8'}).render
+    end
+    
     it 'makes a default doctype of :transitional' do
       @output.should include Garterbelt::Doctype.new(:type => :transitional, :view => @view).render
     end
@@ -94,6 +111,25 @@ describe Garterbelt::Page do
     it 'renders the body content' do
       @output.should match /<body>\W*<p>\W*Something should go here, yes\?\W*<\/p>\W*<\/body>/
     end
+  end
+  
+  describe 'head content' do
+    describe '#file' do
+      it 'adds the file name to the embedded_files array'
+      it 'returns an empty string if the file name is already in the array'
+      it 'uses the class level directory to locate the file'
+      it 'reads the file and returns the string'
+    end
+    
+    describe '#embed_js' do
+      describe 'strings' do
+        it 'wraps a js string in the right script tag'
+        it 'does not escape it'
+      end
+      
+      describe 'an array with files and strings' do
+      end
+    end 
   end
 
 end

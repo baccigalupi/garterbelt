@@ -75,6 +75,10 @@ describe Garterbelt::View, "Integration" do
       ViewWithContentTags.new.render(:style => :minified).should == file("render_styles/minified")
     end
     
+    it 'does compact' do
+      ViewWithContentTags.new.render(:style => :compact).should == file('render_styles/compact')
+    end
+    
     it 'does text only' do
       ViewWithContentTags.new.render(:style => :text).should == file("render_styles/text")
     end

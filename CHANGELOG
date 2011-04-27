@@ -1,2 +1,6 @@
 = Version 0.1.1
   * Bug fix: textarea tags should not have pretty formatting, because white space ends up in the text area
+= Version 0.1.2
+  * Page improvements:
+    - xml with utf-8 included by default at the top
+    - content method is #page_content, leaving content available for subclass usage

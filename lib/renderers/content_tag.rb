@@ -27,9 +27,13 @@ module Garterbelt
       if style == :text 
         ''
       else 
-        head_end = style == :compact ? '' : line_end
+        head_end = compactize? ? '' : line_end
         "#{indent}<#{type}#{rendered_attributes}>#{head_end}"
       end
+    end
+    
+    def compactize?
+      @compactize ||= style == :compact && !content.is_a?(Proc)
     end
     
     def head
@@ -41,7 +45,7 @@ module Garterbelt
       if style == :text 
         [:p, :ul, :ol, :li].include?(type) ? "\n" : '' 
       else
-        foot_dent = style == :compact ? '' : indent
+        foot_dent = compactize? ? '' : indent
         "#{foot_dent}</#{type}>#{line_end}"
       end
     end

@@ -10,14 +10,15 @@ view
   partial
     --
   
+  tags
+    - figure out which tags should be compact
+  
 renderers
   switch from erb to direct escaping of text
-    make quotes not escape
-  handle funky chars, html entities, re-escaping  
+    make quotes not escape  
 
 page
   embed_js, embed_css file content, string content
-  make content method = page_content, so that downstream views can just use content as their main method
 
 
 name changes (for less name collision):
@@ -26,3 +27,7 @@ name changes (for less name collision):
 -----------------------------------------
 # CoverGirl
 rails style helpers
+stubbornella
+javascript class integration
+direct embedding of stlye_train css files
+
