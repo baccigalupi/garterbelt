@@ -108,21 +108,23 @@ describe Garterbelt::View, 'Variables' do
         end
       end
 
-      describe 'allowed accessors' do
-        it 'raises on compile if the required variables map to existing view methods' do
-          lambda {
-            class Failer < Garterbelt::View
-              requires :p
-            end
-          }.should raise_error(ArgumentError, ":p cannot be a required variable because it maps to an existing method")
+      describe 'handling accessors when the method exists' do
+        before do
+          class WeirdNeeds < Garterbelt::View
+            requires :body, :tap
+          end
+          
+          @view = WeirdNeeds.new(:body => 'foo', :tap => 'tip')
         end
-      
-        it 'does not raise an error when overriding Object instance methods' do
-          lambda {
-            class Doer < Garterbelt::View
-              requires :tap
-            end
-          }.should_not raise_error
+        
+        it 'will set instance variables for the variable' do
+          @view.instance_variable_get('@body').should == 'foo'
+          @view.instance_variable_get('@tap').should == 'tip'
+        end
+        
+        it 'will not make an accessor' do
+          @view.respond_to?(:body=).should == false
+          @view.respond_to?(:tap=).should == false
         end
       end
     end    
@@ -137,7 +139,9 @@ describe Garterbelt::View, 'Variables' do
       end
       
       it 'raises an error when values are not provided' do
-        lambda { NeedyView.new :x => 'x' }.should raise_error(ArgumentError, "[:y] required as an initialization option")
+        expect { NeedyView.new :x => 'x' }.should raise_error(
+          ArgumentError, "[:y] required as an initialization option"
+        )
       end
     end
     
@@ -165,7 +169,7 @@ describe Garterbelt::View, 'Variables' do
     end
     
     it 'raises an error when selective and it receives additional parameters' do
-      lambda { SelectiveView.new(:x => 'x', :y => 'y', :z => 'zardoz') }.should raise_error(
+      expect { SelectiveView.new(:x => 'x', :y => 'y', :z => 'zardoz') }.should raise_error(
         ArgumentError, "Allowed initalization options are only [:x, :y]"
       )
     end

@@ -43,7 +43,7 @@ describe Garterbelt do
       
       it 'raises an error when accessing via a key that has no been configured' do
         Garterbelt.cache_hash[:bar].should be_nil
-        lambda { Garterbelt.cache(:bar) }.should raise_error( "Cache :bar has not yet been configured" )
+        expect { Garterbelt.cache(:bar) }.should raise_error( "Cache :bar has not yet been configured" )
       end
     end
   end

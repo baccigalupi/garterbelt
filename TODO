@@ -1,4 +1,5 @@
-increase performance ~10%
+Test performance in a real app: Sinatra and Rails ... then maybe
+  increase performance ~10%
 
 anonymous views
 
@@ -7,10 +8,7 @@ view
   join on widgets?
   caching of full views
 
-  partial
-    --
-  
-  tags
+ tags
     - figure out which tags should be compact
   
 renderers
@@ -24,9 +22,18 @@ page
 name changes (for less name collision):
   --
 
+GarterbeltRails
+  Reload views after change
+  Local variable
+  Template registry
+  Layouts, Templates, partials
+  existing view methods
+  rails helpers: change private api to match rails helper api
+  blocks received with new get rendered via yield with content
+  figure out the yield :head and like symbol references
+
 -----------------------------------------
 # CoverGirl
-rails style helpers
 stubbornella
 javascript class integration
 direct embedding of stlye_train css files

@@ -25,7 +25,7 @@ describe Garterbelt::Text do
     end
     
     it 'raises an error with block content' do
-      @text.content = lambda { puts "foo" }
+      @text.content = expect { puts "foo" }
       lambda{ @text.render }.should raise_error(ArgumentError, "Garterbelt::Text does not take block content")
     end
     

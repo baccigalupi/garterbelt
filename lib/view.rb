@@ -58,12 +58,8 @@ module Garterbelt
     
     def self.add_accessor key
       key = key.to_s
-      return if accessories.include?(key)
-      if (instance_methods - Object.instance_methods).include?(key)
-        raise ArgumentError, ":#{key} cannot be a required variable because it maps to an existing method"
-      end
-      
-      accessories << key.to_s
+      return if (accessories + instance_methods).include?(key)
+      accessories << key
       attr_accessor key
     end
     
@@ -244,10 +240,10 @@ module Garterbelt
       RUBY
     end  
     
-    HEAD_TAGS = ['base', 'meta', 'link']
+    HEAD_TAGS = ['_base', '_meta', '_link']
     HEAD_TAGS.each do |type|
       class_eval <<-RUBY
-        def _#{type}(*args)
+        def #{type}(*args)
           closed_tag(:#{type}, *args)
         end
       RUBY

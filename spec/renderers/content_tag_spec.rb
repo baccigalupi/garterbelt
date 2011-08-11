@@ -127,7 +127,7 @@ describe Garterbelt::ContentTag do
       describe ':compact' do
         describe 'with block content' do
           it 'is just like pretty' do
-            @tag.content = lambda { 'foo' }
+            @tag.content = expect { 'foo' }
             @tag.style = :pretty
             pretty = @tag.render
             @tag.style = :compact

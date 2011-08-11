@@ -429,14 +429,14 @@ describe Garterbelt::View do
     
       describe 'head tags' do
         Garterbelt::View::HEAD_TAGS.each do |type|
-          describe "_#{type}" do
+          describe type do
             it "it is a method" do
-              @view.should respond_to("_#{type}")
+              @view.should respond_to(type)
             end
           
             it "makes a closed tag" do
               @view.should_receive(:closed_tag).with(type.to_sym)
-              @view.send("_#{type}")
+              @view.send(type)
             end
           end
         end

@@ -4,7 +4,7 @@ describe String, 'extension' do
   describe '#wrap(limit, opts)' do
     describe 'limiting' do
       it 'does not require arguments' do
-        lambda {''.wrap}.should_not raise_error
+        expect {''.wrap}.should_not raise_error
       end
     
       it 'doesn\'t break a string without spaces' do

@@ -26,7 +26,7 @@ describe Garterbelt::Comment do
     
     describe 'basics' do
       it 'raises an error with block content' do
-        @comment.content = lambda { puts "foo" }
+        @comment.content = expect { puts "foo" }
         lambda{ @comment.render }.should raise_error(ArgumentError, "Garterbelt::Comment does not take block content")
       end
     
