@@ -11,7 +11,7 @@ class PrettyWithEmbeds < Garterbelt::Page
     
     style 'type' => 'text/css' do
       [
-        "body { background-color: blue;}",
+        "body { background-color: blue; color: white; border: 1px solid black; margin: 1em auto; padding: 2em; /* then a long comment that extends for a while, this should not get split up, thanks! */ }",
         "p { background-color: white;}"
       ].each do |css|
         raw_text css

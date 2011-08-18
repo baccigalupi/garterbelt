@@ -112,11 +112,10 @@ describe Garterbelt::Text do
           @compact = @tag.render
         end
         
-        it 'is just the string' do
+        it 'should be the string' do
           @compact.should == @str
         end
       end
-      
     end
   end
 end

@@ -27,13 +27,19 @@ module Garterbelt
       if style == :text 
         ''
       else 
-        head_end = compactize? ? '' : line_end
+        head_end = if compactize?
+          view.render_style = :minimized
+          ''
+        else
+          line_end
+        end
+        
         "#{indent}<#{type}#{rendered_attributes}>#{head_end}"
       end
     end
     
     def compactize?
-      @compactize ||= style == :compact && !content.is_a?(Proc)
+      @compactize ||= style == :compact && !content.is_a?(Proc) 
     end
     
     def head

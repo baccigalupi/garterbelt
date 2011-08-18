@@ -22,12 +22,18 @@ module Garterbelt
       if escape
         str = ERB::Util.h(content)
         if style == :pretty
-          str = str.wrap(Garterbelt.wrap_length, :indent => indent)
+          str.wrap(Garterbelt.wrap_length, :indent => indent)
+        else
+          "#{indent}#{str}"
         end
-        str
       else
-        content
+        str = content.gsub(/\s*\n\s*/, "\n#{indent}")
+        "#{indent}#{str}"
       end
+    end
+    
+    def indent
+      [:minified, :compact, :text].include?(style) ? '' : super
     end
     
     def line_end
