@@ -20,3 +20,5 @@ require stocking_dir + '/renderers/xml'
 
 require stocking_dir + '/view'
 require stocking_dir + '/page'
+
+require stocking_dir + '/rails'

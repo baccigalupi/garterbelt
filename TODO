@@ -18,18 +18,13 @@ renderers
 page
   embed_js, embed_css file content, string content
 
-
-name changes (for less name collision):
-  --
-
 GarterbeltRails
   Reload views after change
   Local variable
   Template registry
   Layouts, Templates, partials
-  existing view methods
+  existing rails view methods
   rails helpers: change private api to match rails helper api
-  blocks received with new get rendered via yield with content
   figure out the yield :head and like symbol references
 
 -----------------------------------------
