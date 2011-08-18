@@ -199,7 +199,7 @@ module Garterbelt
     end
     
     CONTENT_TAGS = [
-      'a', 'abbr', 'acronym', 'address', 
+      'abbr', 'acronym', 'address', 
       'b', 'bdo', 'big', 'blockquote', 'body', 'button', 
       'caption', 'center', 'cite', 'colgroup',
       'dd', 'del', 'dfn', 'div', 'dl', 'dt', 'em',
@@ -250,8 +250,8 @@ module Garterbelt
       RUBY
     end
     
-    MINIFIED_TAGS = ['textarea']
-    MINIFIED_TAGS.each do |type|
+    COMPACTED_TAGSS = ['textarea', 'a']
+    COMPACTED_TAGSS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args, &block)
           block_given? ? compact_tag(:#{type}, *args, &block) : compact_tag(:#{type}, *args)
