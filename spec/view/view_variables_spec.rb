@@ -86,25 +86,25 @@ describe Garterbelt::View, 'Variables' do
     describe 'accessor' do
       describe 'without default' do
         it 'builds readers for the required variables' do
-          NeedyView.instance_methods.should include 'x'
-          NeedyView.instance_methods.should include 'y'
+          NeedyView.instance_methods.map{ |im| im.to_s }.should include 'x'
+          NeedyView.instance_methods.map{ |im| im.to_s }.should include 'y'
         end
       
         it 'builds writers for the required variables' do
-          NeedyView.instance_methods.should include 'x='
-          NeedyView.instance_methods.should include 'y='
+          NeedyView.instance_methods.map{ |im| im.to_s }.should include 'x='
+          NeedyView.instance_methods.map{ |im| im.to_s }.should include 'y='
         end
       end
       
       describe 'with defaults' do
         it 'makes readers' do
-          LessNeedy.instance_methods.should include 'x'
-          LessNeedy.instance_methods.should include 'y'
+          LessNeedy.instance_methods.map{ |im| im.to_s }.should include 'x'
+          LessNeedy.instance_methods.map{ |im| im.to_s }.should include 'y'
         end
         
         it 'makes writers' do
-          LessNeedy.instance_methods.should include 'x='
-          LessNeedy.instance_methods.should include 'y='
+          LessNeedy.instance_methods.map{ |im| im.to_s }.should include 'x='
+          LessNeedy.instance_methods.map{ |im| im.to_s }.should include 'y='
         end
       end
 

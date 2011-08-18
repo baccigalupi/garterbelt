@@ -57,8 +57,9 @@ module Garterbelt
     end
     
     def self.add_accessor key
-      key = key.to_s
-      return if (accessories + instance_methods).include?(key)
+      key = key.to_sym
+      i_methods = instance_methods.first.is_a?(String) ? instance_methods.map{|m| m.to_sym} : instance_methods
+      return if (accessories + i_methods).include?(key)
       accessories << key
       attr_accessor key
     end

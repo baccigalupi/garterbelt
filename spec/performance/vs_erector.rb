@@ -39,6 +39,8 @@ RBench.run(TIMES) do
   end
 end
 
+# This is all kind of outdated ... and the same test needs to happen with real requests from an app
+
 # 4/13/2011, more stuff checking for 0.0.6
 # 10_000                           GARTERBELT | ERECTOR | PERCENT DIFFERENCE
 # --------------------------------------------------------------------------
