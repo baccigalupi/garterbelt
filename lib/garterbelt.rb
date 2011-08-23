@@ -10,7 +10,7 @@ require stocking_dir + '/stocking'
 
 require stocking_dir + '/renderers/renderer'
 require stocking_dir + '/renderers/content_rendering'
-require stocking_dir + '/renderers/closed_tag'
+require stocking_dir + '/renderers/simple_tag'
 require stocking_dir + '/renderers/content_tag'
 require stocking_dir + '/renderers/cache'
 require stocking_dir + '/renderers/text'

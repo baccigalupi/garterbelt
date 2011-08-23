@@ -206,7 +206,7 @@ describe Garterbelt::ContentTag do
         
         describe 'adding to the tag buffer' do
           before do
-            @b = Garterbelt::ClosedTag.new(:view => @view, :type => :hr, :attributes => {:class => :linear})
+            @b = Garterbelt::SimpleTag.new(:view => @view, :type => :hr, :attributes => {:class => :linear})
             @tag.id(:foo) do
               @view._buffer << @b
             end

@@ -6,8 +6,8 @@ describe Garterbelt::Doctype do
   end
   
   describe 'basics' do
-    it 'is decends from ClosedTag' do
-      Garterbelt::Doctype.ancestors.should include Garterbelt::ClosedTag
+    it 'is decends from SimpleTag' do
+      Garterbelt::Doctype.ancestors.should include Garterbelt::SimpleTag
     end
   end
   

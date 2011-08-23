@@ -124,8 +124,8 @@ module Garterbelt
       add_to_buffer t
     end
     
-    def closed_tag(type, *args)
-      add_to_buffer ClosedTag.new(parse_tag_arguments(type, args))
+    def simple_tag(type, *args)
+      add_to_buffer SimpleTag.new(parse_tag_arguments(type, args))
     end
     
     def non_escape_tag(*args, &block)
@@ -232,11 +232,11 @@ module Garterbelt
       RUBY
     end
     
-    CLOSED_TAGS = ['area', 'br', 'col', 'frame', 'hr', 'img', 'input']
-    CLOSED_TAGS.each do |type|
+    SIMPLE_TAGS = ['area', 'br', 'col', 'frame', 'hr', 'img', 'input']
+    SIMPLE_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args)
-          closed_tag(:#{type}, *args)
+          simple_tag(:#{type}, *args)
         end
       RUBY
     end  
@@ -245,7 +245,7 @@ module Garterbelt
     HEAD_TAGS.each do |type|
       class_eval <<-RUBY
         def #{type}(*args)
-          closed_tag(:#{type}, *args)
+          simple_tag(:#{type}, *args)
         end
       RUBY
     end

@@ -1,5 +1,5 @@
 module Garterbelt
-  class ContentTag < ClosedTag
+  class ContentTag < SimpleTag
     include ContentRendering
     
     def initialize(opts, &block)

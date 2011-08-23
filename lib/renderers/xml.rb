@@ -1,5 +1,5 @@
 module Garterbelt
-  class Xml < ClosedTag
+  class Xml < SimpleTag
     def template
       "#{indent}<?xml #{rendered_attributes} ?>\n"
     end

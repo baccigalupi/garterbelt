@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Garterbelt::ClosedTag do
-  ClosedTag = Garterbelt::ClosedTag unless defined?(ClosedTag)
+describe Garterbelt::SimpleTag do
+  SimpleTag = Garterbelt::SimpleTag unless defined?(SimpleTag)
   
   before do
     @view = MockView.new
@@ -9,33 +9,33 @@ describe Garterbelt::ClosedTag do
   
   describe 'initialize' do
     it 'requires a type' do
-      lambda{ ClosedTag.new({:view => @view}) }.should raise_error(ArgumentError, ":type required in initialization options")
+      lambda{ SimpleTag.new({:view => @view}) }.should raise_error(ArgumentError, ":type required in initialization options")
     end
     
     it 'requires a view' do
-      lambda{ ClosedTag.new({:type => :input}) }.should raise_error(ArgumentError, ":view required in initialization options")
+      lambda{ SimpleTag.new({:type => :input}) }.should raise_error(ArgumentError, ":view required in initialization options")
     end
     
     it 'store the type as an attribute' do
-      ClosedTag.new({:type => :input, :view => @view}).type.should == :input
+      SimpleTag.new({:type => :input, :view => @view}).type.should == :input
     end
     
     it 'attributes should be empty by default' do
-      ClosedTag.new(:type => :input, :view => @view).attributes.should == {}
+      SimpleTag.new(:type => :input, :view => @view).attributes.should == {}
     end
     
     it 'sets the attributes' do
-      ClosedTag.new(:type => :input, :attributes => {:foo => :bar}, :view => @view).attributes.should == {:foo => :bar}
+      SimpleTag.new(:type => :input, :attributes => {:foo => :bar}, :view => @view).attributes.should == {:foo => :bar}
     end
     
     it 'extracts css_class into its own variable' do
-      ClosedTag.new(:type => :input, :attributes => {:class => :foo}, :view => @view).css_class.should == [:foo]
+      SimpleTag.new(:type => :input, :attributes => {:class => :foo}, :view => @view).css_class.should == [:foo]
     end
   end
   
   describe 'method chaining' do
     before do
-      @tag = ClosedTag.new(:type => :input, :view => @view)
+      @tag = SimpleTag.new(:type => :input, :view => @view)
     end
     
     describe '#id' do
@@ -74,7 +74,7 @@ describe Garterbelt::ClosedTag do
   
   describe 'view usage' do
     before do
-      @tag = ClosedTag.new(:type => :input, :view => @view)
+      @tag = SimpleTag.new(:type => :input, :view => @view)
     end
     
     it 'uses its output' do
@@ -89,7 +89,7 @@ describe Garterbelt::ClosedTag do
   
   describe 'rendering' do
     before do
-      @tag = ClosedTag.new(
+      @tag = SimpleTag.new(
         :type => :input, 
         :attributes => {:class => :foo_bar, :thing => :thong},
         :view => @view
@@ -160,7 +160,7 @@ describe Garterbelt::ClosedTag do
     
     describe 'styles' do
       before do
-        @tag = ClosedTag.new(:type => :input, :view => @view)
+        @tag = SimpleTag.new(:type => :input, :view => @view)
         @view.render_style = :pretty
         @pretty = @tag.render
       end

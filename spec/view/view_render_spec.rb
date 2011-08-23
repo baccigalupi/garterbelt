@@ -95,14 +95,14 @@ describe Garterbelt::View do
   
     describe 'tag nesting' do
       it 'should render correctly at one layer deep' do
-        @view._buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
+        @view._buffer << Garterbelt::SimpleTag.new(:type => :hr, :view => @view)
         @view.render.should == "<hr>\n"
       end
       
       describe 'second level' do
         before do
           @view._buffer << Garterbelt::ContentTag.new(:type => :p, :view => @view) do
-            @view._buffer << Garterbelt::ClosedTag.new(:type => :hr, :view => @view)
+            @view._buffer << Garterbelt::SimpleTag.new(:type => :hr, :view => @view)
           end
           @view.render
         end
@@ -125,7 +125,7 @@ describe Garterbelt::View do
           @view._buffer << Garterbelt::ContentTag.new(:type => :form, :view => @view) do
             @view._buffer << Garterbelt::ContentTag.new(:type => :fieldset, :view => @view) do
               @view._buffer << Garterbelt::ContentTag.new(:type => :label, :view => @view, :attributes => {:for => 'email'}) do
-                @view._buffer << Garterbelt::ClosedTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
+                @view._buffer << Garterbelt::SimpleTag.new(:type => :input, :view => @view, :attributes => {:name => 'email', :type => 'text'})
               end
               @view._buffer << Garterbelt::ContentTag.new(:type => :input, :view => @view, :attributes => {:type => 'submit', :value => 'Login or whatever'})
             end
@@ -235,20 +235,20 @@ describe Garterbelt::View do
       end
     end
     
-    describe '#closed_tag' do
-      it 'makes a new closed tag' do
-        Garterbelt::ClosedTag.should_receive(:new).with(
+    describe '#simple_tag' do
+      it 'makes a new simple tag' do
+        Garterbelt::SimpleTag.should_receive(:new).with(
           :type => :hr, :view => @view, :attributes => {:class => 'linear'}
         ).and_return('content')
-        @view.closed_tag(:hr, :class => 'linear')
+        @view.simple_tag(:hr, :class => 'linear')
       end
       
       it 'returns the tag' do
-        @view.closed_tag(:hr, :class => 'linear').is_a?(Garterbelt::ClosedTag).should be_true
+        @view.simple_tag(:hr, :class => 'linear').is_a?(Garterbelt::SimpleTag).should be_true
       end
       
       it 'adds it to the buffer' do
-        tag = @view.closed_tag(:hr, :class => 'linear')
+        tag = @view.simple_tag(:hr, :class => 'linear')
         @view._buffer.should include tag
       end
     end
@@ -359,14 +359,14 @@ describe Garterbelt::View do
         end
       end
       
-      describe 'closed tags' do
-        Garterbelt::View::CLOSED_TAGS.each do |type|
+      describe 'simple tags' do
+        Garterbelt::View::SIMPLE_TAGS.each do |type|
           it "should have a method ##{type}" do
             @view.should respond_to(type)
           end
         
-          it "##{type} should call #closed_tag with argument" do
-            @view.should_receive(:closed_tag).with(type.to_sym, {:class => 'classy'})
+          it "##{type} should call #simple_tag with argument" do
+            @view.should_receive(:simple_tag).with(type.to_sym, {:class => 'classy'})
             @view.send(type, {:class => 'classy'})
           end
         end
@@ -414,7 +414,7 @@ describe Garterbelt::View do
           @view._buffer.last.should == xml
         end
         
-        it 'makes a closed tag with default options' do
+        it 'makes a simple tag with default options' do
           xml = @view.xml
           xml.attributes[:version].should == 1.0
           xml.attributes[:encoding].should == 'utf-8'
@@ -434,8 +434,8 @@ describe Garterbelt::View do
               @view.should respond_to(type)
             end
           
-            it "makes a closed tag" do
-              @view.should_receive(:closed_tag).with(type.to_sym)
+            it "makes a simple tag" do
+              @view.should_receive(:simple_tag).with(type.to_sym)
               @view.send(type)
             end
           end
@@ -449,7 +449,7 @@ describe Garterbelt::View do
         end
         
         describe 'helpers' do
-          it 'stylesheet_link makes a link closed tag with the right options' do
+          it 'stylesheet_link makes a link simple tag with the right options' do
             @view.should_receive(:_link).with(:rel => "stylesheet", 'type' => "text/css", :href => "/foo/theme.css")
             @view.stylesheet_link('/foo/theme')
           end
