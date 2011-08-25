@@ -57,5 +57,14 @@ module Garterbelt
       self.output << str
       str
     end
+    
+    def method_missing(name, *args, &block)
+      super if args.size > 0 || block_given?
+      if name.to_s.match(/(.+)!/)
+        id($1)
+      else
+        c(name)
+      end
+    end
   end
 end

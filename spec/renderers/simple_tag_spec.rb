@@ -70,6 +70,34 @@ describe Garterbelt::SimpleTag do
         @tag.c(:foo, :bar).should === @tag
       end
     end
+    
+    describe 'method_missing' do
+      it 'should convert ! methods to id attributes' do
+        @tag.foo!
+        @tag.attributes[:id].to_s.should == 'foo'
+      end
+      
+      it 'should convert other methods to classes' do
+        @tag.bar
+        @tag.css_class.should == [:bar]
+      end
+      
+      it 'continues to chain' do
+        @tag.foo!.bar
+        @tag.attributes[:id].to_s.should == 'foo'
+        @tag.css_class.should == [:bar]
+      end
+      
+      it 'passes to super when arguments are given' do
+        expect{ @tag.foo!(:bar) }.should raise_error
+      end
+      
+      it 'passes to super when a block is given' do
+        expect do 
+          @tag.foo { 'do something here' }
+        end.should raise_error
+      end
+    end
   end
   
   describe 'view usage' do

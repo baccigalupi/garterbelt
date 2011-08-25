@@ -23,6 +23,15 @@ module Garterbelt
       self
     end
     
+    def method_missing(name, *args, &block)
+      if block_given?
+        self.content = block
+        super rescue self
+      else
+        super
+      end
+    end
+    
     def head_template
       if style == :text 
         ''

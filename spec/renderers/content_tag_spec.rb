@@ -54,6 +54,33 @@ describe Garterbelt::ContentTag do
         @tag.c(:foo).should === @tag
       end
     end
+    
+    describe 'method_missing' do
+      it 'should convert ! methods to id attributes' do
+        @tag.foo!
+        @tag.attributes[:id].to_s.should == 'foo'
+      end
+      
+      it 'should convert other methods to classes' do
+        @tag.bar
+        @tag.css_class.should include( :bar )
+      end
+      
+      it 'continues to chain' do
+        @tag.foo!.bar
+        @tag.attributes[:id].to_s.should == 'foo'
+        @tag.css_class.should include( :bar )
+      end
+      
+      it 'passes to super when arguments are given' do
+        expect{ @tag.foo!(:bar) }.should raise_error
+      end
+      
+      it 'sets the block when one is given' do
+        @tag.foo { @output << "This is from the method missing block" }
+        @tag.content.class.should == Proc
+      end
+    end
   end
   
   describe 'rendering' do
